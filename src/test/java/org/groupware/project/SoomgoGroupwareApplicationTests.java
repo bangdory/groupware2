@@ -1,4 +1,4 @@
-package org.soomgo.soomgo_groupware;
+package org.groupware.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

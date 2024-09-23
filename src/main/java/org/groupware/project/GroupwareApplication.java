@@ -1,13 +1,13 @@
-package org.soomgo.soomgo_groupware;
+package org.groupware.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SoomgoGroupwareApplication {
+public class GroupwareApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SoomgoGroupwareApplication.class, args);
+		SpringApplication.run(GroupwareApplication.class, args);
 	}
 
 }
