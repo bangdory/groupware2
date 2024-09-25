@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groupware.erp.employee.repository.EmployeeMapperRepository">
+
+    <select id="employeeList" parameterType="com.groupware.erp.employee.dto.EmployeeMapperDTO"
+                            resultType="com.groupware.erp.employee.dto.EmployeeMapperDTO">
+        SELECT
+               emp_no           AS empNo
+             , emp_email        AS empEmail
+             , emp_password     AS empPassword
+             , emp_name         AS empName
+        FROM employee
+        <where>
+            <if test="empEmail != null and !empEmail.equals('')">
+                AND emp_email = #{empEmail}
+            </if>
+            <if test="empName != null and !empName.equals('')">
+                AND emp_name LIKE '%' || #{empName} || '%'
+            </if>
+        </where>
+    </select>
+</mapper>

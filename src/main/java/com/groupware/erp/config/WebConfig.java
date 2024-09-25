@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginCheckInterceptor()) // 로그인 체크 인터셉터
                 .order(1) // 인터셉터적용순서
                 .addPathPatterns("/**") // 모든 요청에 인터셉터 적용
-                .excludePathPatterns("/", "/member/**"); // 인터셉터 적용을 제외할 요청 목록
+                .excludePathPatterns("/", "/employee/**"); // 인터셉터 적용을 제외할 요청 목록
     }
 }

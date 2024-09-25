@@ -1,7 +1,7 @@
 package com.groupware.erp.config;
 
-import com.groupware.erp.member.entity.MemberEntity;
-import com.groupware.erp.member.repository.MemberRepository;
+import com.groupware.erp.employee.entity.EmployeeEntity;
+import com.groupware.erp.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginUserDetailService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final EmployeeRepository employeeRepository;
 
     // 로그인 처리
     @Override
-    public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(memberEmail).orElseThrow(() -> new UsernameNotFoundException("없는 회원 입니다..."));
+    public UserDetails loadUserByUsername(String empEmail) throws UsernameNotFoundException {
+        EmployeeEntity employeeEntity = employeeRepository.findByEmpEmail(empEmail).orElseThrow(() -> new UsernameNotFoundException("없는 회원 입니다..."));
 
-        return User.builder().username(memberEntity.getMemberName())
-                   .password(memberEntity.getMemberPassword())
-                   .roles(memberEntity.getRole().name())
+        return User.builder().username(employeeEntity.getEmpName())
+                   .password(employeeEntity.getEmpPassword())
+                   .roles(employeeEntity.getRole().name())
                    .build();
     }
 }

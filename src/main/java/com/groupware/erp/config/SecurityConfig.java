@@ -1,10 +1,9 @@
 package com.groupware.erp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groupware.erp.domain.member.Role;
+import com.groupware.erp.domain.employee.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/", "/member/**").permitAll()
+                                .requestMatchers("/", "/employee/**").permitAll()
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
@@ -45,10 +44,10 @@ public class SecurityConfig {
                                                             .accessDeniedHandler(accessDeniedHandler)
                 )
                 .formLogin(
-                        (formLogin) -> formLogin.loginPage("/member/login")
-                                                .usernameParameter("memberEmail")
-                                                .passwordParameter("memberPassword")
-                                                .loginProcessingUrl("/member/memberLogin")
+                        (formLogin) -> formLogin.loginPage("/employee/login")
+                                                .usernameParameter("empEmail")
+                                                .passwordParameter("empPassword")
+                                                .loginProcessingUrl("/employee/employeeLogin")
                                                 .successHandler(new LoginSuccessHandler()) // 로그인 성공시 제어를 위한 핸들러
                 )
                 .logout(
