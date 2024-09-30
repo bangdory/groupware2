@@ -1,5 +1,6 @@
 package com.groupware.erp.employee.dto;
 
+import com.groupware.erp.domain.employee.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,5 @@ public class EmployeeJoinDTO {
     private LocalDate empHireDate;
     private String department;
     private String empGrade;
+    private Role role;
 }

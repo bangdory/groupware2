@@ -17,6 +17,7 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
     private final AdminEmployeeRepository adminEmployeeRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     @Override
     public List<AdminEmployeeDetailDTO> findAll() {
         List<AdminEmployeeEntity> employeeEntityList = adminEmployeeRepository.findAll();

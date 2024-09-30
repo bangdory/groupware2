@@ -22,12 +22,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final PasswordEncoder passwordEncoder;
 
     // 회원가입 처리
-    @Override
-    public Long join(EmployeeJoinDTO employeeJoinDTO) {
-        // JPA Repository는 무조건 Entity 타입만 받기 때문에 Entity 타입으로 변경
-        EmployeeEntity employeeEntity = EmployeeEntity.joinEmployee(employeeJoinDTO, passwordEncoder);
-        return employeeRepository.save(employeeEntity).getEmpNo();
-    }
+//    @Override
+//    public Long join(EmployeeJoinDTO employeeJoinDTO) {
+//        // JPA Repository는 무조건 Entity 타입만 받기 때문에 Entity 타입으로 변경
+//        EmployeeEntity employeeEntity = EmployeeEntity.joinEmployee(employeeJoinDTO, passwordEncoder);
+//        return employeeRepository.save(employeeEntity).getEmpNo();
+//    }
 
     // 회원목록 조회
     @Override

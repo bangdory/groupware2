@@ -45,21 +45,20 @@ public class EmployeeEntity {
     @Column(name = "role", nullable = false) // 그룹웨어 권한 (관리자여부)
     private Role role;
 
-    // MemberJoinDTO -> MemberEntity 객체로 변환
-    public static EmployeeEntity joinEmployee(EmployeeJoinDTO employeeJoinDTO, PasswordEncoder passwordEncoder) {
-        EmployeeEntity employeeEntity = new EmployeeEntity();
-
-        employeeEntity.setEmpNo(employeeJoinDTO.getEmpNo());
-        employeeEntity.setEmpPassword(passwordEncoder.encode(employeeJoinDTO.getEmpPassword()));
-        employeeEntity.setEmpEmail(employeeJoinDTO.getEmpEmail());
-        employeeEntity.setEmpName(employeeJoinDTO.getEmpName());
-        employeeEntity.setEmpPhone(employeeJoinDTO.getEmpPhone());
-        employeeEntity.setEmpHireDate(employeeJoinDTO.getEmpHireDate());
-        employeeEntity.setDepartment(employeeJoinDTO.getDepartment());
-        employeeEntity.setEmpGrade(employeeJoinDTO.getEmpGrade());
-        employeeEntity.setRole(Role.USER); // 회원가입시 일반사용자로 등록, 필요시 차후 관리자화면에서 관리자로 등록
-
-        // 변환이 완료된 memberEntity 객체를 넘겨줌
-        return employeeEntity;
-    }
+//    // MemberJoinDTO -> MemberEntity 객체로 변환
+//    public static EmployeeEntity joinEmployee(EmployeeJoinDTO employeeJoinDTO, PasswordEncoder passwordEncoder) {
+//        EmployeeEntity employeeEntity = new EmployeeEntity();
+//
+//        employeeEntity.setEmpNo(employeeJoinDTO.getEmpNo());
+//        employeeEntity.setEmpPassword(passwordEncoder.encode(employeeJoinDTO.getEmpPassword()));
+//        employeeEntity.setEmpEmail(employeeJoinDTO.getEmpEmail());
+//        employeeEntity.setEmpName(employeeJoinDTO.getEmpName());
+//        employeeEntity.setEmpPhone(employeeJoinDTO.getEmpPhone());
+//        employeeEntity.setEmpHireDate(employeeJoinDTO.getEmpHireDate());
+//        employeeEntity.setDepartment(employeeJoinDTO.getDepartment());
+//        employeeEntity.setEmpGrade(employeeJoinDTO.getEmpGrade());
+//        employeeEntity.setRole(employeeJoinDTO.getRole());
+//        // 변환이 완료된 memberEntity 객체를 넘겨줌
+//        return employeeEntity;
+//    }
 }

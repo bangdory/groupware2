@@ -21,23 +21,23 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     // 회원가입Page
-    @GetMapping("/join")
-    public String joinForm() {
-        return "/employee/join";
-    }
+//    @GetMapping("/join")
+//    public String joinForm() {
+//        return "/employee/join";
+//    }
 
     // 회원가입 처리
-    @PostMapping("/employeeJoin")
-    public String employeeJoin(@ModelAttribute EmployeeJoinDTO employeeJoinDTO) {
-        Long empNo = employeeService.join(employeeJoinDTO);
-        return "/employee/login";
-    }
+//    @PostMapping("/employeeJoin")
+//    public String employeeJoin(@ModelAttribute EmployeeJoinDTO employeeJoinDTO) {
+//        Long empNo = employeeService.join(employeeJoinDTO);
+//        return "/";
+//    }
 
-    // 로그인Page
-    @GetMapping("/login")
-    public String loginForm() {
-        return "/employee/login";
-    }
+//     로그인Page
+//    @GetMapping("/login")
+//    public String loginForm() {
+//        return "/login";
+//    }
 
     // 회원목록Page
     @GetMapping("/list")
