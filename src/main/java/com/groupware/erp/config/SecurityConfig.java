@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
 
@@ -34,11 +38,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(
+                        (csrfConfig) -> csrfConfig.disable()
+                )
+                .headers(
+                        (headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable())
+                )
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/", "/member/**").permitAll()
+                                // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
-                                .anyRequest().authenticated()
+                                // User 권한으로 접근할 Url
+                                .requestMatchers("/member/list").hasRole(Role.USER.name())
+                                // 위를 제외한 모든 Url 허용
+                                .anyRequest().permitAll()
                 )
                 .exceptionHandling(
                         (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint)
@@ -54,8 +67,8 @@ public class SecurityConfig {
                 .logout(
                         (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
                 )
-                .userDetailsService(userDetailsService)
-        ;
+                .userDetailsService(userDetailsService);
+        http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -80,6 +93,20 @@ public class SecurityConfig {
                 writer.write(json);
                 writer.flush();
             };
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000");// 리액트 서버
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
+    }
 
     @Getter
     @RequiredArgsConstructor
