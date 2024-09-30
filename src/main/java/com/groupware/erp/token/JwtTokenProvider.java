@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtTokenProvider {
-    private final Key key;
+//    private final Key key;
 
-    // secret 값 key에 저장
-    public JwtTokenProvider(@Value("${jwt.secret}")String secretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
-
-
-    }
+//    // secret 값 key에 저장
+//    public JwtTokenProvider(@Value("${jwt.secret}")String secretKey) {
+//        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+//        this.key = Keys.hmacShaKeyFor(keyBytes);
+//
+//
+//    }
 
     // employee정보로 accesstoken, refreshtoken 생성
     public JwtTokenDTO generateToken(Authentication authentication) {
@@ -42,13 +42,13 @@ public class JwtTokenProvider {
                 .setSubject(authentication.getName())
                 .claim("auth",authorities)
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS256)
+//                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         // Refresh Token
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(now + 1000 * 60 * 60 * 24))
-                .signWith(key, SignatureAlgorithm.HS256)
+//                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         return JwtTokenDTO.builder()

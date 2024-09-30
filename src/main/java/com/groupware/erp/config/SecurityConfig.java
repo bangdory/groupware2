@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
 
@@ -34,22 +38,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests(
-                        (authorizeRequests) -> authorizeRequests
-                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/", "/employee/**", "/login").permitAll()
-                                .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
-                                .anyRequest().authenticated()
+                .csrf((csrfConfig) -> csrfConfig.disable())
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .headers(
+                        (headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable())
                 )
-                .addFilter(new JwtAuthenticationFilter(authenticationNanager())) // JWT 인증필터
-
-//                .exceptionHandling(
-//                        (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint)
-//                                                            .accessDeniedHandler(accessDeniedHandler)
-//                )
+                .authorizeHttpRequests(
+                        (authorizeRequests) -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
+                                // Admin 권한으로 접근할 Url
+                                .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
+                                // User 권한으로 접근할 Url
+                                .requestMatchers("/member/list").hasRole(Role.USER.name())
+                                // 위를 제외한 모든 Url 허용
+                                .anyRequest().permitAll())
+//                .addFilter(new JwtAuthenticationFilter(authenticationNanager())) // JWT 인증필터
+                .exceptionHandling(
+                        (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint)
+                                                            .accessDeniedHandler(accessDeniedHandler)
+                )
 //                .formLogin(
 //                        (formLogin) -> formLogin
 //                                                .usernameParameter("empEmail")
@@ -60,33 +66,47 @@ public class SecurityConfig {
                 .logout(
                         (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
                 )
-                .userDetailsService(userDetailsService)
-        ;
+                .userDetailsService(userDetailsService);
+        http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-//    public final AuthenticationEntryPoint unauthorizedEntryPoint =
-//            (request, response, authException) -> {
-//                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security unauthorized...");
-//                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//                String json = new ObjectMapper().writeValueAsString(fail);
-//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                PrintWriter writer = response.getWriter();
-//                writer.write(json);
-//                writer.flush();
-//            };
-//
-//    public final AccessDeniedHandler accessDeniedHandler =
-//            (request, response, accessDeniedException) -> {
-//                ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security forbidden...");
-//                response.setStatus(HttpStatus.FORBIDDEN.value());
-//                String json = new ObjectMapper().writeValueAsString(fail);
-//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//                PrintWriter writer = response.getWriter();
-//                writer.write(json);
-//                writer.flush();
-//            };
-////
+    public final AuthenticationEntryPoint unauthorizedEntryPoint =
+            (request, response, authException) -> {
+                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security unauthorized...");
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                String json = new ObjectMapper().writeValueAsString(fail);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                PrintWriter writer = response.getWriter();
+                writer.write(json);
+                writer.flush();
+            };
+
+    public final AccessDeniedHandler accessDeniedHandler =
+            (request, response, accessDeniedException) -> {
+                ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security forbidden...");
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                String json = new ObjectMapper().writeValueAsString(fail);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                PrintWriter writer = response.getWriter();
+                writer.write(json);
+                writer.flush();
+            };
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000");// 리액트 서버
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
+    }
+
+
     @Getter
     @RequiredArgsConstructor
     public class ErrorResponse {
