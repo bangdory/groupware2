@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupware.erp.domain.employee.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,13 @@ public class SecurityConfig {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-//
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrfConfig) -> csrfConfig.disable())
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf(
+                        (csrfConfig) -> csrfConfig.disable()
+                )
                 .headers(
                         (headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable())
                 )
@@ -50,19 +52,19 @@ public class SecurityConfig {
                                 // User 권한으로 접근할 Url
                                 .requestMatchers("/member/list").hasRole(Role.USER.name())
                                 // 위를 제외한 모든 Url 허용
-                                .anyRequest().permitAll())
-//                .addFilter(new JwtAuthenticationFilter(authenticationNanager())) // JWT 인증필터
+                                .anyRequest().permitAll()
+                )
                 .exceptionHandling(
                         (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint)
                                                             .accessDeniedHandler(accessDeniedHandler)
                 )
-//                .formLogin(
-//                        (formLogin) -> formLogin
-//                                                .usernameParameter("empEmail")
-//                                                .passwordParameter("empPassword")
-//                                                .loginProcessingUrl("/login").permitAll()
-//                                                .successHandler(new LoginSuccessHandler()) // 로그인 성공시 제어를 위한 핸들러
-//                )
+                .formLogin(
+                        (formLogin) -> formLogin.loginPage("/member/login")
+                                                .usernameParameter("memberEmail")
+                                                .passwordParameter("memberPassword")
+                                                .loginProcessingUrl("/member/memberLogin")
+                                                .successHandler(new LoginSuccessHandler()) // 로그인 성공시 제어를 위한 핸들러
+                )
                 .logout(
                         (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
                 )
@@ -92,6 +94,7 @@ public class SecurityConfig {
                 writer.write(json);
                 writer.flush();
             };
+
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
@@ -105,7 +108,6 @@ public class SecurityConfig {
 
         return new CorsFilter(source);
     }
-
 
     @Getter
     @RequiredArgsConstructor
