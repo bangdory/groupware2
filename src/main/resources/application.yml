@@ -8,11 +8,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/groupwaredb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: legounderfoot
+    password: 1234
 
 mybatis:
   mapper-locations: mapper/*.xml
 
-jwt:
-  secret: a8f3d2e1c4b5f6g7h8j9k0lmnopqrstu
-  expiration: 3600
+#jwt:
+#  secret: a8f3d2e1c4b5f6g7h8j9k0lmnopqrstu
+#  expiration: 3600
