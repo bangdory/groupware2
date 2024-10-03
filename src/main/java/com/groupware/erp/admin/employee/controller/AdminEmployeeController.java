@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller()
-@RequestMapping(value = "/admin/member")
+@RequestMapping(value = "/admin/employee")
 public class AdminEmployeeController {
 
     @Autowired
