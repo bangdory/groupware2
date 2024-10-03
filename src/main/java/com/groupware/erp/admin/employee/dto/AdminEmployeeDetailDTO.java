@@ -26,12 +26,12 @@ public class AdminEmployeeDetailDTO {
     private Role role;
 
     public static AdminEmployeeDetailDTO toAdminEmployeeDetailDTO(AdminEmployeeEntity adminEmployeeEntity) {
-        AdminEmployeeDetailDTO memberDetailDTO = new AdminEmployeeDetailDTO();
-        memberDetailDTO.setEmpNo(adminEmployeeEntity.getEmpNo());
-        memberDetailDTO.setEmpEmail(adminEmployeeEntity.getEmpEmail());
-        memberDetailDTO.setEmpPassword(adminEmployeeEntity.getEmpPassword());
-        memberDetailDTO.setEmpName(adminEmployeeEntity.getEmpName());
-        return memberDetailDTO;
+        AdminEmployeeDetailDTO employeeDetailDTO = new AdminEmployeeDetailDTO();
+        employeeDetailDTO.setEmpNo(adminEmployeeEntity.getEmpNo());
+        employeeDetailDTO.setEmpEmail(adminEmployeeEntity.getEmpEmail());
+        employeeDetailDTO.setEmpPassword(adminEmployeeEntity.getEmpPassword());
+        employeeDetailDTO.setEmpName(adminEmployeeEntity.getEmpName());
+        return employeeDetailDTO;
     }
 
     public static List<AdminEmployeeDetailDTO> change(List<AdminEmployeeEntity> employeeEntityList) {

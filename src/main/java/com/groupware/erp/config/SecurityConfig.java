@@ -59,10 +59,10 @@ public class SecurityConfig {
                                                             .accessDeniedHandler(accessDeniedHandler)
                 )
                 .formLogin(
-                        (formLogin) -> formLogin.loginPage("/member/login")
-                                                .usernameParameter("memberEmail")
-                                                .passwordParameter("memberPassword")
-                                                .loginProcessingUrl("/member/memberLogin")
+                        (formLogin) -> formLogin.loginPage("/employee/login")
+                                                .usernameParameter("employeeEmail")
+                                                .passwordParameter("employeePassword")
+                                                .loginProcessingUrl("/employee/employeeLogin")
                                                 .successHandler(new LoginSuccessHandler()) // 로그인 성공시 제어를 위한 핸들러
                 )
                 .logout(

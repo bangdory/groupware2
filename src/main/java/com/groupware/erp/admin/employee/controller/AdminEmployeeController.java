@@ -45,7 +45,7 @@ public class AdminEmployeeController {
 
     // 회원수정
     @PutMapping("/updateEmployee/{empNo}")
-    public ResponseEntity memberUpdate(@RequestBody AdminEmployeeDetailDTO adminEmployeeDetailDTO) {
+    public ResponseEntity employeeUpdate(@RequestBody AdminEmployeeDetailDTO adminEmployeeDetailDTO) {
         Long empNo = adminEmployeeService.update(adminEmployeeDetailDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
