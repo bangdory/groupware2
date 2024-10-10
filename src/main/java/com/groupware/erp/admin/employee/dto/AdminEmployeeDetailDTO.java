@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AdminEmployeeDetailDTO {
 
-    private Long empNo;
+    private String empNo;
     private String empPassword;
     private String empEmail;
     private String empName;

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2 class="mt-3 mb-3">신규직원</h2>
+
+<form action="/admin/employee/newEmployee" method="post">
+    <div>
+        <div>
+            <input type="text" name="empName" placeholder="이름" />
+        </div>
+        <div>
+            <input type="text" name="empEmail" placeholder="이메일" />
+        </div>
+        <div>
+            <input type="text" name="empPhone" placeholder="연락처" />
+        </div>
+        <div>
+            <label for="department">부서명</label>
+                <select id="department" name="department">
+                    <option value="영업팀">영업팀</option>
+                    <option value="인사팀">인사팀</option>
+                    <option value="마케팅팀">마케팅팀</option>
+                </select>
+        </div>
+        <div>
+            <label for="empGrade">직급</label>
+                <select id="empGrade" name="empGrade">
+                    <option value="사원">사원</option>
+                    <option value="팀장">팀장</option>
+                    <option value="이사">이사</option>
+                    <option value="대표이사">대표이사</option>
+                </select>
+        </div>
+    </div>
+    <input type="submit" value="회원가입">
+</form>
+
+</body>
+</html>

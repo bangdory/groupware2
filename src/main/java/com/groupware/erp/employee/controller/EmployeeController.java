@@ -33,21 +33,21 @@ public class EmployeeController {
 //        return "/";
 //    }
 
-//     로그인Page
+//    // 로그인Page
 //    @GetMapping("/login")
 //    public String loginForm() {
 //        return "/login";
 //    }
 
-    // 회원목록Page
-    @GetMapping("/list")
-    public String listForm(Model model) {
-        EmployeeMapperDTO paramEmployeeMapperDTO = new EmployeeMapperDTO();
-        paramEmployeeMapperDTO.setEmpEmail("email.com");
-        paramEmployeeMapperDTO.setEmpName("peter");
-
-        List<EmployeeMapperDTO> employeeList = employeeService.employeeList(paramEmployeeMapperDTO);
-        model.addAttribute("employeeList", employeeList);
-        return "/employee/list";
-    }
+//    // 회원목록Page
+//    @GetMapping("/list")
+//    public String listForm(Model model) {
+//        EmployeeMapperDTO paramEmployeeMapperDTO = new EmployeeMapperDTO();
+//        paramEmployeeMapperDTO.setEmpEmail("email.com");
+//        paramEmployeeMapperDTO.setEmpName("peter");
+//
+//        List<EmployeeMapperDTO> employeeList = employeeService.employeeList(paramEmployeeMapperDTO);
+//        model.addAttribute("employeeList", employeeList);
+//        return "/employee/list";
+//    }
 }

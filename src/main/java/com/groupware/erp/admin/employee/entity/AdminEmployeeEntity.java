@@ -1,6 +1,7 @@
 package com.groupware.erp.admin.employee.entity;
 
 import com.groupware.erp.admin.employee.dto.AdminEmployeeDetailDTO;
+import com.groupware.erp.admin.employee.service.EmployeeUtils;
 import com.groupware.erp.domain.employee.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class AdminEmployeeEntity {
     @Id // PK컬럼
 //    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment와 같은 역할
     @Column(name = "emp_no") // DB 컬럼 이름
-    private Long empNo;
+    private String empNo;
 
     @Column(name = "emp_password")
     private String empPassword;
@@ -45,18 +46,17 @@ public class AdminEmployeeEntity {
     @Column(name = "role", nullable = false) // 그룹웨어 권한 (관리자여부)
     private Role role;
 
-    public static AdminEmployeeEntity hireEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO, PasswordEncoder passwordEncoder) {
+    public static AdminEmployeeEntity newEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO) {
         AdminEmployeeEntity adminEmployeeEntity = new AdminEmployeeEntity();
 
-        adminEmployeeEntity.setEmpNo(adminEmployeeDetailDTO.getEmpNo());
-        adminEmployeeEntity.setEmpPassword(adminEmployeeDetailDTO.getEmpPassword());
+        adminEmployeeEntity.setEmpNo(EmployeeUtils.generateEmpNo()); // 날짜+UUID 조합으로 empNo 생성 (중복체크함)
         adminEmployeeEntity.setEmpEmail(adminEmployeeDetailDTO.getEmpEmail());
         adminEmployeeEntity.setEmpName(adminEmployeeDetailDTO.getEmpName());
         adminEmployeeEntity.setEmpPhone(adminEmployeeDetailDTO.getEmpPhone());
         adminEmployeeEntity.setEmpHireDate(adminEmployeeDetailDTO.getEmpHireDate());
         adminEmployeeEntity.setDepartment(adminEmployeeDetailDTO.getDepartment());
         adminEmployeeEntity.setEmpGrade(adminEmployeeDetailDTO.getEmpGrade());
-        adminEmployeeEntity.setRole(Role.USER);
+        adminEmployeeEntity.setRole(Role.USER); // 최초 회원가입 시 user(일반사용자)권한 부여.
 
         return adminEmployeeEntity;
     }
@@ -64,13 +64,12 @@ public class AdminEmployeeEntity {
     public static AdminEmployeeEntity toUpdateEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO, PasswordEncoder passwordEncoder) {
         AdminEmployeeEntity adminEmployeeEntity = new AdminEmployeeEntity();
 
-        adminEmployeeEntity.setEmpNo(adminEmployeeEntity.getEmpNo());
         adminEmployeeEntity.setEmpEmail(adminEmployeeDetailDTO.getEmpEmail());
         adminEmployeeEntity.setEmpPassword(passwordEncoder.encode(adminEmployeeDetailDTO.getEmpPassword()));
         adminEmployeeEntity.setEmpName(adminEmployeeDetailDTO.getEmpName());
-        adminEmployeeEntity.setRole(adminEmployeeDetailDTO.getRole()); // 최초 회원가입 시 user(일반사용자)권한 부여.
+        adminEmployeeEntity.setRole(adminEmployeeDetailDTO.getRole());
 
-        // 변환이 완료된 memberEntity 객체를 넘겨줌
+        // 변환이 완료된 employeeEntity 객체를 넘겨줌
         return adminEmployeeEntity;
     }
 }

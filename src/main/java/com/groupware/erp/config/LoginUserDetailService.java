@@ -17,12 +17,14 @@ public class LoginUserDetailService implements UserDetailsService {
 
     // 로그인 처리
     @Override
-    public UserDetails loadUserByUsername(String empEmail) throws UsernameNotFoundException {
-        EmployeeEntity employeeEntity = employeeRepository.findByEmpEmail(empEmail).orElseThrow(() -> new UsernameNotFoundException("없는 회원 입니다..."));
+    public UserDetails loadUserByUsername(String empNo) throws UsernameNotFoundException {
 
-        return User.builder().username(employeeEntity.getEmpName())
-                   .password(employeeEntity.getEmpPassword())
-                   .roles(employeeEntity.getRole().name())
-                   .build();
+        // empNo로 회원정보 검증
+
+        EmployeeEntity employeeEntity = employeeRepository.findByEmpNo(empNo)
+                .orElseThrow(() -> new UsernameNotFoundException("없는 회원 입니다..."));
+
+        return new CustomUserDetails(employeeEntity); // CustomerUserDetails 사용
+
     }
 }

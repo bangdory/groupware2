@@ -18,7 +18,7 @@ public class EmployeeEntity {
     @Id // PK컬럼
 //    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment와 같은 역할, 사원번호 개별부여 할 거라서 주석.
     @Column(name = "emp_no") // DB 컬럼 이름
-    private Long empNo;
+    private String empNo;
 
     @Column(name = "emp_password")
     private String empPassword;

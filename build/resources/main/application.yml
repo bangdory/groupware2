@@ -13,6 +13,6 @@ spring:
 mybatis:
   mapper-locations: mapper/*.xml
 
-#jwt:
-#  secret: a8f3d2e1c4b5f6g7h8j9k0lmnopqrstu
-#  expiration: 3600
+jwt:
+  secret: a8f3d2e1c4b5f6g7h8j9k0lmnopqrstu1f36sdg5163df68ghfgv1vc23v5df44ry53761sdfsdjkilkujh3385tgeg
+  expiration: 3600

@@ -2,6 +2,7 @@ package com.groupware.erp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupware.erp.domain.employee.Role;
+import com.groupware.erp.token.JwtTokenProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -18,6 +19,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -30,6 +32,7 @@ import java.io.PrintWriter;
 public class SecurityConfig {
 
     private final LoginUserDetailService userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -42,6 +45,7 @@ public class SecurityConfig {
                 .csrf(
                         (csrfConfig) -> csrfConfig.disable()
                 )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(
                         (headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable())
                 )
@@ -50,7 +54,7 @@ public class SecurityConfig {
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
-                                .requestMatchers("/member/list").hasRole(Role.USER.name())
+                                .requestMatchers("/employee/list").hasRole(Role.USER.name())
                                 // 위를 제외한 모든 Url 허용
                                 .anyRequest().permitAll()
                 )
@@ -59,14 +63,14 @@ public class SecurityConfig {
                                                             .accessDeniedHandler(accessDeniedHandler)
                 )
                 .formLogin(
-                        (formLogin) -> formLogin.loginPage("/employee/login")
-                                                .usernameParameter("employeeEmail")
-                                                .passwordParameter("employeePassword")
+                        (formLogin) -> formLogin
+                                                .usernameParameter("empNo")
+                                                .passwordParameter("empPassword")
                                                 .loginProcessingUrl("/employee/employeeLogin")
-                                                .successHandler(new LoginSuccessHandler()) // 로그인 성공시 제어를 위한 핸들러
+                                                .successHandler(new LoginSuccessHandler(jwtTokenProvider)) // 로그인 성공시 제어를 위한 핸들러
                 )
-                .logout(
-                        (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
+                .logout(logout -> logout.logoutSuccessHandler(logoutSuccessHandler())
+//                        (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
                 )
                 .userDetailsService(userDetailsService);
         http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -99,7 +103,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");// 리액트 서버
+        config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
@@ -107,6 +111,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler(){
+        return (request, response, authentication) -> {
+          String token = request.getHeader("Authorization").substring(7); // bearer 제거
+          if (token != null && token.startsWith("Bearer ")) {
+              jwtTokenProvider.invalidateToken(token); // 토큰무효화
+          }
+          response.setStatus(HttpStatus.OK.value());
+          response.getWriter().write("{\"message\":\"You have been logged out successfully\"}");
+          response.getWriter().flush();
+        };
     }
 
     @Getter
