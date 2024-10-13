@@ -5,6 +5,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -45,7 +46,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName()) // 사원번호(username)
                 .claim("auth",authorities) // 권한
-                .claim("email", ((CustomUserDetails) authentication.getPrincipal()).getEmail()) // 이메일
+                .claim("empEmail", ((CustomUserDetails) authentication.getPrincipal()).getEmail()) // 이메일
                 .claim("department",  ((CustomUserDetails) authentication.getPrincipal()).getDepartment()) // 부서
                 .claim("empGrade",  ((CustomUserDetails) authentication.getPrincipal()).getEmpGrade()) // 직급
                 .setExpiration(accessTokenExpiresIn)
@@ -91,12 +92,52 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("empEmail", String.class);
+    }
+
+    public String getDepartmentFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("department", String.class);
+    }
+
+    public String getGradeFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("empGrade", String.class);
+    }
+
     public boolean invalidateToken(String token) {
         return invalidatedTokens.add(token); // 무효화목록에 토큰추가
     }
 
     public boolean isTokenInvalid(String token) {
         return invalidatedTokens.contains(token); // 무효호ㅛㅏ목록에 토큰 유무 체크
+    }
+
+    // JWT 토큰을 요청 헤더에서 가져오는 메소드
+    public String resolveToken(HttpServletRequest request) {
+        // "Authorization" 헤더에서 "Bearer "로 시작하는 부분을 추출
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);  // "Bearer " 이후 부분만 반환
+        }
+        return null;  // 토큰이 없거나 형식이 잘못된 경우 null 반환
     }
 
 

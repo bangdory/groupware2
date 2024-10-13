@@ -8,6 +8,4 @@ import java.util.Optional;
 public interface AdminEmployeeRepository extends JpaRepository<AdminEmployeeEntity, String> {
 
     Optional<AdminEmployeeEntity> findByEmpNo(String empNo);
-
-    void deleteByEmpNo(String empNo);
 }

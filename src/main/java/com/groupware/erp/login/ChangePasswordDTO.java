@@ -1,4 +1,4 @@
-package com.groupware.erp.employee.dto;
+package com.groupware.erp.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeLoginDTO {
+public class ChangePasswordDTO {
 
     private String empNo;
-    private String empPassword;
+    private String oldPassword;
+    private String newPassword;
+
 }

@@ -46,30 +46,18 @@ public class AdminEmployeeEntity {
     @Column(name = "role", nullable = false) // 그룹웨어 권한 (관리자여부)
     private Role role;
 
-    public static AdminEmployeeEntity newEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO) {
-        AdminEmployeeEntity adminEmployeeEntity = new AdminEmployeeEntity();
+    public static AdminEmployeeEntity joinEmployeeDTO(AdminEmployeeDetailDTO employeeDTO, PasswordEncoder passwordEncoder) {
+        AdminEmployeeEntity employeeEntity = new AdminEmployeeEntity();
 
-        adminEmployeeEntity.setEmpNo(EmployeeUtils.generateEmpNo()); // 날짜+UUID 조합으로 empNo 생성 (중복체크함)
-        adminEmployeeEntity.setEmpEmail(adminEmployeeDetailDTO.getEmpEmail());
-        adminEmployeeEntity.setEmpName(adminEmployeeDetailDTO.getEmpName());
-        adminEmployeeEntity.setEmpPhone(adminEmployeeDetailDTO.getEmpPhone());
-        adminEmployeeEntity.setEmpHireDate(adminEmployeeDetailDTO.getEmpHireDate());
-        adminEmployeeEntity.setDepartment(adminEmployeeDetailDTO.getDepartment());
-        adminEmployeeEntity.setEmpGrade(adminEmployeeDetailDTO.getEmpGrade());
-        adminEmployeeEntity.setRole(Role.USER); // 최초 회원가입 시 user(일반사용자)권한 부여.
-
-        return adminEmployeeEntity;
-    }
-
-    public static AdminEmployeeEntity toUpdateEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO, PasswordEncoder passwordEncoder) {
-        AdminEmployeeEntity adminEmployeeEntity = new AdminEmployeeEntity();
-
-        adminEmployeeEntity.setEmpEmail(adminEmployeeDetailDTO.getEmpEmail());
-        adminEmployeeEntity.setEmpPassword(passwordEncoder.encode(adminEmployeeDetailDTO.getEmpPassword()));
-        adminEmployeeEntity.setEmpName(adminEmployeeDetailDTO.getEmpName());
-        adminEmployeeEntity.setRole(adminEmployeeDetailDTO.getRole());
-
-        // 변환이 완료된 employeeEntity 객체를 넘겨줌
-        return adminEmployeeEntity;
+        employeeEntity.setEmpNo(employeeDTO.getEmpNo());
+        employeeEntity.setEmpPassword(employeeDTO.getEmpPassword());
+        employeeEntity.setEmpEmail(employeeDTO.getEmpEmail());
+        employeeEntity.setEmpName(employeeDTO.getEmpName());
+        employeeEntity.setEmpPhone(employeeDTO.getEmpPhone());
+        employeeEntity.setEmpHireDate(employeeDTO.getEmpHireDate());
+        employeeEntity.setDepartment(employeeDTO.getDepartment());
+        employeeEntity.setEmpGrade(employeeDTO.getEmpGrade());
+        employeeEntity.setRole(Role.USER); // 최초가입 시에 user권한 부여
+        return employeeEntity;
     }
 }

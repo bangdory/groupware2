@@ -22,32 +22,17 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
     private final EmployeeUtils employeeUtils;
 
     @Override
-    public String newEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO){
-        AdminEmployeeEntity newEmployee = AdminEmployeeEntity.newEmployee(adminEmployeeDetailDTO);
-        return adminEmployeeRepository.save(newEmployee).getEmpNo(); // empNo 반환
+    public String joinEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO){
+        String empNo = employeeUtils.generateUniqueEmpNo();
+        adminEmployeeDetailDTO.setEmpNo(empNo);
+
+//        String empPassword = passwordEncoder.encode(empNo);
+        adminEmployeeDetailDTO.setEmpPassword(empNo);
+
+        AdminEmployeeEntity joinEmployee = adminEmployeeDetailDTO.joinEmployee(passwordEncoder);
+        adminEmployeeRepository.save(joinEmployee);
+
+        return empNo;
     }
 
-    @Override
-    public List<AdminEmployeeDetailDTO> findAll() {
-        List<AdminEmployeeEntity> employeeEntityList = adminEmployeeRepository.findAll();
-        List<AdminEmployeeDetailDTO> employeeDetailDTOList = AdminEmployeeDetailDTO.change(employeeEntityList);
-        return employeeDetailDTOList;
-    }
-
-    @Override
-    public Optional<AdminEmployeeEntity> findByEmpNo(String empNo) {
-        return adminEmployeeRepository.findByEmpNo(empNo);
-    }
-
-    @Override
-    public String update(AdminEmployeeDetailDTO adminEmployeeDetailDTO) {
-        AdminEmployeeEntity adminEmployeeEntity = AdminEmployeeEntity.toUpdateEmployee(adminEmployeeDetailDTO, passwordEncoder);
-
-        return adminEmployeeRepository.save(adminEmployeeEntity).getEmpNo();
-    }
-
-    @Override
-    public void deleteByEmpNo(String empNo) {
-        adminEmployeeRepository.deleteById(empNo);
-    }
 }

@@ -14,6 +14,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -42,16 +44,26 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 첫 로그인인지 체크
         if (customUserDetails.getPassword().equals(customUserDetails.getUsername())) { // username = empNo
             // 첫로그인 = 비밀번호변경 페이지
+            response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+
+            // 헤더에 JWT 토큰 추가
+            response.setHeader("Authorization", "Bearer " + jwtTokenDTO.getAccessToken());
+
             PrintWriter writer = response.getWriter();
             // /changePassword = 비밀번호변경페이지 url
-            writer.write("{\"redirectUrl\": \"/changePassword\", \"accessToken\": \"" + jwtTokenDTO.getAccessToken() + "\"}");
+            writer.write("{\"redirectUrl\": \"/\", \"accessToken\": \"" + jwtTokenDTO.getAccessToken() + "\"}");
             writer.flush();
         } else {
             // 비밀번호 다르면 jwt 토큰 응답
+            response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+
+            // 헤더에 JWT 토큰 추가
+            response.setHeader("Authorization", "Bearer " + jwtTokenDTO.getAccessToken());
+
             PrintWriter writer = response.getWriter();
             writer.write("{\"accessToken\":\"" + jwtTokenDTO.getAccessToken() + "\", \"refreshToken\":\"" + jwtTokenDTO.getRefreshToken() + "\"}");
             writer.flush();

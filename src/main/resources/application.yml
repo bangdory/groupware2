@@ -9,6 +9,10 @@ spring:
     url: jdbc:mysql://localhost:3306/groupwaredb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: legounderfoot
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
 
 mybatis:
   mapper-locations: mapper/*.xml
@@ -16,3 +20,9 @@ mybatis:
 jwt:
   secret: a8f3d2e1c4b5f6g7h8j9k0lmnopqrstu1f36sdg5163df68ghfgv1vc23v5df44ry53761sdfsdjkilkujh3385tgeg
   expiration: 3600
+
+logging:
+   level:
+     org.springframework.security: DEBUG
+     org.thymeleaf: DEBUG
+

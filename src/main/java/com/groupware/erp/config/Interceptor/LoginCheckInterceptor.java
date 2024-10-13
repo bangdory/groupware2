@@ -18,7 +18,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (StringUtil.isEmpty(employeeEntity.getEmpName())) {
             // 미로그인 상태면 로그인 화면으로 보냄
-            response.sendRedirect("/employee/login");
+            response.sendRedirect("/login");
             return false;
         } else {
             // 로그인 정상 상태

@@ -9,9 +9,5 @@ import java.util.Optional;
 
 public interface AdminEmployeeService {
 
-    String newEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO); // 새직원
-    List<AdminEmployeeDetailDTO> findAll();
-    Optional<AdminEmployeeEntity> findByEmpNo(String empNo);
-    String update(AdminEmployeeDetailDTO adminEmployeeDetailDTO);
-    void deleteByEmpNo(String empNo);
+    String joinEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO); // 새직원
 }

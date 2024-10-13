@@ -2,6 +2,7 @@ package com.groupware.erp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groupware.erp.domain.employee.Role;
+import com.groupware.erp.token.JwtAuthenticationFilter;
 import com.groupware.erp.token.JwtTokenProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,7 +33,7 @@ import java.io.PrintWriter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 
     private final LoginUserDetailService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,17 +44,30 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        return authenticationManagerBuilder.build();
+
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
                 .csrf(
                         (csrfConfig) -> csrfConfig.disable()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(
+                        (formLogin) -> formLogin.disable()) // session 안 쓸려고 비활성화함
                 .headers(
                         (headerConfig) -> headerConfig.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable())
                 )
                 .authorizeHttpRequests(
-                        (authorizeRequests) -> authorizeRequests.requestMatchers("/h2-console/**").permitAll()
+                        (authorizeRequests) -> authorizeRequests
+//                                .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/login","/login/changePassword").permitAll()
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
@@ -60,20 +77,12 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(
                         (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint)
-                                                            .accessDeniedHandler(accessDeniedHandler)
-                )
-                .formLogin(
-                        (formLogin) -> formLogin
-                                                .usernameParameter("empNo")
-                                                .passwordParameter("empPassword")
-                                                .loginProcessingUrl("/employee/employeeLogin")
-                                                .successHandler(new LoginSuccessHandler(jwtTokenProvider)) // 로그인 성공시 제어를 위한 핸들러
+                                .accessDeniedHandler(accessDeniedHandler)
                 )
                 .logout(logout -> logout.logoutSuccessHandler(logoutSuccessHandler())
-//                        (logoutConfig) -> logoutConfig.logoutSuccessUrl("/")
                 )
                 .userDetailsService(userDetailsService);
-        http.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -100,29 +109,20 @@ public class SecurityConfig {
             };
 
     @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsFilter(source);
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(jwtTokenProvider, new LoginSuccessHandler(jwtTokenProvider));
     }
 
     @Bean
-    public LogoutSuccessHandler logoutSuccessHandler(){
+    public LogoutSuccessHandler logoutSuccessHandler() {
         return (request, response, authentication) -> {
-          String token = request.getHeader("Authorization").substring(7); // bearer 제거
-          if (token != null && token.startsWith("Bearer ")) {
-              jwtTokenProvider.invalidateToken(token); // 토큰무효화
-          }
-          response.setStatus(HttpStatus.OK.value());
-          response.getWriter().write("{\"message\":\"You have been logged out successfully\"}");
-          response.getWriter().flush();
+            String token = request.getHeader("Authorization").substring(7); // bearer 제거
+            if (token != null && token.startsWith("Bearer ")) {
+                jwtTokenProvider.invalidateToken(token); // 토큰무효화
+            }
+            response.setStatus(HttpStatus.OK.value());
+            response.getWriter().write("{\"message\":\"You have been logged out successfully\"}");
+            response.getWriter().flush();
         };
     }
 

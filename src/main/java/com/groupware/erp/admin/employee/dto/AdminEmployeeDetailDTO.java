@@ -5,6 +5,7 @@ import com.groupware.erp.domain.employee.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,20 +26,19 @@ public class AdminEmployeeDetailDTO {
     private String empGrade;
     private Role role;
 
-    public static AdminEmployeeDetailDTO toAdminEmployeeDetailDTO(AdminEmployeeEntity adminEmployeeEntity) {
-        AdminEmployeeDetailDTO employeeDetailDTO = new AdminEmployeeDetailDTO();
-        employeeDetailDTO.setEmpNo(adminEmployeeEntity.getEmpNo());
-        employeeDetailDTO.setEmpEmail(adminEmployeeEntity.getEmpEmail());
-        employeeDetailDTO.setEmpPassword(adminEmployeeEntity.getEmpPassword());
-        employeeDetailDTO.setEmpName(adminEmployeeEntity.getEmpName());
-        return employeeDetailDTO;
+    public AdminEmployeeEntity joinEmployee(PasswordEncoder passwordEncoder) {
+        AdminEmployeeEntity employee = new AdminEmployeeEntity();
+        employee.setEmpNo(this.empNo);
+        employee.setEmpPassword(passwordEncoder.encode(this.empPassword));
+        employee.setEmpEmail(this.empEmail);
+        employee.setEmpName(this.empName);
+        employee.setEmpPhone(this.empPhone);
+        employee.setEmpHireDate(this.empHireDate);
+        employee.setDepartment(this.department);
+        employee.setEmpGrade(this.empGrade);
+        employee.setRole(this.role != null ? this.role : Role.USER);
+
+        return employee;
     }
 
-    public static List<AdminEmployeeDetailDTO> change(List<AdminEmployeeEntity> employeeEntityList) {
-        List<AdminEmployeeDetailDTO> employeeDetailDTOList = new ArrayList<>();
-        for (AdminEmployeeEntity adminEmployeeEntity : employeeEntityList) {
-            employeeDetailDTOList.add(toAdminEmployeeDetailDTO(adminEmployeeEntity));
-        }
-        return employeeDetailDTOList;
-    }
 }
