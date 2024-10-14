@@ -1,3 +1,5 @@
+DROP table file;
+
 create table file(
                      file_no int primary key ,
                      post_no int,

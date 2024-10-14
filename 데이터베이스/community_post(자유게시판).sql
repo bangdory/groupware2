@@ -1,3 +1,5 @@
+DROP TABLE community_post;
+
 create table community_post(
                                post_no int primary key ,
                                post_title varchar(100) not null,
