@@ -11,3 +11,13 @@ create table employee(
                          emp_grade enum('사원', '팀장', '이사', '대표이사') not null, -- 직급
                          role enum('USER', 'ADMIN')
 );
+
+-- role 열의 ENUM 타입을 'ADMIN', 'USER'로 변경
+ALTER TABLE employee
+    MODIFY role ENUM('ADMIN', 'USER');
+
+-- emp_no 열의 타입을 VARCHAR(10)으로 변경
+ALTER TABLE employee
+    MODIFY emp_no VARCHAR(10);
+
+

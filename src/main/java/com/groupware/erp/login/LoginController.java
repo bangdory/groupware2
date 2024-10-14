@@ -1,8 +1,9 @@
 package com.groupware.erp.login;
 
-import com.groupware.erp.employee.repository.EmployeeRepository;
+import com.groupware.erp.login.annualLeave.AnnualLeaveService;
 import com.groupware.erp.token.JwtTokenDTO;
 import com.groupware.erp.token.JwtTokenProvider;
+import com.groupware.erp.login.annualLeave.AnnualLeaveCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/login")
@@ -26,6 +28,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private AnnualLeaveService annualLeaveService;
 
     public LoginController(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -42,7 +47,21 @@ public class LoginController {
 
         // DB에서 사용자 정보 가져오기
         LoginEntity user = loginService.findByEmpNo(loginDTO.getEmpNo());
+
+        // 연차 계산 객체 생성
+        AnnualLeaveCalculator calculator = new AnnualLeaveCalculator();
+
+        // user 객체 읽기
         log.info(user.toString());
+
+        // 입사 일 가져오기
+        LocalDate hireDate = user.getEmpHiredate();
+        int useAnn = user.getAnnualLeaveEntity().getUseAnn();
+        int pendingAnn = user.getAnnualLeaveEntity().getPendingAnn();
+
+        // empNo, 총 연차일을 기준으로 AnnualLeave 테이블 데이터 업데이트
+        annualLeaveService.updateTotalAnn(user.getEmpNo(), hireDate, useAnn,pendingAnn);
+
         log.info("메서드는 불러왔다!!!! 머시 문젠디!!!");
 
         if (user == null) {

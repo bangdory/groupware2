@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="ko" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지</title>
+</head>
+<body>
+<form id="vacationForm" action="/vacation/requestPage" method="POST"> <!-- form으로 감싸기 -->
+    <div>
+        <span th:text="${emp_no}"></span>
+    </div>
+    <div>
+        <label>휴가 시작</label>
+        <label>
+            <input type="date" id="startDate" name="startDate"> <!-- name 속성 추가 -->
+        </label>
+    </div>
+    <div>
+        <label>휴가 종료</label>
+        <label>
+            <input type="date" id="endDate" name="endDate"> <!-- name 속성 추가 -->
+        </label>
+    </div>
+    <div>
+        <label>휴가 사유</label>
+        <label>
+            <input type="text" id="reason" name="reason"> <!-- name 속성 추가 -->
+        </label>
+    </div>
+    <div>
+        <button type="submit" id="vacationRequest">휴가 신청</button> <!-- form 제출 버튼 -->
+    </div>
+</form>
+
+<script>
+    // 별도의 JS 코드가 필요 없는 경우, 기본적으로 form이 submit됨
+</script>
+</body>
+</html>

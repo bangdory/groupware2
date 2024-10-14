@@ -1,3 +1,5 @@
+DROP TABLE community_notice;
+
 create table community_notice(
                                  notice_no int primary key ,
                                  notice_title varchar(50) not null,

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="ko" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지</title>
+</head>
+<body>
+<div>
+    <div>emp_no: <span th:text="${emp_no}"></span></div>
+</div>
+<div>
+    <button name="sendRequestPage" id="sendRequestPage">
+        휴가 신청
+    </button>
+</div>
+
+</body>
+</html>
+<script th:inline="javascript">
+        const emp_no = /*[[${emp_no}]]*/ '3145';
+    document.getElementById("sendRequestPage").addEventListener("click", function() {
+        console.log("emp_no: " + emp_no);
+        window.location.href = "/vacation/requestPage?emp_no="+emp_no; // GET 방식으로 vacation/requestPage로 이동
+    });
+</script>
+

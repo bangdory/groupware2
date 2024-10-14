@@ -1,3 +1,5 @@
+DROP TABLE community_comment;
+
 create table community_comment(
                                   comment_no int primary key ,
                                   post_no int not null,

@@ -39,6 +39,45 @@
                 console.log(response);
             }
         }
+
+        // 휴가 페이지로 이동 함수 (test)
+        async function goToVacationPage(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+
+            const empNo = document.getElementById("empNo").value;
+            const empPassword = document.getElementById("empPassword").value;
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ empNo, empPassword }) // JSON 형식으로 데이터 전송
+            });
+
+            if (response.ok) {
+                // 로그인 성공 처리
+                const data = await response.json();
+
+                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('refreshToken', data.refreshToken);
+
+                console.log("로그인 성공:", data);
+                window.location.href=`vacation/requestList`;
+
+
+            } else if (response.status === 403) {
+                // 403 Forbidden 응답 처리
+                console.log("비밀번호 변경 페이지로 이동합니다.");
+
+                const empNo = document.getElementById("empNo").value;
+                window.location.href = `/login/changePassword?empNo=${empNo}`;// 리다이렉트
+            } else {
+                // 로그인 실패 처리
+                console.error("로그인 실패");
+                console.log(response);
+            }
+        }
     </script>
 </head>
 <body>
@@ -55,6 +94,9 @@
         </div>
         <div>
             <button type="submit">로그인</button>
+        </div>
+        <div>
+            <button type="button" onclick="goToVacationPage(event)" name="vacationTest" id="vacationTest">로그인 후 휴가 페이지 이동</button>
         </div>
     </form>
 </body>

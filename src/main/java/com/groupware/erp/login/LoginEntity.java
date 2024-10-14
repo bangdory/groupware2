@@ -1,11 +1,12 @@
 package com.groupware.erp.login;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.groupware.erp.login.annualLeave.AnnualLeaveEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -18,4 +19,11 @@ public class LoginEntity {
 
     @Column(name = "emp_password")
     private String empPassword;
+
+    @Column(name = "emp_hiredate")
+    private LocalDate empHiredate;
+
+    // 연차 테이블과의 연관관계 설정
+    @OneToOne(mappedBy = "loginEntity")  // AnnualLeaveEntity에서 설정한 loginEntity와 연결
+    private AnnualLeaveEntity annualLeaveEntity;
 }
