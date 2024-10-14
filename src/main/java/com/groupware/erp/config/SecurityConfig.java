@@ -72,6 +72,8 @@ public class SecurityConfig{
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
                                 .requestMatchers("/employee/list").hasRole(Role.USER.name())
+                                // User 권한을 부여해서 Attendance 허용
+//                                .requestMatchers("/attendance/**").hasRole(Role.USER.name())
                                 // 위를 제외한 모든 Url 허용
                                 .anyRequest().permitAll()
                 )

@@ -702,6 +702,11 @@ h6 {
   background: #fff;
 }
 
+.alwaysHover {
+  color: #4154f1;
+  background: #f6f9ff;
+}
+
 .sidebar-nav .nav-link.collapsed i {
   color: #899bbd;
 }
