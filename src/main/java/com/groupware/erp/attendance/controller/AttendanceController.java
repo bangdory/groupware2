@@ -23,7 +23,7 @@ public class AttendanceController {
     parameter : emp_no
     * */
     @GetMapping("/attList")
-    public String attList (Model model, @RequestParam("emp_no") int emp_no) {
+    public String attList () {
         return "attendance/attList";
     }
 
