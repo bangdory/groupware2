@@ -1,3 +1,6 @@
+
+
+drop table if exists annualleave;
 CREATE INDEX idx_hire_date ON employee(emp_hiredate);
 
 
@@ -27,6 +30,7 @@ DELIMITER ;
 
 
 INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann) values ('0000000001', '2024-10-10', 11, 0);
+INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann) values ('0000000000', '2024-10-10', 11, 0);
 
 
 # 만약 1년차로 연차 발급 시 남은 잔여 연차를 입력하기 위한 남은 연차 칼럼 추가
