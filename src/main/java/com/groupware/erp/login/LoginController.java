@@ -92,11 +92,12 @@ public class LoginController {
     }
 
     @GetMapping("/changePassword")
-    public String changePasswordPage(Model model) {
+    public String changePasswordPage(@RequestParam(name = "empNo") String empNo,Model model) {
 
         log.info("비밀번호 바꾸셈");
-        log.info("Model" + model.toString());
-        return "changePassword";
+        log.info("empNo: " + empNo);
+        model.addAttribute("empNo", empNo);
+        return "login/changePassword";
     }
 
     @PostMapping("/changePassword")
