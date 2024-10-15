@@ -74,6 +74,10 @@ public class SecurityConfig{
                                 .requestMatchers("/employee/list").hasRole(Role.USER.name())
                                 // User 권한을 부여해서 Attendance 허용
 //                                .requestMatchers("/attendance/**").hasRole(Role.USER.name())
+                                // MAIL URL
+                                .requestMatchers("/mail/**")
+                                .permitAll()
+//                                .hasRole(Role.ADMIN.name())
                                 // 위를 제외한 모든 Url 허용
                                 .anyRequest().permitAll()
                 )
