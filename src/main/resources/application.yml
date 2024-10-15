@@ -23,6 +23,7 @@ jwt:
 
 logging:
    level:
-     org.springframework.security: DEBUG
+     org.springframework.security: INFO
+     org.springframework.security.web.FilterChainProxy: WARN
      org.thymeleaf: DEBUG
 

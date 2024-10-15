@@ -67,6 +67,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests
 //                                .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/login","/login/changePassword", "login/changePassword").permitAll()
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())

@@ -32,6 +32,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
                                     throws ServletException, IOException {
 
+        String requestURI = request.getRequestURI();
+
+        // JWT 검증을 제외할 경로 목록 (정적 리소스 자원)
+        if (requestURI.startsWith("/assets/") || requestURI.startsWith("/css/") || requestURI.startsWith("/js/") ||
+                requestURI.startsWith("/img/") || requestURI.startsWith("/vendor/") || requestURI.startsWith("/scss/") ||
+                requestURI.equals("/login") || requestURI.equals("/login/changePassword")) {
+            // 필터를 통과시키고 더 이상 JWT 검증을 하지 않음
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 1. JWT 토큰을 요청 헤더에서 가져옴
         String token = jwtTokenProvider.resolveToken(request);
 

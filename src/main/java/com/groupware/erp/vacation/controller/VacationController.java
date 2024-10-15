@@ -33,13 +33,10 @@ public class VacationController {
     parameter : emp_no
     * */
     @GetMapping("/requestList")
-    public String requestList(HttpServletRequest request, Model model) {
-        String token = jwtTokenProvider.resolveToken(request);
-        String test = jwtTokenProvider.getUsernameFromToken(token);
-        log.info("emp_no: " + test);
+    public String requestList(@RequestParam(name = "empNo") String emp_no, Model model) {
         System.out.println("requestList");
-
-        model.addAttribute("emp_no", "0000000000");
+        log.info("emp_no: " + emp_no);
+        model.addAttribute("emp_no", emp_no);
         return "vacation/requestList";
     }
 
@@ -50,7 +47,7 @@ public class VacationController {
     parameter : emp_no
     * */
     @GetMapping("/requestPage")
-    public String requestPage (@RequestParam(value = "emp_no") String emp_no, Model model) {
+    public String requestPage (@RequestParam(value = "empNo") String emp_no, Model model) {
         System.out.println("emp_no: " + emp_no);
         System.out.println("requestPage");
         model.addAttribute("emp_no", emp_no);

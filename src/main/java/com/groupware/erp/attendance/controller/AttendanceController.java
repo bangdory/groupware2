@@ -2,6 +2,8 @@ package com.groupware.erp.attendance.controller;
 
 import com.groupware.erp.attendance.domain.AttendanceEntity;
 import com.groupware.erp.attendance.service.AttendanceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("attendance")
 public class AttendanceController {
 
+    private static final Logger log = LoggerFactory.getLogger(AttendanceController.class);
     private final AttendanceService attendanceService;
 
     public AttendanceController(AttendanceService attendanceService) {
@@ -23,7 +26,10 @@ public class AttendanceController {
     parameter : emp_no
     * */
     @GetMapping("/attList")
-    public String attList () {
+    public String attList (@RequestParam(name = "empNo") String empNo, Model model) {
+        System.out.println("attList");
+        log.info("empNo: " + empNo);
+        model.addAttribute("empNo", empNo);
         return "attendance/attList";
     }
 
