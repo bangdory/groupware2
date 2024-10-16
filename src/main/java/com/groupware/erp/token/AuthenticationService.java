@@ -16,7 +16,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    // jwt 토큰 사용해서 사용자인증 메소드 구현
+    // jwt 토큰 사용해서 사용자인증
     public Authentication authenticateUser(String username, String password) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);

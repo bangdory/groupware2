@@ -31,8 +31,8 @@ public class LoginController {
 
     @Autowired
     private AuthenticationService authenticationService;
-    @Autowired
-    private GeneralTokenProvider generalTokenProvider;
+//    @Autowired
+//    private GeneralTokenProvider generalTokenProvider;
 
     public LoginController(JwtTokenProvider jwtTokenProvider,
                            AnnualLeaveService annualLeaveService,
@@ -89,18 +89,18 @@ public class LoginController {
 
         //JWT 생성
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.generateToken(authentication);
-        log.info("jwt 생성 했다!!!!!!!", jwtTokenDTO.toString());
+        log.info("JWT생성:",jwtTokenDTO);
 
         // 일반토큰 생성
-        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());
-        log.info("일반토큰도 생성했다!!!!!!!!!!!!!!!",generalToken);
+//        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());
+//        log.info("일반토큰도 생성했다!!!!!!!!!!!!!!!",generalToken);
+//
+//        // 토큰 2개를 객체 한 개로
+//        CombinedTokenResponse response = new CombinedTokenResponse(generalToken, jwtTokenDTO);
+//
+//        log.info("토큰 만들었냐 잘 봐라!!!!" , response);
 
-        // 토큰 2개를 객체 한 개로
-        CombinedTokenResponse response = new CombinedTokenResponse(generalToken, jwtTokenDTO);
-
-        log.info("토큰 만들었냐 잘 봐라!!!!" , response);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jwtTokenDTO);
     }
 
 

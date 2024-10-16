@@ -32,23 +32,24 @@
             if (response.ok) {
                 // 로그인 성공 처리
                 const data = await response.json();
+                console.log("DATA!!!!!!!!!!!!!!", data);
 
-                localStorage.setItem('accessToken', data.jwtTokenDTO.accessToken);
-                localStorage.setItem('refreshToken', data.jwtTokenDTO.refreshToken);
-                localStorage.setItem('generalToken', data.generalToken);
+                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('refreshToken', data.refreshToken);
+                // localStorage.setItem('generalToken', data.generalToken);
 
                 // window.location.href=`index`;
 
                 console.log("로그인 성공:", data);
-                console.log("JWT 토큰 !!!!!!!!", data.jwtTokenDTO.accessToken);
-                console.log("일반ㅌ토큰!!!!!!!!", data.generalToken);
+                console.log("JWT 토큰 !!!!!!!!", data.accessToken);
+                // console.log("일반ㅌ토큰!!!!!!!!", data.generalToken);
 
             } else if (response.status === 403) {
                 // 403 Forbidden 응답 처리
                 console.log("비밀번호 변경 페이지로 이동합니다.");
 
                 const empNo = document.getElementById("empNo").value;
-                window.location.href = `/login/changePassword?empNo=${empNo}`;// 리다이렉트
+                window.location.href = `/login/changePassword?empNo=${empNo}`;// empNo포함 경로로 리다이렉트
             } else {
                 // 로그인 실패 처리
                 console.error("로그인 실패");

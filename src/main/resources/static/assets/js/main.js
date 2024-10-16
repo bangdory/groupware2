@@ -322,7 +322,7 @@ function logout(){
   // 토큰삭제
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
-  localStorage.removeItem('generalToken');
+  // localStorage.removeItem('generalToken');
 
   // 로그아웃하면 로그인페이지로 이동
   window.location.href = '/login';
