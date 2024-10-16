@@ -30,34 +30,10 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT token");
         }
 
-        String username = jwtTokenProvider.getUsernameFromToken(jwtToken);
         GrantedAuthority authority = jwtTokenProvider.getAuthoritiesFromToken(jwtToken);
-        String email = jwtTokenProvider.getEmailFromToken(jwtToken);
-        String department = jwtTokenProvider.getDepartmentFromToken(jwtToken);
-        String grade = jwtTokenProvider.getGradeFromToken(jwtToken);
 
-        String authorityString = authority.getAuthority();
+        String response = authority.getAuthority();
 
-        // 사용자정보, 권한 반환
-        AuthResponse response = new AuthResponse(username,authorityString,email,department,grade);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-}
-
-@Data
-class AuthResponse {
-    private String username;
-    private String authorities;
-    private String email;
-    private String department;
-    private String grade;
-
-    public AuthResponse(String username, String authorities, String email, String department, String grade) {
-        this.username = username;
-        this.authorities = authorities;
-        this.email = email;
-        this.department = department;
-        this.grade = grade;
-    }
-
 }
