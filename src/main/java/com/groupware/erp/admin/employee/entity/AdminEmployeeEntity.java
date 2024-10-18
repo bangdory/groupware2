@@ -1,7 +1,6 @@
 package com.groupware.erp.admin.employee.entity;
 
 import com.groupware.erp.admin.employee.dto.AdminEmployeeDetailDTO;
-import com.groupware.erp.admin.employee.service.EmployeeUtils;
 import com.groupware.erp.domain.employee.Role;
 import jakarta.persistence.*;
 import lombok.Getter;

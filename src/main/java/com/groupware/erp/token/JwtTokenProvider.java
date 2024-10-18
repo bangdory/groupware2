@@ -11,11 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -159,19 +160,6 @@ public class JwtTokenProvider {
 //
 //        return claims.getSubject();
 //    }
-
-    public GrantedAuthority getAuthoritiesFromToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        String authoritiesString = claims.get("auth", String.class); // "auth" 클레임에서 권한 정보 추출
-
-        // 문자열인 권한을 GrantedAuthority로 변환
-        return new SimpleGrantedAuthority("ROLE_"+authoritiesString);
-    }
 
     public String getEmailFromToken(String token) {
         Claims claims = Jwts.parserBuilder()

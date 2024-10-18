@@ -39,6 +39,7 @@
 <aside id="sidebar" class="sidebar" th:insert="~{/designTemplates/aside :: aside}">
 </aside>
 <!-- End Sidebar-->
+
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -55,71 +56,22 @@
         <div class="row">
 
             <!-- Left side columns -->
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>휴가 신청</h3>
-                            </div>
-                            <div class="card-body">
-                                <input type="hidden" id="empNo" th:value="${empNo}">
-
-                                <!-- 상단부 정보: 신청자 이름 및 신청 날짜 -->
-                                <div class="row mb-3 mt-2">
-                                    <div class="col-md-6">
-                                        <label for="empName" class="form-label">이름</label>
-                                        <input type="text" class="form-control" id="empName" th:value="${empName}" disabled>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="reqDate" class="form-label">신청 날짜</label>
-                                        <input type="text" class="form-control" id="reqDate" value="" disabled>
-                                    </div>
-                                </div>
-
-                                <!-- 휴가 신청 입력란 -->
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="startDate" class="form-label">휴가 시작일</label>
-                                        <input type="date" class="form-control" id="startDate">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="endDate" class="form-label">휴가 종료일</label>
-                                        <input type="date" class="form-control" id="endDate">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="requestReason" class="form-label">휴가 사유</label>
-                                    <textarea class="form-control" id="requestReason" rows="3" placeholder="휴가 사유를 입력하세요"></textarea>
-                                </div>
-
-                                <!-- 총 휴가 일수 -->
-                                <div class="mb-3">
-                                    <label for="totalDays" class="form-label">총 휴가 일수</label>
-                                    <input type="text" class="form-control" id="totalDays" value="0" disabled>
-                                </div>
-
-                                <!-- 신청 버튼 -->
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" id="vacation-submit" class="btn btn-primary">신청하기</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+            <div class="col-lg-8">
+                <div class="card">
+                    좌측 담장 !!!!!!!!!!!!!!!!!!!!!!
                 </div>
             </div>
             <!-- End Left side columns -->
 
             <!-- Right side columns -->
-            <!--            <div class="col-lg-4">-->
-
-            <!--            </div>-->
-            <!-- End Right side columns -->
-
+            <div class="col-lg-4">
+                <div class="card">
+                    우측 담장 !!!!!!!!!!!!!!!!!!!!!!
+                </div>
+            </div><!-- End Right side columns -->
         </div>
     </section>
+
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
@@ -153,11 +105,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-
-        const today = new Date();
-        const formatRedDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-        document.getElementById("reqDate").value = formatRedDate;
-
 
         // localStorage 에서 jwt 가져오기
         const jwtToken = localStorage.getItem("accessToken");
@@ -211,51 +158,6 @@
             console.error('JWT 파싱 에러:', e);
             return null; // 에러 발생 시 null 반환
         }
-    }
-document.getElementById('vacation-submit').addEventListener('click', submitVacationRequest);
-
-    function submitVacationRequest() {
-        const empNo = document.getElementById('empNo').value;
-        // console.log('empNo: ' + empNo);
-        // alert(empNo);
-        const reqDate = document.getElementById('reqDate').value;
-        const startDate = document.getElementById("startDate").value;
-        const endDate = document.getElementById("endDate").value;
-        const requestReason = document.getElementById('requestReason').value;
-        const totalDays = parseInt(document.getElementById('totalDays').value, 10); // 정수로 변환
-
-        const data = {
-            empNo: empNo,
-            reqDate: reqDate,
-            startDate: startDate,
-            endDate: endDate,
-            requestReason: requestReason,
-            totalDays: totalDays
-        };
-
-        fetch('/vacation/requestPage', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('뭔가 오류 뜸' + response.status);
-                }
-            })
-            .then(data => {
-                console.log('Success:', data);
-                window.location.href='/vacation/requestList?empNo='+empNo;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('휴가 신청 중 오류가 발생했습니다.');
-                window.location.reload();
-            });
     }
 </script>
 <!-- Vendor JS Files -->

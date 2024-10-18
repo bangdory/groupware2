@@ -1,26 +1,29 @@
 package com.groupware.erp.login;
 
-import com.groupware.erp.login.annualLeave.AnnualLeaveService;
-import com.groupware.erp.token.*;
 import com.groupware.erp.login.annualLeave.AnnualLeaveCalculator;
+import com.groupware.erp.login.annualLeave.AnnualLeaveService;
+import com.groupware.erp.token.JwtTokenDTO;
+import com.groupware.erp.token.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-@Controller
+@RestController
 @RequestMapping("/login")
 public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -29,17 +32,8 @@ public class LoginController {
     @Autowired
     private AnnualLeaveService annualLeaveService;
 
-    @Autowired
-    private AuthenticationService authenticationService;
-//    @Autowired
-//    private GeneralTokenProvider generalTokenProvider;
-
-    public LoginController(JwtTokenProvider jwtTokenProvider,
-                           AnnualLeaveService annualLeaveService,
-                           AuthenticationService authenticationService) {
+    public LoginController(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.annualLeaveService = annualLeaveService;
-        this.authenticationService = authenticationService;
     }
 
 
@@ -62,8 +56,8 @@ public class LoginController {
 
         // 입사 일 가져오기
         LocalDate hireDate = user.getEmpHiredate();
-        int useAnn = user.getAnnualLeaveEntity().getUseAnn();
-        int pendingAnn = user.getAnnualLeaveEntity().getPendingAnn();
+        int useAnn = user.getAnnualLeaveEntities().getUseAnn();
+        int pendingAnn = user.getAnnualLeaveEntities().getPendingAnn();
 
         // empNo, 총 연차일을 기준으로 AnnualLeave 테이블 데이터 업데이트
         annualLeaveService.updateTotalAnn(user.getEmpNo(), hireDate, useAnn,pendingAnn);
@@ -78,10 +72,8 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"redirectUrl\":\"/login/changePassword\"}");
         }
 
-        //사용자 인증 로직
-        Authentication authentication = authenticationService.authenticateUser(
-                loginDTO.getEmpNo(), loginDTO.getEmpPassword()
-        );
+        // 사용자 인증 로직
+        Authentication authentication = authenticateUser(loginDTO);
 
         if (authentication == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -89,27 +81,23 @@ public class LoginController {
 
         //JWT 생성
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.generateToken(authentication);
-        log.info("JWT생성:",jwtTokenDTO);
-
-        // 일반토큰 생성
-//        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());
-//        log.info("일반토큰도 생성했다!!!!!!!!!!!!!!!",generalToken);
-//
-//        // 토큰 2개를 객체 한 개로
-//        CombinedTokenResponse response = new CombinedTokenResponse(generalToken, jwtTokenDTO);
-//
-//        log.info("토큰 만들었냐 잘 봐라!!!!" , response);
 
         return ResponseEntity.ok(jwtTokenDTO);
     }
 
+    private Authentication authenticateUser(LoginDTO loginDTO) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getEmpNo(), loginDTO.getEmpPassword());
+        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+    }
 
     @GetMapping("/changePassword")
-    public String changePasswordPage(Model model) {
+    public String changePasswordPage(@RequestParam(name = "empNo") String empNo,Model model) {
 
         log.info("비밀번호 바꾸셈");
-        log.info("Model" + model.toString());
-        return "changePassword";
+        log.info("empNo: " + empNo);
+        model.addAttribute("empNo", empNo);
+        return "login/changePassword";
     }
 
     @PostMapping("/changePassword")

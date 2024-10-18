@@ -1,18 +1,20 @@
 package com.groupware.erp.login;
 
+import com.groupware.erp.attendance.domain.AttendanceEntity;
 import com.groupware.erp.login.annualLeave.AnnualLeaveEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name="employee") // DB테이블이름
+@Table(name = "employee") // DB 테이블 이름
 public class LoginEntity {
+
     @Id
     @Column(name = "emp_no")
     private String empNo;
@@ -23,19 +25,11 @@ public class LoginEntity {
     @Column(name = "emp_hiredate")
     private LocalDate empHiredate;
 
-    @Column(name = "emp_name") // 사원이름
-    private String empName;
-
-    @Column(name = "department") // 부서
-    private String department;
-
-    @Column(name = "emp_grade") // 직급
-    private String empGrade;
-
-    @Column(name = "emp_email", length = 50, unique = true)  // varchar(50)에 unique 속성
-    private String empEmail;
-
     // 연차 테이블과의 연관관계 설정
     @OneToOne(mappedBy = "loginEntity")  // AnnualLeaveEntity에서 설정한 loginEntity와 연결
-    private AnnualLeaveEntity annualLeaveEntity;
+    private AnnualLeaveEntity annualLeaveEntities;
+
+    // 근태 테이블과의 OneToMany 연관관계 설정
+    @OneToMany(mappedBy = "loginEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AttendanceEntity> attendanceEntities;
 }
