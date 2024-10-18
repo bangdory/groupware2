@@ -18,8 +18,8 @@ CREATE TRIGGER trg_insert_annualLeave
     AFTER INSERT ON employee
     FOR EACH ROW
 BEGIN
-    INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann)
-    VALUES (NEW.emp_no, NEW.emp_hiredate, 11, 0);
+    INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann, rem_ann, pending_ann)
+    VALUES (NEW.emp_no, NEW.emp_hiredate, 11, 0,0,0);
 END$$
 
 DELIMITER ;
