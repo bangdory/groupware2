@@ -89,7 +89,7 @@ public class LoginController {
 
         //JWT 생성
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.generateToken(authentication);
-        log.info("JWT생성:",jwtTokenDTO);
+        log.info("JWT생성: {}",jwtTokenDTO);
 
         // 일반토큰 생성
 //        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());
@@ -109,7 +109,7 @@ public class LoginController {
 
         log.info("비밀번호 바꾸셈");
         log.info("Model" + model.toString());
-        return "changePassword";
+        return "login/changePassword";
     }
 
     @PostMapping("/changePassword")
@@ -127,6 +127,10 @@ public class LoginController {
                 changePasswordDTO.getOldPassword(),
                 changePasswordDTO.getNewPassword()
         );
+        log.info("이거슨 changePasswordDTO.getEmpNo 임니다 {}",changePasswordDTO.getEmpNo());
+        log.info("이거슨 changePasswordDTO.getOldPassword 임니다 {}",changePasswordDTO.getOldPassword());
+        log.info("이거슨 changePasswordDTO.getNewPassword 임니다 {}",changePasswordDTO.getNewPassword());
+
 
         if (isChanged) {
             log.info("비밀번호 변경 : empNo={}", changePasswordDTO.getEmpNo());

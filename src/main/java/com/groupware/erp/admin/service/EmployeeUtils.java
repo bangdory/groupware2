@@ -1,4 +1,4 @@
-package com.groupware.erp.admin.employee.service;
+package com.groupware.erp.admin.service;
 
 import com.groupware.erp.employee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

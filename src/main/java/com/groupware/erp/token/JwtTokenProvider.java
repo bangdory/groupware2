@@ -120,16 +120,24 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+
+        log.info("validateToken시작!!!!{}", token);
+
         if (isTokenInvalid(token)){
+            log.info("로직 점호 1!!!!!");
             log.error("JWT token is invalid (invalidated): {}", token);
             return false; // 무효화토큰 체크
-        }
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true; // 토큰유효
-        } catch (SignatureException | ExpiredJwtException e) {
-            log.error("JWT token is invalid: ",e.getMessage());
-            return false; // 토큰유효x 혹은 만료
+        } else {
+            try {
+                log.info("로직 점호 2!!!!!");
+                Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+                return true; // 토큰유효
+            } catch (SignatureException | ExpiredJwtException e) {
+                log.info("로직 점호 3!!!!!");
+                log.error("JWT token is invalid: {}",e.getMessage());
+                invalidateToken(token);
+                return false; // 토큰유효x 혹은 만료
+            }
         }
     }
 
@@ -161,13 +169,18 @@ public class JwtTokenProvider {
 //    }
 
     public GrantedAuthority getAuthoritiesFromToken(String token) {
+        log.info("getAuthoritiesFromToken 실행함!{}", token);
+
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        log.info("claims : {}", claims);
 
         String authoritiesString = claims.get("auth", String.class); // "auth" 클레임에서 권한 정보 추출
+
+        log.info("authoritiesString : {}", authoritiesString);
 
         // 문자열인 권한을 GrantedAuthority로 변환
         return new SimpleGrantedAuthority("ROLE_"+authoritiesString);
@@ -204,6 +217,7 @@ public class JwtTokenProvider {
     }
 
     public boolean invalidateToken(String token) {
+        log.info("로직 점호 4!!!!!");
         return invalidatedTokens.add(token); // 무효화목록에 토큰추가
     }
 

@@ -1,7 +1,6 @@
-package com.groupware.erp.admin.employee.entity;
+package com.groupware.erp.admin.entity;
 
-import com.groupware.erp.admin.employee.dto.AdminEmployeeDetailDTO;
-import com.groupware.erp.admin.employee.service.EmployeeUtils;
+import com.groupware.erp.admin.dto.AdminEmployeeDetailDTO;
 import com.groupware.erp.domain.employee.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -46,11 +45,11 @@ public class AdminEmployeeEntity {
     @Column(name = "role", nullable = false) // 그룹웨어 권한 (관리자여부)
     private Role role;
 
-    public static AdminEmployeeEntity joinEmployeeDTO(AdminEmployeeDetailDTO employeeDTO, PasswordEncoder passwordEncoder) {
+    public static AdminEmployeeEntity joinEmployeeDTO(AdminEmployeeDetailDTO employeeDTO) {
         AdminEmployeeEntity employeeEntity = new AdminEmployeeEntity();
 
         employeeEntity.setEmpNo(employeeDTO.getEmpNo());
-        employeeEntity.setEmpPassword(employeeDTO.getEmpPassword());
+//        employeeEntity.setEmpPassword(employeeDTO.getEmpPassword());
         employeeEntity.setEmpEmail(employeeDTO.getEmpEmail());
         employeeEntity.setEmpName(employeeDTO.getEmpName());
         employeeEntity.setEmpPhone(employeeDTO.getEmpPhone());
