@@ -36,3 +36,15 @@ ALTER TABLE annualLeave
 # 연차 수당을 위한 미처리된 잔여 연차 칼럼 추가
 ALTER TABLE annualLeave
     ADD COLUMN pending_ann INT NOT NULL;
+
+ALTER TABLE annualleave
+    MODIFY total_ann INT NULL,
+    MODIFY use_ann INT NULL,
+    MODIFY rem_ann INT NULL,
+    MODIFY pending_ann INT NULL;
+
+ALTER TABLE annualleave
+    MODIFY total_ann INT NOT NULL DEFAULT 0,
+    MODIFY use_ann INT NOT NULL DEFAULT 0,
+    MODIFY rem_ann INT NOT NULL DEFAULT 0,
+    MODIFY pending_ann INT NOT NULL DEFAULT 0;

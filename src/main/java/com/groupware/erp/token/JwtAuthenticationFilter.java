@@ -6,11 +6,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -32,6 +34,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
                                     throws ServletException, IOException {
 
+        String requestURI = request.getRequestURI();
+
+        // JWT 검증을 제외할 경로 목록 (정적 리소스 자원)
+        if (requestURI.startsWith("/assets/") || requestURI.startsWith("/css/") || requestURI.startsWith("/js/") ||
+                requestURI.startsWith("/img/") || requestURI.startsWith("/vendor/") || requestURI.startsWith("/scss/") ||
+                requestURI.equals("/login") || requestURI.equals("/login/changePassword")) {
+            // 필터를 통과시키고 더 이상 JWT 검증을 하지 않음
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 1. JWT 토큰을 요청 헤더에서 가져옴
         String token = jwtTokenProvider.resolveToken(request);
 
@@ -42,9 +55,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String empEmail = jwtTokenProvider.getEmailFromToken(token);
             String department = jwtTokenProvider.getDepartmentFromToken(token);
             String empGrade = jwtTokenProvider.getGradeFromToken(token);
+            GrantedAuthority grantedAuthority = jwtTokenProvider.getAuthoritiesFromToken(token);
 
             // 4. Authentication 객체 생성 (권한도 함께 설정 가능)
-            JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, empEmail, department, empGrade, token);
+            JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, empEmail, department, empGrade, token, List.of(grantedAuthority));
 
             // 5. 인증을 SecurityContext에 설정
             SecurityContextHolder.getContext().setAuthentication(authentication);

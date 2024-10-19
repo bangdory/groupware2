@@ -1,6 +1,7 @@
 package com.groupware.erp.employee.entity;
 
 import com.groupware.erp.domain.employee.Role;
+import com.groupware.erp.login.annualLeave.AnnualLeaveEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,11 @@ public class EmployeeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false) // 그룹웨어 권한 (관리자여부)
     private Role role;
+
+    // annualleave 테이블과 1:1 매핑 설정 (외래 키 관계)
+    @OneToOne
+    @JoinColumn(name = "emp_no", referencedColumnName = "emp_no") // 외래 키 관계 설정
+    private AnnualLeaveEntity annualLeave;
 
 //    // MemberJoinDTO -> MemberEntity 객체로 변환
 //    public static EmployeeEntity joinEmployee(EmployeeJoinDTO employeeJoinDTO, PasswordEncoder passwordEncoder) {

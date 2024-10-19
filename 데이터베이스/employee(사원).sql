@@ -20,4 +20,12 @@ ALTER TABLE employee
 ALTER TABLE employee
     MODIFY emp_no VARCHAR(10);
 
-
+-- password 자동으로 설정하는 트리거(24.10.17. 테스트용으로 추가)
+Delimiter //
+create trigger setPassword
+    before insert on employee
+    for each row
+begin
+    set new.emp_password = new.emp_no;
+end;
+Delimiter ;

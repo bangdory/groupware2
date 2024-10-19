@@ -1,4 +1,4 @@
-package com.groupware.erp.admin.employee.repository;
+package com.groupware.erp.admin.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 
