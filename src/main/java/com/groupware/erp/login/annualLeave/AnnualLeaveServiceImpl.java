@@ -74,4 +74,9 @@ public class AnnualLeaveServiceImpl implements AnnualLeaveService{
         }
     }
 
+    @Override
+    public Optional<AnnualLeaveEntity> findByEmpNo(String empNo) {
+        return annualLeaveRepository.findByEmpNo(empNo);
+    }
+
 }
