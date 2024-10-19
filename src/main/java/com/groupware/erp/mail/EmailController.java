@@ -33,7 +33,8 @@ public class EmailController {
         return "redirect:/mail/list";
     }
 
-    @GetMapping("/send/{empNo}")
+    @GetMapping({"/send", "/send/{empNo}"})
+//    @GetMapping("/send/{empNo}")
     @PreAuthorize("hasRole('ADMIN')")
     public String sendEmail(MailForm mailForm, @PathVariable(value = "empNo", required = false) String empNo
             , Model model) {
@@ -53,9 +54,63 @@ public class EmailController {
         return "email/send_mail";
     }
 
-    @PostMapping("/send/{empNo}")
+    /*@PostMapping("/send/{empNo}")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView sendMail(@Valid MailForm mailForm, BindingResult bindingResult, @PathVariable(value = "empNo", required = false) String empNo) {
+        if (bindingResult.hasErrors()) {
+            // 바인딩 에러 발생시
+            ModelAndView modelAndView = new ModelAndView("email/send_mail"); // 뷰 이름
+            modelAndView.setStatus(HttpStatus.BAD_REQUEST); // HTTP 상태 코드 설정
+            modelAndView.addObject("errors", bindingResult.getAllErrors()); // 오류 메시지 추가
+            return modelAndView;
+        }*/
+    @PostMapping({"/send", "/send/{empNo}"})
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView sendMail(@Valid MailForm mailForm, BindingResult bindingResult, @PathVariable(value = "empNo", required = false) String empNo, Model model) {
+        // empNo로 직원 정보 가져오기
+        if (bindingResult.hasErrors()) {
+            if (empNo != null) {
+                Optional<EmployeeEntity> employee = employeeRepository.findByEmpNo(empNo);
+                // 바인딩 에러 발생시
+                if (employee.isPresent()) {
+                    model.addAttribute("empData", employee.get()); // empData 추가
+                } else {
+                    model.addAttribute("errorMessage", "해당 사원을 찾을 수 없습니다.");
+                }
+                // 에러가 발생했을 때 현재 모델을 반환
+                return new ModelAndView("email/send_mail", model.asMap());
+            }
+        }
+
+        // 수신자 이메일, 제목, 내용이 비어있는지 체크
+        if (mailForm.getReceiverMailAddress() == null || mailForm.getReceiverMailAddress().isEmpty() ||
+                mailForm.getSubject() == null || mailForm.getSubject().isEmpty() ||
+                mailForm.getMessage() == null || mailForm.getMessage().isEmpty()) {
+
+            bindingResult.reject("mailForm.empty", "메일 수신자, 제목 및 내용을 모두 입력해야 합니다."); // 에러 메시지 추가
+
+            // 에러가 발생했을 때 현재 모델을 반환
+            return new ModelAndView("email/send_mail", model.asMap());
+        }
+
+        mailForm = MailForm.builder()
+//                .receiverMailAddress("klarnuri@gmail.com") // 수신자 메일
+                .receiverMailAddress(mailForm.getReceiverMailAddress()) // 수신자 메일
+                .subject(mailForm.getSubject()) // 메일 제목
+                .message(mailForm.getMessage()) // 메일 본문
+                .build();
+        emailService.sendMail(mailForm);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setStatus(HttpStatus.OK); // HTTP 상태 코드 설정
+        modelAndView.addObject("message", "메일이 성공적으로 전송되었습니다."); // 성공 메시지 추가
+
+        return new ModelAndView("redirect:/mail/list");
+    }
+
+    /*@PostMapping("/send")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView sendMail(@Valid MailForm mailForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 바인딩 에러 발생시
             ModelAndView modelAndView = new ModelAndView("email/send_mail"); // 뷰 이름
@@ -81,7 +136,7 @@ public class EmailController {
 
         return new ModelAndView("redirect:/mail/list");
     }
-
+*/
     @GetMapping("/list")
     @PreAuthorize("hasRole('ADMIN')")
     public String list(Model model,
@@ -98,6 +153,7 @@ public class EmailController {
     @GetMapping("/detail/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     // mail_detail 템플릿 Form 태그에 th:object="${mailForm}" 를 사용 -> MailForm 이 필요함 (mailForm 은 변수 이름 바인딩)
+    // 디테일 메일의 수신자 객체 받아올 것!!
     public String detail(Model model, @PathVariable("id") Integer id,
                          MailForm mailForm) {
         Mail mail = emailService.getMail(id);
@@ -115,6 +171,6 @@ public class EmailController {
         }
 */
         emailService.delete(mail);
-        return "redirect:/";
+        return "redirect:/mail";
     }
 }

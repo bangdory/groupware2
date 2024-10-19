@@ -80,6 +80,7 @@ public class SecurityConfig {
                                 // User 권한을 부여해서 Attendance 허용
 //                                .requestMatchers("/attendance/**").hasRole(Role.USER.name())
                                 // MAIL URL
+//                                .requestMatchers("/mail/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers("/mail/**")
                                 .permitAll()
 //                                .hasRole(Role.ADMIN.name())
