@@ -1,5 +1,9 @@
 package com.groupware.erp.mail;
 
+import com.groupware.erp.employee.dto.EmployeeMapperDTO;
+import com.groupware.erp.employee.entity.EmployeeEntity;
+import com.groupware.erp.employee.repository.EmployeeRepository;
+import com.groupware.erp.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +24,7 @@ import java.security.Principal;
 public class EmailController {
 
     private final EmailService emailService;
+    private final EmployeeRepository employeeRepository;
 
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
@@ -27,17 +33,29 @@ public class EmailController {
         return "redirect:/mail/list";
     }
 
-    @GetMapping("/send")
+    @GetMapping("/send/{empNo}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String sendEmail(MailForm mailForm) {
+    public String sendEmail(MailForm mailForm, @PathVariable(value = "empNo", required = false) String empNo
+            , Model model) {
 //        model.addAttribute("mailForm", new MailForm());
         // 메일 받을 receiverMailAddress 가져오는 로직 추가할 것!!
+
+        if (empNo != null) {
+            Optional<EmployeeEntity> employee = employeeRepository.findByEmpNo(empNo);
+            if (employee.isPresent()) {
+                model.addAttribute("empData", employee.get());
+                mailForm.setReceiverMailAddress(employee.get().getEmpEmail());
+            } else {
+                model.addAttribute("errorMessage", "해당 사원을 찾을 수 없습니다.");
+            }
+        }
+        System.out.println("!!!!!!!!!!mailForm!!!! = " + mailForm.toString());
         return "email/send_mail";
     }
 
-    @PostMapping("/send")
+    @PostMapping("/send/{empNo}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView sendMail(@Valid MailForm mailForm, BindingResult bindingResult) {
+    public ModelAndView sendMail(@Valid MailForm mailForm, BindingResult bindingResult, @PathVariable(value = "empNo", required = false) String empNo) {
         if (bindingResult.hasErrors()) {
             // 바인딩 에러 발생시
             ModelAndView modelAndView = new ModelAndView("email/send_mail"); // 뷰 이름
@@ -50,7 +68,8 @@ public class EmailController {
 //        System.out.println("mailForm.getMessage() = " + mailForm.getMessage());
 
         mailForm = MailForm.builder()
-                .receiverMailAddress("klarnuri@gmail.com") // 수신자 메일
+//                .receiverMailAddress("klarnuri@gmail.com") // 수신자 메일
+                .receiverMailAddress(mailForm.getReceiverMailAddress()) // 수신자 메일
                 .subject(mailForm.getSubject()) // 메일 제목
                 .message(mailForm.getMessage()) // 메일 본문
                 .build();
@@ -82,7 +101,6 @@ public class EmailController {
     public String detail(Model model, @PathVariable("id") Integer id,
                          MailForm mailForm) {
         Mail mail = emailService.getMail(id);
-//        System.out.println("여기까진 작동됨!!!" + mail.getMessage());
         model.addAttribute("mail", mail);
         return "email/mail_detail";
     }

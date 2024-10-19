@@ -24,6 +24,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -33,7 +34,7 @@ import java.io.PrintWriter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final LoginUserDetailService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -55,9 +56,13 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
+/*
                 .csrf(
                         (csrfConfig) -> csrfConfig.disable()
                 )
+*/
+                .csrf(csrf -> csrf // CSRF 보호 활성화
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // CSRF 토큰을 쿠키에 저장
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(
                         (formLogin) -> formLogin.disable()) // session 안 쓸려고 비활성화함
@@ -67,7 +72,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests
 //                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers("/login","/login/changePassword", "login/changePassword").permitAll()
+                                .requestMatchers("/login", "/login/changePassword", "login/changePassword").permitAll()
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
@@ -115,7 +120,7 @@ public class SecurityConfig{
             };
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider, new LoginSuccessHandler(jwtTokenProvider, userDetailsService));
     }
 
