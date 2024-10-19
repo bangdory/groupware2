@@ -1,7 +1,10 @@
 package com.groupware.erp.admin.controller;
 
 import com.groupware.erp.admin.dto.AdminEmployeeDetailDTO;
+import com.groupware.erp.admin.entity.AdminEmployeeEntity;
 import com.groupware.erp.admin.service.AdminEmployeeService;
+import com.groupware.erp.attendance.domain.AttendanceEntity;
+import com.groupware.erp.attendance.service.AttendanceService;
 import com.groupware.erp.login.LoginService;
 import com.groupware.erp.token.JwtTokenProvider;
 import jakarta.validation.Valid;
@@ -13,6 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminEmployeeController {
@@ -21,6 +28,9 @@ public class AdminEmployeeController {
 
     @Autowired
     private AdminEmployeeService adminEmployeeService;
+
+    @Autowired
+    private AttendanceService attendanceService;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -55,5 +65,18 @@ public class AdminEmployeeController {
         String empNo = adminEmployeeService.joinEmployee(adminEmployeeDetailDTO);
         model.addAttribute("successMessage","신규 직원이 등록되었습니다. 사원번호: "+ empNo);
         return "redirect:/admin/joinEmployee"; // 등록완료 , 관리자메뉴 페이지 구현 다 되면 경로 변경할 것.
+    }
+
+    @GetMapping("/employeeList")
+    public String employeeList(@RequestParam(name = "empNo") String empNo, Model model) {
+        // 오늘 날짜 가져오기
+        LocalDate today = LocalDate.now();
+        // 출근/퇴근 데이터를 가져옴
+        Optional<AttendanceEntity> attendanceList = attendanceService.findByEmpNoAndRegDate(empNo, today);
+        List<AdminEmployeeEntity> adminEmployeeEntity = adminEmployeeService.getEmployees();
+
+        model.addAttribute("adminEmployeeEntity", adminEmployeeEntity);
+        model.addAttribute("attendanceList", attendanceList);
+        return "admin/employeeList";
     }
 }

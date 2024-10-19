@@ -43,10 +43,10 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>신규직원등록</h1>
+        <h1>직원근태관리</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/index">Home</a> <span> > </span><a href="/admin/joinEmployee">신규직원등록</a></li>
+                <li class="breadcrumb-item"><a href="/index">Home</a> <span> > </span><a href="/admin/employeeList">직원근태관리</a></li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -60,57 +60,32 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3>신규직원등록</h3>
+                                <h3>직원근태관리</h3>
                             </div>
                             <div class="card-body">
-                                <form action="/admin/joinEmployee" method="post">
-                                <div class="row mb-3 mt-2">
-                                    <div class="col-md-6">
-                                        <label for="empName" class="form-label">이름</label>
-                                        <input type="text" class="form-control" id="empName" name="empName" placeholder="사원명" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="empPhone" class="form-label">연락처</label>
-                                        <input type="text" class="form-control" id="empPhone" name="empPhone" placeholder="000-0000-0000" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="empEmail" class="form-label">이메일</label>
-                                        <input type="text" class="form-control" id="empEmail" name="empEmail" placeholder="email@email.com" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="col-md-6">
-                                        <label for="empHireDate" class="form-label">입사일</label>
-                                        <input type="date" class="form-control" id="empHireDate" name="empHireDate" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="col-md-6">
-                                        <label for="department" class="form-label">부서명</label>
-                                        <select id="department" name="department" class="form-control" required>
-                                            <option value="영업팀">영업팀</option>
-                                            <option value="인사팀">인사팀</option>
-                                            <option value="마케팅팀">마케팅팀</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="empGrade" class="form-label">직급</label>
-                                        <select id="empGrade" name="empGrade" class="form-control" required>
-                                            <option value="사원">사원</option>
-                                            <option value="팀장">팀장</option>
-                                            <option value="이사">이사</option>
-                                            <option value="대표이사">대표이사</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- 등록 버튼 -->
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">등록하기</button>
-                                </div>
-                                </form>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>사원번호</th>
+                                        <th>사원명</th>
+                                        <th>부서</th>
+                                        <th>직급</th>
+                                        <th>출근/퇴근</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:if="${adminEmployeeEntity == null || #lists.isEmpty(adminEmployeeEntity)}">
+                                        <td colspan="5">직원정보를 추가해주세요.</td>
+                                    </tr>
+                                    <tr th:each="adminEmployeeEntity : ${adminEmployeeEntity}">
+                                        <td th:text="${adminEmployeeEntity.empNo}"></td>
+                                        <td th:text="${adminEmployeeEntity.empName}"></td>
+                                        <td th:text="${adminEmployeeEntity.department}"></td>
+                                        <td th:text="${adminEmployeeEntity.empGrade}"></td>
+                                        <td th:text="${#lists.contains(attendanceList, adminEmployeeEntity.empNo) ? '출근' : '미출근'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

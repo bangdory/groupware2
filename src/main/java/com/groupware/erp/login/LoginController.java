@@ -62,8 +62,8 @@ public class LoginController {
 
         // 입사 일 가져오기
         LocalDate hireDate = user.getEmpHiredate();
-        int useAnn = user.getAnnualLeaveEntity().getUseAnn();
-        int pendingAnn = user.getAnnualLeaveEntity().getPendingAnn();
+        int useAnn = user.getAnnualLeaveEntities().getUseAnn();
+        int pendingAnn = user.getAnnualLeaveEntities().getPendingAnn();
 
         // empNo, 총 연차일을 기준으로 AnnualLeave 테이블 데이터 업데이트
         annualLeaveService.updateTotalAnn(user.getEmpNo(), hireDate, useAnn,pendingAnn);

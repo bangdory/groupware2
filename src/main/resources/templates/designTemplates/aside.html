@@ -70,14 +70,20 @@
         </ul>
     </li><!-- End Charts Nav -->
 
-    <li class="nav-item">
+    <li class="nav-item" id="adminMenu" style="display: none">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-gem"></i><span>인사관리</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="icons-bootstrap.html">
-                    <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                <a href="/admin/joinEmployee" class="bsLink" > <!-- onclick="handleLinkClick('/admin/joinEmployee')" -->
+                    <i class="bi bi-circle"></i><span>신규직원등록</span>
+                </a>
+                <a href="/admin/employeeList" class="bsLink"><!-- onclick="handleLinkClick('/admin/employeeList')" -->
+                    <i class="bi bi-circle"></i><span>직원근태관리</span>
+                </a>
+                <a href="#" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
+                    <i class="bi bi-circle"></i><span>직원계정관리</span>
                 </a>
             </li>
         </ul>
