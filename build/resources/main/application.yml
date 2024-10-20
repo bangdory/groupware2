@@ -8,11 +8,34 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/groupwaredb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: legounderfoot
+    password: 1234
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
+
+#    JPA 추가
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+#        globally_quoted_identifiers: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+#      메일 추가
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: klarnuri@naver.com
+    password: rlfsnfl1103
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.timeout: 5000
+      mail.smtp.starttls.enable: true
 
 mybatis:
   mapper-locations: mapper/*.xml
@@ -25,5 +48,5 @@ logging:
    level:
      org.springframework.security: INFO
      org.springframework.security.web.FilterChainProxy: WARN
-     org.thymeleaf: DEBUG
+     org.thymeleaf: INFO
 

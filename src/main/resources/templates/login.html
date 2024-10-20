@@ -29,6 +29,8 @@
                 body: JSON.stringify({ empNo, empPassword }) // JSON 형식으로 데이터 전송
             });
 
+            console.log("response: ", response);
+
             if (response.ok) {
                 // 로그인 성공 처리
                 const data = await response.json();
@@ -44,7 +46,7 @@
                 console.log("비밀번호 변경 페이지로 이동합니다.");
 
                 const empNo = document.getElementById("empNo").value;
-                window.location.href = `/login/changePassword?empNo=${empNo}`;// 리다이렉트
+                // window.location.href = `/login/changePassword?empNo=${empNo}`;// 리다이렉트
             } else {
                 // 로그인 실패 처리
                 console.error("로그인 실패");
