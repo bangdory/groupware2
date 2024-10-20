@@ -6,7 +6,7 @@ create table community_post(
                                post_content varchar(2000) not null,
                                post_date date not null,
                                post_view int,
-                               emp_no bigint,
+                               emp_no varchar(10),
                                foreign key (emp_no) references employee (emp_no)
 );
 

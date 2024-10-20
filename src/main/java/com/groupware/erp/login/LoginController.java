@@ -1,8 +1,10 @@
 package com.groupware.erp.login;
 
-import com.groupware.erp.login.annualLeave.AnnualLeaveService;
-import com.groupware.erp.token.*;
 import com.groupware.erp.login.annualLeave.AnnualLeaveCalculator;
+import com.groupware.erp.login.annualLeave.AnnualLeaveService;
+import com.groupware.erp.token.AuthenticationService;
+import com.groupware.erp.token.JwtTokenDTO;
+import com.groupware.erp.token.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 
@@ -50,6 +55,8 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        // LoginDTO 데이터 읽기
+        log.info("loginDTO: " + loginDTO.toString());
 
         // DB에서 사용자 정보 가져오기
         LoginEntity user = loginService.findByEmpNo(loginDTO.getEmpNo());
@@ -66,7 +73,7 @@ public class LoginController {
         int pendingAnn = user.getAnnualLeaveEntities().getPendingAnn();
 
         // empNo, 총 연차일을 기준으로 AnnualLeave 테이블 데이터 업데이트
-        annualLeaveService.updateTotalAnn(user.getEmpNo(), hireDate, useAnn,pendingAnn);
+        annualLeaveService.updateTotalAnn(user.getEmpNo(), hireDate, useAnn, pendingAnn);
 
         log.info("메서드는 불러왔다!!!! 머시 문젠디!!!");
 
@@ -89,7 +96,7 @@ public class LoginController {
 
         //JWT 생성
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.generateToken(authentication);
-        log.info("JWT생성: {}",jwtTokenDTO);
+        log.info("JWT생성: {}", jwtTokenDTO);
 
         // 일반토큰 생성
 //        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());

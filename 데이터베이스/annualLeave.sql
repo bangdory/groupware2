@@ -48,3 +48,7 @@ ALTER TABLE annualleave
     MODIFY use_ann INT NOT NULL DEFAULT 0,
     MODIFY rem_ann INT NOT NULL DEFAULT 0,
     MODIFY pending_ann INT NOT NULL DEFAULT 0;
+
+
+CREATE INDEX idx_ann_leave_emp_no ON annualleave(emp_no);
+CREATE INDEX idx_ann_leave_emp_hiredate ON annualleave(emp_hiredate);

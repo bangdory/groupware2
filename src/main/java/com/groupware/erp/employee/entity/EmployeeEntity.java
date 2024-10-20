@@ -22,7 +22,7 @@ public class EmployeeEntity {
     @Column(name = "emp_password")
     private String empPassword;
 
-    @Column(name = "emp_email", length = 50, unique = true)  // varchar(50)에 unique 속성
+    @Column(name = "emp_email", unique = true)  // varchar(50)에 unique 속성
     private String empEmail;
 
     @Column(name = "emp_name") // 사원이름

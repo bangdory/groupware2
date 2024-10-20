@@ -1,15 +1,13 @@
 package com.groupware.erp.admin.service.impl;
 
 import com.groupware.erp.admin.dto.AdminEmployeeDetailDTO;
-import com.groupware.erp.admin.repository.AdminEmployeeRepository;
 import com.groupware.erp.admin.entity.AdminEmployeeEntity;
+import com.groupware.erp.admin.repository.AdminEmployeeRepository;
 import com.groupware.erp.admin.service.AdminEmployeeService;
 import com.groupware.erp.admin.service.EmployeeUtils;
-import com.groupware.erp.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

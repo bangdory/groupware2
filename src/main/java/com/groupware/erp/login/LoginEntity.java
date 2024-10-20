@@ -30,6 +30,8 @@ public class LoginEntity {
     private AnnualLeaveEntity annualLeaveEntities;
 
     // 근태 테이블과의 OneToMany 연관관계 설정
-    @OneToMany(mappedBy = "loginEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "loginEntity"
+//            , cascade = CascadeType.ALL, orphanRemoval = true
+    )
     private List<AttendanceEntity> attendanceEntities;
 }

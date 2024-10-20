@@ -16,9 +16,11 @@ spring:
 
 #    JPA 추가
   jpa:
+    open-in-view: false
     show-sql: true
     properties:
       hibernate:
+#        globally_quoted_identifiers: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -46,5 +48,5 @@ logging:
    level:
      org.springframework.security: INFO
      org.springframework.security.web.FilterChainProxy: WARN
-     org.thymeleaf: DEBUG
+     org.thymeleaf: INFO
 

@@ -3,6 +3,11 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/데이터베이스/annualLeave.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/데이터베이스/attendance(근태).sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/데이터베이스/community_comment(게시판댓글).sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/데이터베이스/community_notice(공지사항).sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/데이터베이스/community_post(자유게시판).sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/데이터베이스/employee(사원).sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/데이터베이스/file(파일).sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/데이터베이스/sqlGenerator.sql" dialect="MySQL" />
   </component>
 </project>
