@@ -23,16 +23,16 @@ public class MarketCartService {
 
     //카트 불러오기
     public List<MarketCartEntity> getCart(String empNo) {
-        return marketCartRepository.findByEmployee_EmpNo(empNo);
+        return marketCartRepository.findByEmpNo(empNo);
     }
 
 
     //카트에 등록
     public MarketCartEntity addToCart(String empNo, int productNo, int productAmount) {
-        EmployeeEntity employee = employeeRepository.findById(empNo).orElseThrow(() -> new RuntimeException("Employee not found"));
+
 
         MarketCartEntity cart = new MarketCartEntity();
-        cart.setEmployee(employee);
+        cart.setEmpNo(empNo);
         cart.setProductNo(productNo);
         cart.setProductAmount(productAmount);
 
@@ -40,7 +40,7 @@ public class MarketCartService {
     }
     //카트 삭제
     public void deleteCartItem(String empNo, int productNo) {
-        marketCartRepository.deleteByEmployee_EmpNoAndProductNo(empNo, productNo);
+        marketCartRepository.deleteByEmpNoAndProductNo(empNo, productNo);
     }
 
 }

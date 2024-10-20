@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface MarketCartRepository extends JpaRepository<MarketCartEntity, Integer> {
 
-    List<MarketCartEntity> findByEmployee_EmpNo(String empNo);
-    void deleteByEmployee_EmpNoAndProductNo(String empNo, int productNo);
+    List<MarketCartEntity> findByEmpNo(String empNo);
+    void deleteByEmpNoAndProductNo(String empNo, int productNo);
 }

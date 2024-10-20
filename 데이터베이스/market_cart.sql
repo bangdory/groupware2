@@ -6,8 +6,7 @@ create table market_cart
     emp_no         varchar(255) not null,
     product_no     int         not null,
     product_amount int         null,
-    constraint fk_cart_emp_no
-        foreign key (emp_no) references employee (emp_no),
+
     constraint fk_cart_product_no
         foreign key (product_no) references market_product (product_no)
 );

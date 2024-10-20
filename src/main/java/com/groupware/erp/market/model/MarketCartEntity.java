@@ -13,9 +13,9 @@ public class MarketCartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int no;
 
-    @ManyToOne
-    @JoinColumn(name = "emp_no", referencedColumnName = "emp_no")
-    private EmployeeEntity employee;
+
+    @Column(name = "emp_no")
+    private String empNo;
     @Column(name = "product_no")
     private int productNo;
     @Column(name = "product_amount")
