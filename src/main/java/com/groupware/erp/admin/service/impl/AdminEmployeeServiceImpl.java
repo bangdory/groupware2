@@ -6,6 +6,7 @@ import com.groupware.erp.admin.entity.AdminEmployeeEntity;
 import com.groupware.erp.admin.service.AdminEmployeeService;
 import com.groupware.erp.admin.service.EmployeeUtils;
 import com.groupware.erp.employee.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminEmployeeServiceImpl implements AdminEmployeeService {
 
@@ -41,6 +43,20 @@ public class AdminEmployeeServiceImpl implements AdminEmployeeService {
     @Override
     public List<AdminEmployeeEntity> getEmployees(){
         return adminEmployeeRepository.findAll();
+    }
+
+    @Override
+    public void updateEmployeeStatus(String empNo, String status){
+        log.info("서비스는 실행대엇다!!!!!");
+        log.info("empNo: {}", empNo);
+        log.info("status: {}", status);
+        adminEmployeeRepository.updateEmployeeStatus(empNo, status);
+    }
+
+    @Override
+    public void updateEmployee(AdminEmployeeEntity adminEmployeeEntity){
+        log.info("updateEmployee 실행댐 {}", adminEmployeeEntity);
+        adminEmployeeRepository.save(adminEmployeeEntity);
     }
 
 }

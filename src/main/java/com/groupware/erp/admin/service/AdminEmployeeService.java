@@ -10,5 +10,9 @@ public interface AdminEmployeeService {
 
     String joinEmployee(AdminEmployeeDetailDTO adminEmployeeDetailDTO); // 새직원
 
-    public List<AdminEmployeeEntity> getEmployees();
+    List<AdminEmployeeEntity> getEmployees();
+
+    void updateEmployeeStatus(String empNo, String status);
+
+    void updateEmployee(AdminEmployeeEntity adminEmployeeEntity);
 }

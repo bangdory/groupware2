@@ -2,6 +2,7 @@ package com.groupware.erp.admin.controller;
 
 import com.groupware.erp.admin.dto.AdminEmployeeDetailDTO;
 import com.groupware.erp.admin.entity.AdminEmployeeEntity;
+import com.groupware.erp.admin.repository.AdminEmployeeRepository;
 import com.groupware.erp.admin.service.AdminEmployeeService;
 import com.groupware.erp.attendance.domain.AttendanceEntity;
 import com.groupware.erp.attendance.service.AttendanceService;
@@ -11,10 +12,13 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +40,8 @@ public class AdminEmployeeController {
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private AdminEmployeeRepository adminEmployeeRepository;
 
     @GetMapping("/joinEmployee")
     public String joinEmployee() { //@RequestHeader("Authorization") String authorization, Model model
@@ -64,7 +70,7 @@ public class AdminEmployeeController {
 
         String empNo = adminEmployeeService.joinEmployee(adminEmployeeDetailDTO);
         model.addAttribute("successMessage","신규 직원이 등록되었습니다. 사원번호: "+ empNo);
-        return "redirect:/admin/joinEmployee"; // 등록완료 , 관리자메뉴 페이지 구현 다 되면 경로 변경할 것.
+        return "redirect:/admin/adminEmployee"; // 등록완료
     }
 
     @GetMapping("/employeeList")
@@ -78,5 +84,53 @@ public class AdminEmployeeController {
         model.addAttribute("adminEmployeeEntity", adminEmployeeEntity);
         model.addAttribute("attendanceList", attendanceList);
         return "admin/employeeList";
+    }
+
+    @GetMapping("/adminEmployee")
+    public String adminEmployee(Model model) {
+        List<AdminEmployeeEntity> adminEmployeeEntity = adminEmployeeService.getEmployees();
+
+        model.addAttribute("adminEmployeeEntity", adminEmployeeEntity);
+        return "admin/adminEmployee";
+    }
+
+    @GetMapping("/editEmployee")
+    public String editEmployee(@RequestParam String empNo, Model model) {
+        Optional<AdminEmployeeEntity> findByEmpNo = adminEmployeeRepository.findByEmpNo(empNo);
+
+        if(findByEmpNo.isPresent()) {
+            AdminEmployeeEntity adminEmployeeEntity = findByEmpNo.get();
+            log.info("editEmployee 실행{},{},{},{}",
+                    adminEmployeeEntity.getEmpNo(),
+                    adminEmployeeEntity.getEmpPassword(),
+                    adminEmployeeEntity.getEmpName(),
+                    adminEmployeeEntity.getEmpEmail());
+            model.addAttribute("adminEmployeeEntity", adminEmployeeEntity);
+        } else {
+            log.warn("employee not found{}", empNo);
+            return "redirect:/admin/adminEmployee";
+        }
+        return "admin/editEmployee";
+    }
+
+    @PostMapping("/editEmployee")
+    public ModelAndView editEmployee(@ModelAttribute @Valid AdminEmployeeEntity adminEmployeeEntity) {
+
+        adminEmployeeService.updateEmployee(adminEmployeeEntity);
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/adminEmployee");
+        return modelAndView;
+    }
+
+    @PostMapping("/deleteEmployee")
+    public ResponseEntity<Void> deleteEmployee(@RequestParam(name = "empNo") String empNo) {
+
+        log.info("실행했음 {}", empNo);
+
+        try {
+            adminEmployeeService.updateEmployeeStatus(empNo, "퇴사");
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
