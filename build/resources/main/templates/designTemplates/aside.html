@@ -1,0 +1,85 @@
+
+<ul class="sidebar-nav" id="sidebar-nav" th:fragment="aside">
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="/index">
+            <i class="bi bi-grid"></i>
+            <span>Home</span>
+        </a>
+    </li><!-- End Dashboard Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-menu-button-wide"></i><span>근무</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="/attendance/attList" class="bsLink">
+                    <i class="bi bi-circle"></i><span>출근 / 퇴근</span>
+                </a>
+            </li>
+            <li>
+                <a href="/vacation/requestList" class="bsLink">
+                    <i class="bi bi-circle"></i><span>휴가 내역</span>
+                </a>
+            </li>
+            <li>
+                <a href="/vacation/requestPage" class="bsLink">
+                    <i class="bi bi-circle"></i><span>휴가 신청</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Components Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-journal-text"></i><span>파트2</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="forms-elements.html">
+                    <i class="bi bi-circle"></i><span>Form Elements</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Forms Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="tables-general.html">
+                    <i class="bi bi-circle"></i><span>General Tables</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Tables Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-bar-chart"></i><span>파트4</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="charts-chartjs.html">
+                    <i class="bi bi-circle"></i><span>Chart.js</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Charts Nav -->
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="icons-bootstrap.html">
+                    <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End Icons Nav -->
+</ul>
