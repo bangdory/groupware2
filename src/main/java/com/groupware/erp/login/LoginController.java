@@ -58,7 +58,6 @@ public class LoginController {
         AnnualLeaveCalculator calculator = new AnnualLeaveCalculator();
 
         // user 객체 읽기
-        log.info(user.toString());
 
         // 입사 일 가져오기
         LocalDate hireDate = user.getEmpHiredate();

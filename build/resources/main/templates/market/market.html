@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Goott Groupware</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for a beautiful layout */
+
+        .category {
+
+            display: flex;
+            flex-direction: row;
+           border: 1px;
+            border-radius: 10px;
+            margin-bottom:20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+
+        }
+        .category-container {
+            padding-top: 20px;
+            padding-left: 20px;
+            background-color:#ffffff;
+            margin-bottom: 5px;
+            justify-content: center;
+        }
+        .category_button {
+            border:none;
+            border-radius: 5px;
+            box-shadow: 5px -5px 10px rgba(0, 0, 0, 0.05), -5px -5px 10px rgba(0, 0, 0, 0.05);
+            background-color:white;
+        }
+        .create-category {
+            border:none;
+            border-radius: 5px;
+            box-shadow: 5px -5px 10px rgba(0, 0, 0, 0.05), -5px -5px 10px rgba(0, 0, 0, 0.05);
+            background-color:white;
+        }
+        .card {
+            border: none;
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+        .create-category-modal {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed; /* 화면 고정 */
+            z-index: 1; /* 가장 위에 표시 */
+            left: 0;
+            top: 0;
+            width: 100%; /* 전체 화면 */
+            height: 100%; /* 전체 화면 */
+            overflow: auto; /* 스크롤 가능 */
+            background-color: rgb(0,0,0); /* 검은 배경 */
+            background-color: rgba(0,0,0,0.4); /* 배경 투명도 */
+            padding-top: 60px; /* 위쪽 여백 */
+        }
+        .create-category-modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 중앙 정렬 */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* 모달 크기 */
+            max-width: 400px; /* 최대 너비 */
+            border-radius: 5px; /* 모서리 둥글게 */
+        }
+        .create-category-modal-close {
+            color: #aaa;
+            float: right; /* 오른쪽 정렬 */
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .create-category-modal-close:hover,
+        .create-category-modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        create-category-modal-button {
+            background-color: #4CAF50; /* 버튼 색 */
+            color: white; /* 버튼 글자 색 */
+            padding: 10px 20px;
+            border: none; /* 테두리 없음 */
+            border-radius: 5px; /* 둥글게 */
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049; /* 호버 시 색상 변경 */
+        }
+        /*상품*/
+        .product-list {
+            display: flex;
+            flex-wrap: wrap; /* 필요한 경우 다음 줄로 감싸도록 설정 */
+            justify-content: flex-start;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .price-container {
+            margin-top: 10px;
+        }
+
+        .product-title {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .product-description {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .product-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .discounted-price {
+            color: #ff6347;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .quantity-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-container label {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        /* 장바구니에 담기 버튼 스타일 */
+        .add-to-cart-button {
+            background-color: #ff6347;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #e55337;
+        }
+
+        .add-to-cart-button:active {
+            background-color: #d54327;
+        }
+
+        /* 장바구니 버튼과 수량 입력 필드를 적절히 배치 */
+        .quantity-container,
+        .add-to-cart-button {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/index" class="logo d-flex align-items-center">
+            <span class="d-none d-lg-block">Goott</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <!--            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">-->
+                    <span class="d-none d-md-block dropdown-toggle ps-2">사용자 &nbsp;</span>
+                </a>
+                <!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" onclick="logout()">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link" href="/index">
+                <i class="bi bi-grid"></i>
+                <span>Home</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>근무</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/attendance/attList" class="bsLink">
+                        <i class="bi bi-circle"></i><span>출근 / 퇴근</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/vacation/requestList" class="bsLink">
+                        <i class="bi bi-circle"></i><span>휴가 내역</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/vacation/requestPage" class="bsLink">
+                        <i class="bi bi-circle"></i><span>휴가 신청</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>파트2</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="forms-elements.html">
+                        <i class="bi bi-circle"></i><span>Form Elements</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="tables-general.html">
+                        <i class="bi bi-circle"></i><span>General Tables</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-bar-chart"></i><span>마켓</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/market/market.html">
+                        <i class="bi bi-circle"></i><span>구매</span>
+                    </a>
+                    <a href="/market/cart.html">
+                        <i class="bi bi-circle"></i><span>구매내역</span>
+                    </a>
+
+                    <a href="/market/receipt.html">
+                        <i class="bi bi-circle"></i><span>구매내역</span>
+                    </a>
+                    <a href="/admin/market.html">
+                        <i class="bi bi-circle"></i><span>구매내역</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Charts Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="icons-bootstrap.html">
+                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Icons Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+    <!-- 모달 구조 -->
+
+    <div id="create-category-myModal" class="create-category-modal">
+        <div class="create-category-modal-content">
+            <span class="create-category-modal-close" style="cursor: pointer;" th:text="'&times;'"></span> <!-- 모달 닫기 버튼 -->
+            <h2 th:text="'Create a New Category'"></h2>
+            <input type="text" id="categoryName" placeholder="Category Name" required>
+            <button id="submitCategoryButton" th:text="'Submit'"></button> <!-- 제출 버튼 -->
+        </div>
+    </div>
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="category">
+            <!--카테고리 불러오기-->
+                    <div th:each="category : ${categories}" class="category-container">
+                        <button class="category_button" th:text="${category.categoryName}"
+                                th:attr="data-category-no=${category.categoryNo}"
+                                onclick="fetchProducts(this)">
+                        </button>
+                    </div>
+            <!--카테고리 추가-->
+                    <div class="category-container">
+                        <button id="create-category-modal" class="create-category">+</button>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Left side columns -->
+            <div class="col-lg-8">
+                <div class="row">
+
+
+
+
+
+                    <div class="col-12">
+                        <div class="card top-selling overflow-auto">
+
+
+
+
+<!--                            <div class="card-body pb-0">-->
+<!--                                <h5 class="card-title">Top Selling <span>| Today</span></h5>-->
+
+<!--                                <table class="table table-borderless">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="col">Preview</th>-->
+<!--                                        <th scope="col">Product</th>-->
+<!--                                        <th scope="col">Price</th>-->
+<!--                                        <th scope="col">Sold</th>-->
+<!--                                        <th scope="col">Revenue</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-1.jpg" alt=""></a></th>-->
+<!--                                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>-->
+<!--                                        <td>$64</td>-->
+<!--                                        <td class="fw-bold">124</td>-->
+<!--                                        <td>$5,828</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-2.jpg" alt=""></a></th>-->
+<!--                                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>-->
+<!--                                        <td>$46</td>-->
+<!--                                        <td class="fw-bold">98</td>-->
+<!--                                        <td>$4,508</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-3.jpg" alt=""></a></th>-->
+<!--                                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>-->
+<!--                                        <td>$59</td>-->
+<!--                                        <td class="fw-bold">74</td>-->
+<!--                                        <td>$4,366</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-4.jpg" alt=""></a></th>-->
+<!--                                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>-->
+<!--                                        <td>$32</td>-->
+<!--                                        <td class="fw-bold">63</td>-->
+<!--                                        <td>$2,016</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-5.jpg" alt=""></a></th>-->
+<!--                                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>-->
+<!--                                        <td>$79</td>-->
+<!--                                        <td class="fw-bold">41</td>-->
+<!--                                        <td>$3,239</td>-->
+<!--                                    </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+
+<!--                            </div>-->
+                            <div id="product-list" class="product-list"></div>
+                        </div>
+                    </div><!-- End Top Selling -->
+
+                </div>
+            </div><!-- End Left side columns -->
+
+<!--           장바구니-->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div id="cart-container">
+                        <h2>장바구니</h2>
+                        <div id="cart-items"></div>
+                        <div id="cart-total">
+                            <strong>총 가격: </strong><span id="total-price">₩0</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- End Right side columns -->
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
+<script src="/assets/vendor/quill/quill.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // localStorage 에서 jwt 가져오기
+        const jwtToken = localStorage.getItem("accessToken");
+
+        if (jwtToken) {
+            console.log('jwtToken: ' + jwtToken);
+
+            // jwt 토큰을 decoding 해서 json 타입으로 리턴 받기
+            const tokenData = decodingJwt(jwtToken);
+
+            if (tokenData) {
+
+                const empNo = tokenData.sub;
+
+
+            } else {
+                console.error("JWT 토큰에서 empNo 데이터를 찾을 수 없습니다.");
+            }
+
+        } else {
+            console.error("JWT 토큰을 찾을 수 없습니다.");
+        }
+        // 장바구니
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
+
+        // 각 버튼에 클릭 이벤트 추가
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productNo = this.getAttribute('data-product-id'); // productNo 가져오기
+
+                // 해당 상품의 수량 필드를 찾기
+                const quantityInput = document.getElementById(`quantity-${productNo}`);
+                const productAmount = quantityInput ? quantityInput.value : 1; // 수량 가져오기 (기본값 1)
+
+                // 장바구니에 담기 함수 호출
+                addToCart(productNo, productAmount);
+            });
+        });
+    });
+
+    function decodingJwt(token) {
+        try {
+            // 토큰의 페이로드 부분(Base64로 인코딩된 부분)을 디코딩
+            const base64Url = token.split('.')[1]; // JWT의 두 번째 부분이 페이로드
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload); // JSON 형식으로 변환하여 반환
+        } catch (e) {
+            console.error('JWT 파싱 에러:', e);
+            return null; // 에러 발생 시 null 반환
+        }
+    }
+// 여기서부터
+
+    // 모달 열기 버튼
+    const openModalButton = document.getElementById('create-category-modal');
+    const modal = document.getElementById('create-category-myModal');
+    const closeModalButton = document.getElementsByClassName('create-category-modal-close')[0];
+
+    // 모달 열기
+    openModalButton.addEventListener('click', function() {
+        modal.style.display = 'block';
+    });
+
+    // 모달 닫기
+    closeModalButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // 모달 외부 클릭 시 닫기
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    // 카테고리 제출 버튼 클릭 이벤트
+    document.getElementById('submitCategoryButton').addEventListener('click', function() {
+        const categoryName = document.getElementById('categoryName').value;
+
+        // MarketCategoryEntity 객체 생성
+        const category = {
+            categoryName: categoryName // 'name'은 MarketCategoryEntity의 필드명에 맞춰 설정
+        };
+
+        // API 호출
+        axios.post('/admin/market/category/create', category)
+            .then(response => {
+                console.log('Category created:', response.data);
+                alert('Category created successfully!');
+                modal.style.display = 'none'; // 모달 닫기
+
+                // 새 카테고리를 동적으로 추가
+                const newCategory = response.data;
+                const categoryList = document.querySelector('.category'); // 카테고리 리스트가 있는 컨테이너
+                const newCategoryContainer = document.createElement('div');
+                newCategoryContainer.classList.add('category-container');
+
+                const newCategoryButton = document.createElement('button');
+                newCategoryButton.classList.add('category_button');
+                newCategoryButton.textContent = newCategory.categoryName; // 새로 추가된 카테고리 이름
+
+                newCategoryContainer.appendChild(newCategoryButton);
+                categoryList.insertBefore(newCategoryContainer, document.getElementById('create-category-modal').parentNode);
+            })
+            .catch(error => {
+                console.error('Error creating category:', error);
+                alert('Failed to create category.');
+            });
+    });
+    // 카테고리에 따른 상품 불러오기
+    // 모든 카테고리 버튼에 클릭 이벤트 추가
+    function fetchProducts(button) {
+        // 버튼에서 카테고리 번호를 가져옴
+        const categoryNo = button.getAttribute('data-category-no');
+
+        // Ajax 요청으로 상품 리스트를 서버에서 받아옴
+        axios.get(`/market/category/${categoryNo}`)
+            .then(response => {
+                const products = response.data;
+                updateProductList(products);  // 상품 리스트 업데이트 함수 호출
+            })
+            .catch(error => {
+                console.error('Error fetching products for category:', error);
+                alert('Failed to fetch products.');
+            });
+    }
+
+    // 상품 리스트를 화면에 업데이트
+    function updateProductList(products) {
+        const productListContainer = document.getElementById('product-list');
+
+        // 기존 내용 삭제
+        const existingProducts = productListContainer.querySelectorAll('.product');
+        existingProducts.forEach(product => product.remove()); // 각 제품 항목 제거
+
+        // 새 상품 리스트 추가
+        products.forEach(item => {
+            const product = item.product; // product 객체에 접근
+
+            // 오류 추적을 위해 콘솔에 item을 출력
+            console.log('item:', item);
+
+            if (!product || !product.productNo) {
+                console.error('상품 데이터에 문제가 있습니다:', product);
+                return; // product가 정의되지 않으면 다음 항목으로 넘어감
+            }
+
+            const discountedPrice = item.discountedPrice; // 할인된 가격
+
+            const productItem = document.createElement('div');
+            productItem.classList.add('product');
+
+            // 상품 정보를 HTML로 생성
+            const productHTML = `
+        <img src="${product.img || 'default_image.jpg'}" alt="${product.name}" class="product-image" />
+        <h2 class="product-title">${product.name}</h2>
+        <div class="price-container">
+            <span class="original-price">₩${product.price}</span>
+            ${discountedPrice ? `<span class="discounted-price">₩${discountedPrice}</span>` : ''}
+        </div>
+        <p class="product-description">${product.description || 'No description available'}</p>
+
+        <!-- 수량 입력 필드 추가 -->
+        <div class="quantity-container">
+            <label for="quantity-${product.productNo}">수량:</label>
+            <input type="number" id="quantity-${product.productNo}" value="1" min="1" class="quantity-input">
+        </div>
+
+        <!-- 장바구니에 담기 버튼 추가 -->
+        <button class="add-to-cart-button" data-product-id="${product.productNo}">
+            장바구니에 담기
+        </button>
+        `;
+
+            // HTML 삽입
+            productItem.innerHTML = productHTML;
+
+            // 제품 항목을 제품 리스트에 추가
+            productListContainer.appendChild(productItem);
+
+            // 여기서 버튼에 이벤트 리스너 추가
+            const addToCartButton = productItem.querySelector('.add-to-cart-button');
+            addToCartButton.addEventListener('click', function() {
+                const productNo = this.getAttribute('data-product-id');
+                const quantityInput = document.getElementById(`quantity-${productNo}`);
+                const productAmount = quantityInput ? quantityInput.value : 1;
+
+                // 장바구니에 담기 함수 호출
+                addToCart(productNo, productAmount);
+            });
+        });
+
+    }
+
+    // 장바구니에 상품 추가 함수
+    let cart = []; // 장바구니 데이터를 저장하는 배열
+    function addToCart(productNo, productAmount) {
+        const jwtToken = localStorage.getItem("accessToken");
+        const tokenData = decodingJwt(jwtToken);
+        const empNo = tokenData ? tokenData.sub : null;
+
+        // Ajax로 서버에 장바구니 담기 요청
+        axios.put(`/market/cart/update`, null, {
+            params: {
+                empNo: empNo,
+                productNo: productNo,
+                productAmount: productAmount
+            }
+        })
+            .then(response => {
+                console.log('장바구니에 상품이 추가되었습니다:', response.data); // 응답 데이터 확인
+
+                // 장바구니에 추가된 항목을 저장
+                const cartItem = {
+                    productNo: response.data.productNo,
+                    productAmount: response.data.productAmount,
+                    empNo: empNo
+                };
+
+                cart.push(cartItem); // cart에 추가
+
+                // 화면에 장바구니 업데이트
+                updateCartDisplay(); // 장바구니 화면 업데이트
+            })
+            .catch(error => {
+                console.error('장바구니에 상품을 추가하는 중 오류 발생:', error);
+            });
+    }
+
+   
+</script>
+
+</body>
+
+</html>

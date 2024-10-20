@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Goott Groupware</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/index" class="logo d-flex align-items-center">
+            <span class="d-none d-lg-block">Goott</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn" id="side-bar-toggle-i"></i>
+    </div><!-- End Logo -->
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <!--            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">-->
+                    <span class="d-none d-md-block dropdown-toggle ps-2">사용자 &nbsp;</span>
+                </a>
+                <!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/index">
+                <i class="bi bi-grid"></i>
+                <span>Home</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>근무</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/attendance/attList" class="bsLink">
+                        <i class="bi bi-circle"></i><span>출근 / 퇴근</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/vacation/requestList" class="bsLink">
+                        <i class="bi bi-circle"></i><span>휴가 내역</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/vacation/requestPage" class="bsLink">
+                        <i class="bi bi-circle"></i><span>휴가 신청</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>파트2</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="forms-elements.html">
+                        <i class="bi bi-circle"></i><span>Form Elements</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="tables-general.html">
+                        <i class="bi bi-circle"></i><span>General Tables</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-bar-chart"></i><span>파트4</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="charts-chartjs.html">
+                        <i class="bi bi-circle"></i><span>Chart.js</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Charts Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="icons-bootstrap.html">
+                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Icons Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Home</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index">Home</a><span> > </span> <a href="/attendance/attList"> 출근 / 퇴근</a></li>
+            </ol>
+
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+
+            <!-- Left side columns -->
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>출근 / 퇴근 내역</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>출근 시간</th>
+                                    <th>퇴근 시간</th>
+                                    <th>근무 시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>2024-10-14</td>
+                                    <td>08:30 AM</td>
+                                    <td>05:30 PM</td>
+                                    <td>8시간</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-10-13</td>
+                                    <td>08:45 AM</td>
+                                    <td>05:40 PM</td>
+                                    <td>8시간</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-10-12</td>
+                                    <td>08:45 AM</td>
+                                    <td>05:40 PM</td>
+                                    <td>8시간</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-10-11</td>
+                                    <td>08:45 AM</td>
+                                    <td>05:40 PM</td>
+                                    <td>8시간</td>
+                                </tr>
+                                <!-- 추가 항목은 여기에 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Left side columns -->
+
+            <!-- Right side columns -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">출근 / 퇴근 상태</h5>
+                        <span class="badge bg-success">출근 완료</span> <!-- 상태에 따라 동적 변경 -->
+                    </div>
+                    <div class="card-body">
+                        <!-- 출근 / 퇴근 시간 -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3" style="margin-top: 5px;"> <!-- 위쪽에 5px 공백 추가 -->
+                                <h6>오늘의 출근 시간</h6>
+                                <p>08:30 AM</p>
+                            </div>
+                            <div class="col-md-6 mb-3" style="margin-top: 5px;"> <!-- 위쪽에 5px 공백 추가 -->
+                                <h6>오늘의 퇴근 시간</h6>
+                                <p>미정</p> <!-- 퇴근 전일 경우 "미정"으로 표시 -->
+                            </div>
+                        </div>
+
+                        <!-- 통합된 버튼 -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="button" class="btn btn-primary btn-lg w-100" style="max-width: 200px;">출근</button> <!-- 버튼 가로 크기 조정 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 원형 그래프 추가 -->
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">최근 출근/퇴근 통계</h5>
+                    </div>
+                    <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
+                        <div class="chart-container" style="min-width: 320px; height: 300px">
+<!--                    <div class="card-body" style="display: flex; justify-content: center; align-items: center; height: 500px">-->
+                        <div id="attendancePieChart" style="height: 300px;min-width: 300px"></div>
+<!--                        <div id="attendancePieChart" style="min-height: 300px;"></div>-->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Right side columns -->
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
+<script src="/assets/vendor/quill/quill.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/assets/js/main.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var attendanceChart = echarts.init(document.getElementById('attendancePieChart'));
+
+        var option = {
+            title: {
+                subtext: '최근 7일 기준',
+                left: 'left'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                show: false,
+                orient: 'horizontal',
+                bottom: 10, // 우측에 표시
+                right: 'right'
+            },
+            series: [
+                {
+                    name: '출근/퇴근 비율',
+                    type: 'pie',
+                    radius: ['50%', '65%'], // 안쪽과 바깥쪽 반지름을 비율로 설정
+                    avoidLabelOverlap: false,
+                    center: ['50%', '50%'],
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: false,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: 6, name: '출근 완료'},
+                        {value: 1, name: '미출근'},
+                    ]
+                }
+            ]
+        };
+
+        // 초기 차트 렌더링
+        attendanceChart.setOption(option);
+        //
+        // // 창 크기 조정 시 차트 크기 자동 조정
+        // window.addEventListener('resize', function () {
+        //     attendanceChart.resize();
+        // });
+        //
+        // // 전체화면 변경 시 차트 크기 조정
+        // document.addEventListener('fullscreenchange', function () {
+        //     attendanceChart.resize();
+        // });
+        //
+        // // 브라우저 창 최소화/최대화 시 차트 크기 조정
+        // window.addEventListener('visibilitychange', function () {
+        //     if (document.visibilityState === 'visible') {
+        //         attendanceChart.resize();
+        //     }
+        // });
+
+        // localStorage 에서 jwt 가져오기
+        const jwtToken = localStorage.getItem("accessToken");
+
+        if (jwtToken) {
+            console.log('jwtToken: ' + jwtToken);
+
+            // jwt 토큰을 decoding 해서 json 타입으로 리턴 받기
+            const tokenData = decodingJwt(jwtToken);
+
+            if (tokenData) {
+
+                const empNo = tokenData.sub;
+                console.log('empNo: ' + empNo);
+
+                // bsLink 의 클래스를 가진 요소 가져오기
+                const aTags = document.querySelectorAll('a.bsLink');
+
+
+                // 각 aTag 요소에 대해 처리
+                aTags.forEach(function (aTag) {
+                    if (aTag && empNo) {
+                        // bsLink 클래스의 href 속성 가져오기
+                        const originalHref = aTag.href;
+                        // 기존 링크에 empNo 데이터 추가하기
+                        aTag.href = originalHref + '?empNo=' + empNo;
+                        console.log('Updated aTag.href: ' + aTag.href);
+                    }
+                });
+
+            } else {
+                console.error("JWT 토큰에서 empNo 데이터를 찾을 수 없습니다.");
+            }
+
+        } else {
+            console.error("JWT 토큰을 찾을 수 없습니다.");
+        }
+
+
+        function decodingJwt(token) {
+            try {
+                // 토큰의 페이로드 부분(Base64로 인코딩된 부분)을 디코딩
+                const base64Url = token.split('.')[1]; // JWT의 두 번째 부분이 페이로드
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+
+                return JSON.parse(jsonPayload); // JSON 형식으로 변환하여 반환
+            } catch (e) {
+                console.error('JWT 파싱 에러:', e);
+                return null; // 에러 발생 시 null 반환
+            }
+        }
+    });
+</script>
+</body>
+
+</html>
