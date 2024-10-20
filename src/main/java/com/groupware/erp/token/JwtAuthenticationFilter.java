@@ -6,11 +6,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -53,9 +55,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String empEmail = jwtTokenProvider.getEmailFromToken(token);
             String department = jwtTokenProvider.getDepartmentFromToken(token);
             String empGrade = jwtTokenProvider.getGradeFromToken(token);
+            GrantedAuthority grantedAuthority = jwtTokenProvider.getAuthoritiesFromToken(token);
 
             // 4. Authentication 객체 생성 (권한도 함께 설정 가능)
-            JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, empEmail, department, empGrade, token);
+            JwtAuthenticationToken authentication = new JwtAuthenticationToken(username, empEmail, department, empGrade, token, List.of(grantedAuthority));
 
             // 5. 인증을 SecurityContext에 설정
             SecurityContextHolder.getContext().setAuthentication(authentication);

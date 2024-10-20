@@ -1,29 +1,26 @@
 package com.groupware.erp.login;
 
-import com.groupware.erp.login.annualLeave.AnnualLeaveCalculator;
 import com.groupware.erp.login.annualLeave.AnnualLeaveService;
-import com.groupware.erp.token.JwtTokenDTO;
-import com.groupware.erp.token.JwtTokenProvider;
+import com.groupware.erp.token.*;
+import com.groupware.erp.login.annualLeave.AnnualLeaveCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-@RestController
+@Controller
 @RequestMapping("/login")
 public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -32,8 +29,17 @@ public class LoginController {
     @Autowired
     private AnnualLeaveService annualLeaveService;
 
-    public LoginController(JwtTokenProvider jwtTokenProvider) {
+    @Autowired
+    private AuthenticationService authenticationService;
+//    @Autowired
+//    private GeneralTokenProvider generalTokenProvider;
+
+    public LoginController(JwtTokenProvider jwtTokenProvider,
+                           AnnualLeaveService annualLeaveService,
+                           AuthenticationService authenticationService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.annualLeaveService = annualLeaveService;
+        this.authenticationService = authenticationService;
     }
 
 
@@ -72,8 +78,10 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"redirectUrl\":\"/login/changePassword\"}");
         }
 
-        // 사용자 인증 로직
-        Authentication authentication = authenticateUser(loginDTO);
+        //사용자 인증 로직
+        Authentication authentication = authenticationService.authenticateUser(
+                loginDTO.getEmpNo(), loginDTO.getEmpPassword()
+        );
 
         if (authentication == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -81,22 +89,26 @@ public class LoginController {
 
         //JWT 생성
         JwtTokenDTO jwtTokenDTO = jwtTokenProvider.generateToken(authentication);
+        log.info("JWT생성: {}",jwtTokenDTO);
+
+        // 일반토큰 생성
+//        String generalToken = generalTokenProvider.GeneralToken(user.getEmpNo());
+//        log.info("일반토큰도 생성했다!!!!!!!!!!!!!!!",generalToken);
+//
+//        // 토큰 2개를 객체 한 개로
+//        CombinedTokenResponse response = new CombinedTokenResponse(generalToken, jwtTokenDTO);
+//
+//        log.info("토큰 만들었냐 잘 봐라!!!!" , response);
 
         return ResponseEntity.ok(jwtTokenDTO);
     }
 
-    private Authentication authenticateUser(LoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDTO.getEmpNo(), loginDTO.getEmpPassword());
-        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-    }
 
     @GetMapping("/changePassword")
-    public String changePasswordPage(@RequestParam(name = "empNo") String empNo,Model model) {
+    public String changePasswordPage(Model model) {
 
         log.info("비밀번호 바꾸셈");
-        log.info("empNo: " + empNo);
-        model.addAttribute("empNo", empNo);
+        log.info("Model" + model.toString());
         return "login/changePassword";
     }
 
@@ -115,6 +127,10 @@ public class LoginController {
                 changePasswordDTO.getOldPassword(),
                 changePasswordDTO.getNewPassword()
         );
+        log.info("이거슨 changePasswordDTO.getEmpNo 임니다 {}",changePasswordDTO.getEmpNo());
+        log.info("이거슨 changePasswordDTO.getOldPassword 임니다 {}",changePasswordDTO.getOldPassword());
+        log.info("이거슨 changePasswordDTO.getNewPassword 임니다 {}",changePasswordDTO.getNewPassword());
+
 
         if (isChanged) {
             log.info("비밀번호 변경 : empNo={}", changePasswordDTO.getEmpNo());

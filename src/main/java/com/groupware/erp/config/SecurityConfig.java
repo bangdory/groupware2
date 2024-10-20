@@ -21,15 +21,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final LoginUserDetailService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -51,9 +56,13 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
+/*
                 .csrf(
                         (csrfConfig) -> csrfConfig.disable()
                 )
+*/
+                .csrf(csrf -> csrf // CSRF 보호 활성화
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // CSRF 토큰을 쿠키에 저장
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(
                         (formLogin) -> formLogin.disable()) // session 안 쓸려고 비활성화함
@@ -63,14 +72,18 @@ public class SecurityConfig{
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests
 //                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("/login","/login/changePassword", "login/changePassword").permitAll()
+                                .requestMatchers("/login", "/login/changePassword", "login/changePassword").permitAll()
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
                                 .requestMatchers("/employee/list").hasRole(Role.USER.name())
                                 // User 권한을 부여해서 Attendance 허용
 //                                .requestMatchers("/attendance/**").hasRole(Role.USER.name())
+                                // MAIL URL
+//                                .requestMatchers("/mail/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers("/mail/**")
+                                .permitAll()
+//                                .hasRole(Role.ADMIN.name())
                                 // 위를 제외한 모든 Url 허용
                                 .anyRequest().permitAll()
                 )
@@ -108,7 +121,7 @@ public class SecurityConfig{
             };
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider, new LoginSuccessHandler(jwtTokenProvider, userDetailsService));
     }
 

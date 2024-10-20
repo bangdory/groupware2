@@ -36,11 +36,6 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-    <style>
-        .table-location {
-
-        }
-    </style>
 </head>
 
 <body>
@@ -90,17 +85,14 @@
                                     <tr th:if="${vacationEntity == null || #lists.isEmpty(vacationEntity)}">
                                         <td colspan="4">휴가 기록이 없습니다.</td>
                                     </tr>
-                                    <tr th:each="vacationEntity : ${vacationEntity}"
-                                        onclick="window.location.href='[[${'/vacationResultPage?vac_no=' + vacationEntity.vacNo}]]'">
+                                    <tr th:each="vacationEntity : ${vacationEntity}">
                                         <td th:text="${vacationEntity.startDate}"></td>
                                         <td th:text="${vacationEntity.endDate}"></td>
                                         <td th:text="${vacationEntity.totalDays}"></td>
                                         <td th:text="${vacationEntity.approveBoolean == 0 ? '처리중' : (vacationEntity.approveBoolean == 1 ? '승인' : '거절')}"></td>
+
                                     </tr>
                                     </tbody>
-
-
-
                                 </table>
                             </div>
                         </div>

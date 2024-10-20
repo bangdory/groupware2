@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -256,7 +256,7 @@
                     <!--            </li>-->
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" onclick="logout()">
                             <i class="bi bi-box-arrow-right"></i>
                             <span>Sign Out</span>
                         </a>
@@ -320,13 +320,13 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i
+                <i class="bi bi-mailbox"></i><span>이메일(파트3)</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="tables-general.html">
-                        <i class="bi bi-circle"></i><span>General Tables</span>
+                    <a href="/mail">
+                        <i class="bi bi-at"></i><span>관리자용 메일</span>
                     </a>
                 </li>
             </ul>
@@ -345,14 +345,21 @@
             </ul>
         </li><!-- End Charts Nav -->
 
-        <li class="nav-item">
+        <li class="nav-item" id="adminMenu" style="display: none">
             <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-gem"></i><span>인사관리</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="icons-bootstrap.html">
-                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
+                    <a href="/admin/joinEmployee" class="bsLink">
+                        <!-- onclick="handleLinkClick('/admin/joinEmployee')" -->
+                        <i class="bi bi-circle"></i><span>신규직원등록</span>
+                    </a>
+                    <a href="/admin/employeeList" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
+                        <i class="bi bi-circle"></i><span>직원근태관리</span>
+                    </a>
+                    <a href="#" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
+                        <i class="bi bi-circle"></i><span>직원계정관리</span>
                     </a>
                 </li>
             </ul>
@@ -371,6 +378,8 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+
+    <th:block layout:fragment="content"></th:block>
 
     <section class="section dashboard">
         <div class="row">
@@ -1057,14 +1066,16 @@
             if (tokenData) {
 
                 const empNo = tokenData.sub;
+                const auth = tokenData.auth;
                 console.log('empNo: ' + empNo);
+                console.log('auth: ' + auth)
 
                 // bsLink 의 클래스를 가진 요소 가져오기
                 const aTags = document.querySelectorAll('a.bsLink');
 
 
                 // 각 aTag 요소에 대해 처리
-                aTags.forEach(function(aTag) {
+                aTags.forEach(function (aTag) {
                     if (aTag && empNo) {
                         // bsLink 클래스의 href 속성 가져오기
                         const originalHref = aTag.href;
@@ -1073,6 +1084,8 @@
                         console.log('Updated aTag.href: ' + aTag.href);
                     }
                 });
+                checkAdmin(auth);
+
 
             } else {
                 console.error("JWT 토큰에서 empNo 데이터를 찾을 수 없습니다.");
@@ -1099,8 +1112,18 @@
         }
     }
 
+    function checkAdmin(auth) {
+        const adminMenu = document.getElementById('adminMenu');
+        if (auth === 'ADMIN') {
+            adminMenu.style.display = 'block';
+        } else {
+            adminMenu.style.display = 'none';
+        }
+    }
+
+
 </script>
 
 </body>
-
+<th:block layout:fragment="script"></th:block>
 </html>

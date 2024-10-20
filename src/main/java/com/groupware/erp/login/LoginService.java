@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
+
     private static final Logger log = LoggerFactory.getLogger(LoginService.class);
     private final LoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,18 +28,43 @@ public class LoginService {
         // DB에서 사용자 정보 가져오기
         LoginEntity user = loginRepository.findByEmpNo(empNo);
 
-        if (user != null) {
-            if (user.getEmpPassword().equals(newPassword)) {
-                log.info("같은비밀번호");
-                return false;
-            }
+        log.info("user를 제대로 가지고 왔나요?!? {}", user);
 
-            // 새 비밀번호를 BCrypt로 인코딩
-            String encodedPassword = passwordEncoder.encode(newPassword);
-            user.setEmpPassword(encodedPassword);
-            loginRepository.save(user); // 변경사항 저장
-            return true;
+        if (user != null) {
+            // 비밀번호 인코딩여부 확인
+            boolean isEmpPasswordEncoded = isPasswordEncoded(user.getEmpPassword());
+
+            boolean isOldPasswordValid = isEmpPasswordEncoded
+                    ? passwordEncoder.matches(oldPassword, user.getEmpPassword())
+                    : oldPassword.equals(user.getEmpPassword());
+
+            if(isOldPasswordValid) {
+
+                boolean isNewPasswordValid = isEmpPasswordEncoded
+                        ? passwordEncoder.matches(newPassword, user.getEmpPassword())
+                        : newPassword.equals(user.getEmpPassword());
+
+                if (isNewPasswordValid) {
+                        log.info("같은비밀번호");
+                        return false;
+                }
+
+                // 새 비밀번호를 BCrypt로 인코딩
+                String encodedPassword = passwordEncoder.encode(newPassword);
+                user.setEmpPassword(encodedPassword);
+                loginRepository.save(user); // 변경사항 저장
+                return true;
+            }
+            log.info("비밀번호가!!!!! 틀렸다구요!!!!!!!!!");
+            log.info("사용자 정보에서 user.getEmpPassword는 제대론가요!??!{}", user.getEmpPassword());
+            return false;
+
+
         }
         return false;
+    }
+
+    private boolean isPasswordEncoded(String password) {
+        return password != null && password.length() >= 60 && password.startsWith("$2a$");
     }
 }
