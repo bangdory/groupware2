@@ -6,7 +6,7 @@ create table community_notice(
                                  notice_content varchar(2000) not null,
                                  notice_date date not null,
                                  notice_view int,
-                                 emp_no bigint,
+                                 emp_no VARCHAR(10),
                                  notice_state boolean,
                                  foreign key (emp_no) references employee (emp_no)
 );

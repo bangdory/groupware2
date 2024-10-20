@@ -15,7 +15,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -39,139 +40,23 @@
 </head>
 
 <body>
-
 <!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-        <a href="/index" class="logo d-flex align-items-center">
-            <span class="d-none d-lg-block">Goott</span>
-        </a>
-        <i class="bi bi-list toggle-sidebar-btn" id="side-bar-toggle-i"></i>
-    </div><!-- End Logo -->
-    <nav class="header-nav ms-auto">
-        <ul class="d-flex align-items-center">
-            <li class="nav-item dropdown pe-3">
-
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <!--            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">-->
-                    <span class="d-none d-md-block dropdown-toggle ps-2">사용자 &nbsp;</span>
-                </a>
-                <!-- End Profile Iamge Icon -->
-
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
-                        </a>
-                    </li>
-
-                </ul><!-- End Profile Dropdown Items -->
-            </li><!-- End Profile Nav -->
-
-        </ul>
-    </nav><!-- End Icons Navigation -->
-
-</header><!-- End Header -->
+<header id="header" class="header fixed-top d-flex align-items-center" th:insert="~{/designTemplates/header :: header}">
+</header>
+<!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/index">
-                <i class="bi bi-grid"></i>
-                <span>Home</span>
-            </a>
-        </li><!-- End Dashboard Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>근무</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="/attendance/attList" class="bsLink">
-                        <i class="bi bi-circle"></i><span>출근 / 퇴근</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/vacation/requestList" class="bsLink">
-                        <i class="bi bi-circle"></i><span>휴가 내역</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/vacation/requestPage" class="bsLink">
-                        <i class="bi bi-circle"></i><span>휴가 신청</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Components Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-journal-text"></i><span>파트2</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="forms-elements.html">
-                        <i class="bi bi-circle"></i><span>Form Elements</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Forms Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="tables-general.html">
-                        <i class="bi bi-circle"></i><span>General Tables</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Tables Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-bar-chart"></i><span>파트4</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="charts-chartjs.html">
-                        <i class="bi bi-circle"></i><span>Chart.js</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Charts Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-gem"></i><span>파트5</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="icons-bootstrap.html">
-                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End Icons Nav -->
-    </ul>
-
-</aside><!-- End Sidebar-->
-
+<aside id="sidebar" class="sidebar" th:insert="~{/designTemplates/aside :: aside}">
+</aside>
+<!-- End Sidebar-->
 <main id="main" class="main">
 
     <div class="pagetitle">
         <h1>Home</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/index">Home</a><span> > </span> <a href="/attendance/attList"> 출근 / 퇴근</a></li>
+                <li class="breadcrumb-item"><a href="/index">Home</a><span> > </span> <a href="/attendance/attList"> 출근
+                    / 퇴근</a></li>
             </ol>
 
         </nav>
@@ -188,41 +73,54 @@
                             <h5>출근 / 퇴근 내역</h5>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered attTable">
                                 <thead>
                                 <tr>
                                     <th>날짜</th>
                                     <th>출근 시간</th>
                                     <th>퇴근 시간</th>
                                     <th>근무 시간</th>
+                                    <th>출결</th>
                                 </tr>
                                 </thead>
+                                <!--                                <tbody>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td>2024-10-14</td>-->
+                                <!--                                    <td>08:30 AM</td>-->
+                                <!--                                    <td>05:30 PM</td>-->
+                                <!--                                    <td>8시간</td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td>2024-10-13</td>-->
+                                <!--                                    <td>08:45 AM</td>-->
+                                <!--                                    <td>05:40 PM</td>-->
+                                <!--                                    <td>8시간</td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td>2024-10-12</td>-->
+                                <!--                                    <td>08:45 AM</td>-->
+                                <!--                                    <td>05:40 PM</td>-->
+                                <!--                                    <td>8시간</td>-->
+                                <!--                                </tr>-->
+                                <!--                                <tr>-->
+                                <!--                                    <td>2024-10-11</td>-->
+                                <!--                                    <td>08:45 AM</td>-->
+                                <!--                                    <td>05:40 PM</td>-->
+                                <!--                                    <td>8시간</td>-->
+                                <!--                                </tr>-->
+                                <!--                                &lt;!&ndash; 추가 항목은 여기에 &ndash;&gt;-->
+                                <!--                                </tbody>-->
                                 <tbody>
-                                <tr>
-                                    <td>2024-10-14</td>
-                                    <td>08:30 AM</td>
-                                    <td>05:30 PM</td>
-                                    <td>8시간</td>
+                                <!--                                <tr th:if="${status != null}">-->
+                                <!--                                    <td colspan="4" th:text="${status}"></td>-->
+                                <!--                                </tr>-->
+                                <tr th:each="attendance : ${attendanceList}">
+                                    <td th:text="${attendance.regDate}"></td>
+                                    <td th:text="${attendance.arrTime}"></td>
+                                    <td th:text="${attendance.levTime}"></td>
+                                    <td th:text="${attendance.workTime}"></td>
+                                    <td th:text="${attendance.attStat}"></td>
                                 </tr>
-                                <tr>
-                                    <td>2024-10-13</td>
-                                    <td>08:45 AM</td>
-                                    <td>05:40 PM</td>
-                                    <td>8시간</td>
-                                </tr>
-                                <tr>
-                                    <td>2024-10-12</td>
-                                    <td>08:45 AM</td>
-                                    <td>05:40 PM</td>
-                                    <td>8시간</td>
-                                </tr>
-                                <tr>
-                                    <td>2024-10-11</td>
-                                    <td>08:45 AM</td>
-                                    <td>05:40 PM</td>
-                                    <td>8시간</td>
-                                </tr>
-                                <!-- 추가 항목은 여기에 -->
                                 </tbody>
                             </table>
                         </div>
@@ -235,25 +133,44 @@
                 <div class="card shadow-sm">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">출근 / 퇴근 상태</h5>
-                        <span class="badge bg-success">출근 완료</span> <!-- 상태에 따라 동적 변경 -->
+                        <span th:classappend="${todayAttendance.attStat == '미출근' ? ' badge bg-danger'
+        : (todayAttendance.attStat == '출근' ? ' badge bg-success'
+        : (todayAttendance.attStat == '퇴근' ? ' badge bg-secondary'
+        : ' badge bg-warning'))}"
+                              class="attStat-Condition"
+                              th:text="${todayAttendance.attStat}">
+</span>
+
                     </div>
                     <div class="card-body">
                         <!-- 출근 / 퇴근 시간 -->
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3" style="margin-top: 5px;"> <!-- 위쪽에 5px 공백 추가 -->
                                 <h6>오늘의 출근 시간</h6>
-                                <p>08:30 AM</p>
+                                <p th:text="${todayAttendance.arrTime != null ? #dates.format(todayAttendance.arrTime, 'HH:mm:ss') : ''}" id="todayArrTime"></p>
                             </div>
                             <div class="col-md-6 mb-3" style="margin-top: 5px;"> <!-- 위쪽에 5px 공백 추가 -->
                                 <h6>오늘의 퇴근 시간</h6>
-                                <p>미정</p> <!-- 퇴근 전일 경우 "미정"으로 표시 -->
+                                <p th:text="${todayAttendance.levTime != null ? #dates.format(todayAttendance.levTime, 'HH:mm:ss') : ''}" id="todayLevTime"></p>
                             </div>
                         </div>
-
                         <!-- 통합된 버튼 -->
                         <div class="d-flex justify-content-center mt-4">
-                            <button type="button" class="btn btn-primary btn-lg w-100" style="max-width: 200px;">출근</button> <!-- 버튼 가로 크기 조정 -->
+                            <button type="button"
+                                    th:id="${todayAttendance.attStat == '미출근' ? 'checkInButton' : (todayAttendance.attStat == '퇴근' || todayAttendance.attStat == '휴가' ? 'disabledButton' : 'checkOutButton')}"
+                                    th:classappend="${todayAttendance.attStat == '미출근' ? 'btn-primary' : (todayAttendance.attStat == '퇴근' || todayAttendance.attStat == '휴가' ? 'btn-secondary' : 'btn-warning')}"
+                                    class="btn btn-lg w-100"
+                                    style="max-width: 200px;"
+                                    th:text="${todayAttendance.attStat == '미출근' ? '출근' : (todayAttendance.attStat == '퇴근' ? '퇴근 완료' : (todayAttendance.attStat == '휴가' ? '휴가' : '퇴근'))}"
+                                    th:disabled="${todayAttendance.attStat == '퇴근' || todayAttendance.attStat == '휴가'}">
+                            </button>
                         </div>
+
+
+                        <!--                        &lt;!&ndash; 통합된 버튼 &ndash;&gt;-->
+                        <!--                        <div class="d-flex justify-content-center mt-4">-->
+                        <!--                            <button type="button" class="btn btn-primary btn-lg w-100" style="max-width: 200px;">출근</button> &lt;!&ndash; 버튼 가로 크기 조정 &ndash;&gt;-->
+                        <!--                        </div>-->
                     </div>
                 </div>
 
@@ -264,9 +181,9 @@
                     </div>
                     <div class="card-body" style="display: flex; justify-content: center; align-items: center;">
                         <div class="chart-container" style="min-width: 320px; height: 300px">
-<!--                    <div class="card-body" style="display: flex; justify-content: center; align-items: center; height: 500px">-->
-                        <div id="attendancePieChart" style="height: 300px;min-width: 300px"></div>
-<!--                        <div id="attendancePieChart" style="min-height: 300px;"></div>-->
+                            <!--                    <div class="card-body" style="display: flex; justify-content: center; align-items: center; height: 500px">-->
+                            <div id="attendancePieChart" style="height: 300px;min-width: 300px"></div>
+                            <!--                        <div id="attendancePieChart" style="min-height: 300px;"></div>-->
                         </div>
                     </div>
                 </div>
@@ -291,7 +208,8 @@
     </div>
 </footer><!-- End Footer -->
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
 <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -307,7 +225,89 @@
 <script src="/assets/js/main.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // 타임리프 변수를 자바스크립트 변수로 할당
+        // 출근
+        var countCheckIn = [[${countCheckIn}]] | 0;
+        // 퇴근
+        var countCheckOut = [[${countCheckOut}]] | 0;
+        // 휴가
+        var countVacation = [[${countVacation}]] | 0;
+        // 미출근
+        var countAbsent = [[${countAbsent}]] | 0;
+
+
         var attendanceChart = echarts.init(document.getElementById('attendancePieChart'));
+// 그래프 업데이트 함수
+        function updateChart(countCheckIn, countCheckOut, countAbsent, countVacation) {
+            var option = { title: {
+                    subtext: '최근 7일 기준',
+                    left: 'left'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    show: false,
+                    orient: 'horizontal',
+                    bottom: 10, // 우측에 표시
+                    right: 'right'
+                },
+                series: [{
+                    name: '출근/퇴근 비율',
+                    type: 'pie',
+                    radius: ['50%', '65%'], // 안쪽과 바깥쪽 반지름을 비율로 설정
+                    avoidLabelOverlap: false,
+                    center: ['50%', '50%'],
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: false,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                        data: [
+                            {
+                                value: countCheckIn,
+                                name: '출근',
+                                itemStyle: {
+                                    color: '#87CEFA' // 하늘색
+                                }
+                            },
+                            {
+                                value: countCheckOut,
+                                name: '정상 퇴근',
+                                itemStyle: {
+                                    color: '#A9A9A9' // 회색
+                                }
+                            },
+                            {
+                                value: countAbsent,
+                                name: '미출근',
+                                itemStyle: {
+                                    color: '#FF4500' // 붉은색
+                                }
+                            },
+                            {
+                                value: countVacation,
+                                name: '휴가',
+                                itemStyle: {
+                                    color: '#FFD700' // 노란색
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            // 차트를 새로고침 (새로운 값으로 차트 업데이트)
+            attendanceChart.setOption(option, true);
+        }
 
         var option = {
             title: {
@@ -344,8 +344,34 @@
                         show: false
                     },
                     data: [
-                        {value: 6, name: '출근 완료'},
-                        {value: 1, name: '미출근'},
+                        {
+                            value: countCheckIn,
+                            name: '출근',
+                            itemStyle: {
+                                color: '#87CEFA' // 하늘색
+                            }
+                        },
+                        {
+                            value: countCheckOut,
+                            name: '정상 퇴근',
+                            itemStyle: {
+                                color: '#A9A9A9' // 회색
+                            }
+                        },
+                        {
+                            value: countAbsent,
+                            name: '미출근',
+                            itemStyle: {
+                                color: '#FF4500' // 붉은색
+                            }
+                        },
+                        {
+                            value: countVacation,
+                            name: '휴가',
+                            itemStyle: {
+                                color: '#FFD700' // 노란색
+                            }
+                        }
                     ]
                 }
             ]
@@ -385,6 +411,7 @@
                 const empNo = tokenData.sub;
                 console.log('empNo: ' + empNo);
 
+
                 // bsLink 의 클래스를 가진 요소 가져오기
                 const aTags = document.querySelectorAll('a.bsLink');
 
@@ -423,6 +450,199 @@
                 console.error('JWT 파싱 에러:', e);
                 return null; // 에러 발생 시 null 반환
             }
+        }
+
+        var checkInButton = document.getElementById("checkInButton");
+        var checkOutButton = document.getElementById("checkOutButton");
+
+        // checkInButton이 있을 경우 출근 처리
+        if (checkInButton) {
+            // checkInButton 클릭 이벤트
+            checkInButton.addEventListener("click", function () {
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const empNo = urlParams.get('empNo'); // empNo 값을 추출
+
+                console.log("empNo: " + empNo);
+
+                fetch("/attendance/checkIn", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: new URLSearchParams({empNo: empNo})
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            return response.json();
+                        } else if (response.status === 409) {
+                            alert("이미 출근 기록이 존재합니다.");
+                        } else {
+                            throw new Error("알 수 없는 오류가 발생했습니다.");
+                        }
+                    })
+                    .then(data => {
+                        if (data) {
+                            if (countAbsent > 0) {
+                                countAbsent--;  // 미출근 카운트 감소
+                                countCheckIn++;  // 출근 카운트 증가
+                                updateChart(countCheckIn, countCheckOut, countAbsent, countVacation); // 그래프 업데이트
+                                console.log("출근 처리 완료");
+                            }
+
+                            // 출근 버튼을 퇴근 버튼으로 변경
+                            checkInButton.id = "checkOutButton"; // ID 변경
+                            checkInButton.classList.remove("btn-primary"); // 기존 파란색 클래스 제거
+                            checkInButton.classList.add("btn-warning"); // 노란색 버튼으로 변경
+                            checkInButton.textContent = "퇴근"; // 버튼 텍스트 변경
+
+                            // 기존 이벤트 리스너 제거 (퇴근 버튼에서 출근 기능이 실행되는 것 방지)
+                            checkInButton.removeEventListener("click", arguments.callee);
+
+                            // 새로운 checkOutButton에 이벤트 리스너 바인딩
+                            checkOutButton = document.getElementById("checkOutButton");
+                            if (checkOutButton) {
+                                checkOutButton.addEventListener("click", function () {
+                                    // 퇴근 로직
+                                    handleCheckOut(empNo);
+                                });
+                            }
+
+                            // 퇴근 시간 업데이트
+                            document.getElementById("todayArrTime").textContent = data.arrTime ? data.arrTime : '';
+
+                            // 출근 퇴근 상태 업데이트
+                            document.querySelector('.attStat-Condition').textContent = data.attStat ? data.attStat : '미정';
+                            document.querySelector('.attStat-Condition').className = 'attStat-Condition';
+
+
+                            // data.attStat 값에 따라 클래스 추가
+                            if (data.attStat === '미출근') {
+                                document.querySelector('.attStat-Condition').classList.add('badge', 'bg-danger');
+                            } else if (data.attStat === '출근') {
+                                document.querySelector('.attStat-Condition').classList.add('badge', 'bg-success');
+                            } else if (data.attStat === '퇴근') {
+                                document.querySelector('.attStat-Condition').classList.add('badge', 'bg-secondary');
+                            } else if (data.attStat === '휴가') {
+                                document.querySelector('.attStat-Condition').classList.add('badge', 'bg-secondary');
+                            }
+
+
+                            // 상태 업데이트 (span 태그의 class와 내용 변경)
+                            //             <div className="card-header d-flex justify-content-between align-items-center">
+                            //                 <h5 className="mb-0">출근 / 퇴근 상태</h5>
+                            //                 <span th:class="${todayAttendance.attStat == '미출근' ? 'badge bg-danger'
+                            // : (todayAttendance.attStat == '출근' ? 'badge bg-success'
+                            // : (todayAttendance.attStat == '퇴근' ? 'badge bg-info'
+                            // : 'badge bg-warning'))}"
+                            //                       th:text="${todayAttendance.attStat}">
+                            //             </span>
+                            //             </div>
+
+                            // 가장 최신 테이블의 출근/퇴근 시간 및 상태 업데이트
+                            const firstRow = document.querySelector('.attTable tbody tr');
+                            if (firstRow) {
+                                firstRow.children[1].textContent = data.arrTime ? data.arrTime : '';  // 출근 시간
+                                firstRow.children[2].textContent = data.levTime ? data.levTime : '';  // 퇴근 시간
+                                firstRow.children[4].textContent = data.attStat ? data.attStat : '';      // 상태
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error("에러 발생:", error);
+                    });
+            });
+        }
+        // checkOutButton이 있을 경우 퇴근 처리
+        if (checkOutButton) {
+            checkOutButton.addEventListener("click", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const empNo = urlParams.get('empNo'); // empNo 값을 추출
+
+                console.log("empNo: " + empNo);
+
+                handleCheckOut(empNo);
+            });
+        }
+
+
+// 퇴근 처리 함수
+        function handleCheckOut(empNo) {
+            fetch("/attendance/checkOut", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({empNo: empNo})
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else if (response.status === 409) {
+                        alert("이미 퇴근 기록이 존재합니다.");
+                    } else {
+                        throw new Error("알 수 없는 오류가 발생했습니다.");
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        if (countCheckIn > 0) {
+                            countCheckIn--;  // 출근 카운트 감소
+                            countCheckOut++;  // 퇴근 카운트 증가
+                            updateChart(countCheckIn, countCheckOut, countAbsent, countVacation); // 그래프 업데이트
+                            console.log("퇴근 처리 완료");
+                        }
+
+                        // 퇴근 버튼 업데이트
+                        document.getElementById("checkOutButton").textContent = "퇴근 완료";
+                        document.getElementById('checkOutButton').classList.remove('btn-warning');
+                        document.getElementById('checkOutButton').classList.add('btn-secondary');
+                        document.getElementById('checkOutButton').disabled = true;
+
+                        // 퇴근 시간 업데이트
+                        document.getElementById("todayLevTime").textContent = data.levTime ? data.levTime : '';
+
+                        // 출근 퇴근 상태 업데이트
+                        document.querySelector('.attStat-Condition').textContent = data.attStat ? data.attStat : '미정';
+                        document.querySelector('.attStat-Condition').className = 'attStat-Condition';
+
+
+                        // data.attStat 값에 따라 클래스 추가
+                        if (data.attStat === '미출근') {
+                            document.querySelector('.attStat-Condition').classList.add('badge', 'bg-danger');
+                        } else if (data.attStat === '출근') {
+                            document.querySelector('.attStat-Condition').classList.add('badge', 'bg-success');
+                        } else if (data.attStat === '퇴근') {
+                            document.querySelector('.attStat-Condition').classList.add('badge', 'bg-secondary');
+                        } else if (data.attStat === '휴가') {
+                            document.querySelector('.attStat-Condition').classList.add('badge', 'bg-secondary');
+                        }
+
+
+                        // 상태 업데이트 (span 태그의 class와 내용 변경)
+                        //             <div className="card-header d-flex justify-content-between align-items-center">
+                        //                 <h5 className="mb-0">출근 / 퇴근 상태</h5>
+                        //                 <span th:class="${todayAttendance.attStat == '미출근' ? 'badge bg-danger'
+                        // : (todayAttendance.attStat == '출근' ? 'badge bg-success'
+                        // : (todayAttendance.attStat == '퇴근' ? 'badge bg-info'
+                        // : 'badge bg-warning'))}"
+                        //                       th:text="${todayAttendance.attStat}">
+                        //             </span>
+                        //             </div>
+
+                        // 가장 최신 테이블의 출근/퇴근 시간 및 상태 업데이트
+                        const firstRow = document.querySelector('.attTable tbody tr');
+                        if (firstRow) {
+                            firstRow.children[1].textContent = data.arrTime ? data.arrTime : '';  // 출근 시간
+                            firstRow.children[2].textContent = data.levTime ? data.levTime : '';  // 퇴근 시간
+                            firstRow.children[3].textContent = data.workTime ? data.workTime : '';  // 근무 시간
+                            firstRow.children[4].textContent = data.attStat ? data.attStat : '';      // 상태
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("에러 발생:", error);
+                });
         }
     });
 </script>

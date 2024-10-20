@@ -18,8 +18,8 @@ CREATE TRIGGER trg_insert_annualLeave
     AFTER INSERT ON employee
     FOR EACH ROW
 BEGIN
-    INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann)
-    VALUES (NEW.emp_no, NEW.emp_hiredate, 11, 0);
+    INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann, rem_ann, pending_ann)
+    VALUES (NEW.emp_no, NEW.emp_hiredate, 11, 0,0,0);
 END$$
 
 DELIMITER ;
@@ -36,3 +36,19 @@ ALTER TABLE annualLeave
 # 연차 수당을 위한 미처리된 잔여 연차 칼럼 추가
 ALTER TABLE annualLeave
     ADD COLUMN pending_ann INT NOT NULL;
+
+ALTER TABLE annualleave
+    MODIFY total_ann INT NULL,
+    MODIFY use_ann INT NULL,
+    MODIFY rem_ann INT NULL,
+    MODIFY pending_ann INT NULL;
+
+ALTER TABLE annualleave
+    MODIFY total_ann INT NOT NULL DEFAULT 0,
+    MODIFY use_ann INT NOT NULL DEFAULT 0,
+    MODIFY rem_ann INT NOT NULL DEFAULT 0,
+    MODIFY pending_ann INT NOT NULL DEFAULT 0;
+
+
+CREATE INDEX idx_ann_leave_emp_no ON annualleave(emp_no);
+CREATE INDEX idx_ann_leave_emp_hiredate ON annualleave(emp_hiredate);

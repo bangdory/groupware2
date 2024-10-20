@@ -20,4 +20,17 @@ ALTER TABLE employee
 ALTER TABLE employee
     MODIFY emp_no VARCHAR(10);
 
+-- password 자동으로 설정하는 트리거(24.10.17. 테스트용으로 추가)
+Delimiter //
+create trigger setPassword
+    before insert on employee
+    for each row
+begin
+    set new.emp_password = new.emp_no;
+end;
+Delimiter ;
 
+
+-- 직원 퇴사 시 정보를 삭제하지 않고 직급/부서를 '퇴사' 상태로 변경하기 위해서 enum 수정
+ALTER TABLE employee MODIFY COLUMN department ENUM('영업팀', '인사팀', '마케팅팀', '퇴사') not null;
+ALTER TABLE employee MODIFY COLUMN emp_grade ENUM('사원', '팀장', '이사', '대표이사', '퇴사') not null;

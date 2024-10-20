@@ -6,7 +6,7 @@ import com.groupware.erp.token.JwtAuthenticationFilter;
 import com.groupware.erp.token.JwtTokenProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -21,19 +21,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+@Log4j2
+public class SecurityConfig {
 
     private final LoginUserDetailService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -55,8 +53,16 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
-                .csrf(
-                        (csrfConfig) -> csrfConfig.disable()
+
+//                .csrf(
+//                        (csrfConfig) -> csrfConfig.disable()
+//                )
+
+//                .csrf(csrf -> csrf // CSRF 보호 활성화
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())) // CSRF 토큰을 쿠키에 저장
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/**")  // 기본적으로 모든 경로에 대해 CSRF 비활성화
+                        .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/mail/**"))  // /mail/** 경로는 CSRF 보호 적용
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(
@@ -67,14 +73,18 @@ public class SecurityConfig{
                 .authorizeHttpRequests(
                         (authorizeRequests) -> authorizeRequests
 //                                .requestMatchers("/h2-console/**").permitAll()
-                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("/login","/login/changePassword", "login/changePassword").permitAll()
+                                .requestMatchers("/login").permitAll()
                                 // Admin 권한으로 접근할 Url
                                 .requestMatchers("/admins/**").hasRole(Role.ADMIN.name())
                                 // User 권한으로 접근할 Url
                                 .requestMatchers("/employee/list").hasRole(Role.USER.name())
                                 // User 권한을 부여해서 Attendance 허용
 //                                .requestMatchers("/attendance/**").hasRole(Role.USER.name())
+                                // MAIL URL
+//                                .requestMatchers("/mail/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers("/mail/**")
+                                .permitAll()
+//                                .hasRole(Role.ADMIN.name())
                                 // 위를 제외한 모든 Url 허용
                                 .anyRequest().permitAll()
                 )
@@ -103,16 +113,20 @@ public class SecurityConfig{
     public final AccessDeniedHandler accessDeniedHandler =
             (request, response, accessDeniedException) -> {
                 ErrorResponse fail = new ErrorResponse(HttpStatus.FORBIDDEN, "Spring security forbidden...");
+                log.info("fail: " + fail.getMessage());
+                log.info("fail: " + fail.getStatus());
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 String json = new ObjectMapper().writeValueAsString(fail);
+                log.info("json: " + json);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 PrintWriter writer = response.getWriter();
+                log.info("writer: " + writer.toString());
                 writer.write(json);
                 writer.flush();
             };
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider, new LoginSuccessHandler(jwtTokenProvider, userDetailsService));
     }
 
