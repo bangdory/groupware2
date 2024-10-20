@@ -70,7 +70,7 @@ public class AdminEmployeeController {
 
         String empNo = adminEmployeeService.joinEmployee(adminEmployeeDetailDTO);
         model.addAttribute("successMessage","신규 직원이 등록되었습니다. 사원번호: "+ empNo);
-        return "redirect:/admin/adminEmployee"; // 등록완료
+        return "redirect:/admin/adminEmployee"; // 등록완료f@
     }
 
     @GetMapping("/employeeList")
