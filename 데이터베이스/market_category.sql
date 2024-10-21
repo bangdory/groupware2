@@ -7,4 +7,5 @@ create table market_category
     order_no      int         null
 );
 
-
+INSERT INTO market_category (category_no,category_name, order_no)
+VALUES (1,'건강', 1),(2,'전자기기',2),(3,'추석세트',3);

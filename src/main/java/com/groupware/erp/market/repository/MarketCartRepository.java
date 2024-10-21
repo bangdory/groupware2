@@ -12,4 +12,6 @@ public interface MarketCartRepository extends JpaRepository<MarketCartEntity, In
 
     List<MarketCartEntity> findByEmpNo(String empNo);
     void deleteByEmpNoAndProductNo(String empNo, int productNo);
+    MarketCartEntity findByEmpNoAndProductNo(String empNo, int productNo);
+
 }

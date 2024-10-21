@@ -38,7 +38,7 @@
 
             display: flex;
             flex-direction: row;
-           border: 1px;
+            border: 1px;
             border-radius: 10px;
             margin-bottom:20px;
             background-color: white;
@@ -220,6 +220,37 @@
         .add-to-cart-button {
             margin-top: 10px;
         }
+        /*카트이쁘게*/
+        .cart-container {
+             /* Center the container */
+            padding: 20px;
+            border: 1px solid #ddd; /* Light border */
+            border-radius: 8px; /* Rounded corners */
+            background-color: #f9f9f9; /* Light background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .cart-list {
+            margin-bottom: 20px; /* Space between cart items and total price */
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between; /* Space between item name and price */
+            align-items: center; /* Center items vertically */
+            padding: 10px;
+            border-bottom: 1px solid #ccc; /* Divider between items */
+        }
+
+        .cart-item h4 {
+            margin: 0; /* Remove default margin */
+        }
+
+        .total-price-container {
+            text-align: right; /* Align total price to the right */
+            font-size: 18px; /* Larger font size for total price */
+            font-weight: bold; /* Make the font bold */
+        }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
@@ -395,14 +426,14 @@
         <div class="row">
             <div class="col-12">
                 <div class="category">
-            <!--카테고리 불러오기-->
+                    <!--카테고리 불러오기-->
                     <div th:each="category : ${categories}" class="category-container">
                         <button class="category_button" th:text="${category.categoryName}"
                                 th:attr="data-category-no=${category.categoryNo}"
                                 onclick="fetchProducts(this)">
                         </button>
                     </div>
-            <!--카테고리 추가-->
+                    <!--카테고리 추가-->
                     <div class="category-container">
                         <button id="create-category-modal" class="create-category">+</button>
                     </div>
@@ -423,59 +454,59 @@
 
 
 
-<!--                            <div class="card-body pb-0">-->
-<!--                                <h5 class="card-title">Top Selling <span>| Today</span></h5>-->
+                            <!--                            <div class="card-body pb-0">-->
+                            <!--                                <h5 class="card-title">Top Selling <span>| Today</span></h5>-->
 
-<!--                                <table class="table table-borderless">-->
-<!--                                    <thead>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="col">Preview</th>-->
-<!--                                        <th scope="col">Product</th>-->
-<!--                                        <th scope="col">Price</th>-->
-<!--                                        <th scope="col">Sold</th>-->
-<!--                                        <th scope="col">Revenue</th>-->
-<!--                                    </tr>-->
-<!--                                    </thead>-->
-<!--                                    <tbody>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-1.jpg" alt=""></a></th>-->
-<!--                                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>-->
-<!--                                        <td>$64</td>-->
-<!--                                        <td class="fw-bold">124</td>-->
-<!--                                        <td>$5,828</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-2.jpg" alt=""></a></th>-->
-<!--                                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>-->
-<!--                                        <td>$46</td>-->
-<!--                                        <td class="fw-bold">98</td>-->
-<!--                                        <td>$4,508</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-3.jpg" alt=""></a></th>-->
-<!--                                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>-->
-<!--                                        <td>$59</td>-->
-<!--                                        <td class="fw-bold">74</td>-->
-<!--                                        <td>$4,366</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-4.jpg" alt=""></a></th>-->
-<!--                                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>-->
-<!--                                        <td>$32</td>-->
-<!--                                        <td class="fw-bold">63</td>-->
-<!--                                        <td>$2,016</td>-->
-<!--                                    </tr>-->
-<!--                                    <tr>-->
-<!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-5.jpg" alt=""></a></th>-->
-<!--                                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>-->
-<!--                                        <td>$79</td>-->
-<!--                                        <td class="fw-bold">41</td>-->
-<!--                                        <td>$3,239</td>-->
-<!--                                    </tr>-->
-<!--                                    </tbody>-->
-<!--                                </table>-->
+                            <!--                                <table class="table table-borderless">-->
+                            <!--                                    <thead>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="col">Preview</th>-->
+                            <!--                                        <th scope="col">Product</th>-->
+                            <!--                                        <th scope="col">Price</th>-->
+                            <!--                                        <th scope="col">Sold</th>-->
+                            <!--                                        <th scope="col">Revenue</th>-->
+                            <!--                                    </tr>-->
+                            <!--                                    </thead>-->
+                            <!--                                    <tbody>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-1.jpg" alt=""></a></th>-->
+                            <!--                                        <td><a href="#" class="text-primary fw-bold">Ut inventore ipsa voluptas nulla</a></td>-->
+                            <!--                                        <td>$64</td>-->
+                            <!--                                        <td class="fw-bold">124</td>-->
+                            <!--                                        <td>$5,828</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-2.jpg" alt=""></a></th>-->
+                            <!--                                        <td><a href="#" class="text-primary fw-bold">Exercitationem similique doloremque</a></td>-->
+                            <!--                                        <td>$46</td>-->
+                            <!--                                        <td class="fw-bold">98</td>-->
+                            <!--                                        <td>$4,508</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-3.jpg" alt=""></a></th>-->
+                            <!--                                        <td><a href="#" class="text-primary fw-bold">Doloribus nisi exercitationem</a></td>-->
+                            <!--                                        <td>$59</td>-->
+                            <!--                                        <td class="fw-bold">74</td>-->
+                            <!--                                        <td>$4,366</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-4.jpg" alt=""></a></th>-->
+                            <!--                                        <td><a href="#" class="text-primary fw-bold">Officiis quaerat sint rerum error</a></td>-->
+                            <!--                                        <td>$32</td>-->
+                            <!--                                        <td class="fw-bold">63</td>-->
+                            <!--                                        <td>$2,016</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    <tr>-->
+                            <!--                                        <th scope="row"><a href="#"><img src="/assets/img/product-5.jpg" alt=""></a></th>-->
+                            <!--                                        <td><a href="#" class="text-primary fw-bold">Sit unde debitis delectus repellendus</a></td>-->
+                            <!--                                        <td>$79</td>-->
+                            <!--                                        <td class="fw-bold">41</td>-->
+                            <!--                                        <td>$3,239</td>-->
+                            <!--                                    </tr>-->
+                            <!--                                    </tbody>-->
+                            <!--                                </table>-->
 
-<!--                            </div>-->
+                            <!--                            </div>-->
                             <div id="product-list" class="product-list"></div>
                         </div>
                     </div><!-- End Top Selling -->
@@ -483,14 +514,15 @@
                 </div>
             </div><!-- End Left side columns -->
 
-<!--           장바구니-->
+            <!--           장바구니-->
             <div class="col-lg-4">
                 <div class="card">
-                    <div id="cart-container">
+                    <div id="cart" class="cart-container">
                         <h2>장바구니</h2>
-                        <div id="cart-items"></div>
-                        <div id="cart-total">
-                            <strong>총 가격: </strong><span id="total-price">₩0</span>
+                        <div id="cart-list" class="cart-list"></div>
+                        <div class="total-price-container">
+                            <p class="total-price"><span id="total-price">0</span></p>
+                            <button>결제하기</button>
                         </div>
                     </div>
                 </div>
@@ -546,7 +578,10 @@
             if (tokenData) {
 
                 const empNo = tokenData.sub;
-
+                // 페이지 로딩 시 해당 직원(empNo)의 카트 아이템을 불러옴
+                if (empNo) {
+                    fetchCart(empNo);
+                }
 
             } else {
                 console.error("JWT 토큰에서 empNo 데이터를 찾을 수 없습니다.");
@@ -555,22 +590,7 @@
         } else {
             console.error("JWT 토큰을 찾을 수 없습니다.");
         }
-        // 장바구니
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
 
-        // 각 버튼에 클릭 이벤트 추가
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productNo = this.getAttribute('data-product-id'); // productNo 가져오기
-
-                // 해당 상품의 수량 필드를 찾기
-                const quantityInput = document.getElementById(`quantity-${productNo}`);
-                const productAmount = quantityInput ? quantityInput.value : 1; // 수량 가져오기 (기본값 1)
-
-                // 장바구니에 담기 함수 호출
-                addToCart(productNo, productAmount);
-            });
-        });
     });
 
     function decodingJwt(token) {
@@ -588,7 +608,7 @@
             return null; // 에러 발생 시 null 반환
         }
     }
-// 여기서부터
+    // 여기서부터
 
     // 모달 열기 버튼
     const openModalButton = document.getElementById('create-category-modal');
@@ -640,6 +660,8 @@
 
                 newCategoryContainer.appendChild(newCategoryButton);
                 categoryList.insertBefore(newCategoryContainer, document.getElementById('create-category-modal').parentNode);
+                location.reload();
+
             })
             .catch(error => {
                 console.error('Error creating category:', error);
@@ -691,24 +713,27 @@
 
             // 상품 정보를 HTML로 생성
             const productHTML = `
-        <img src="${product.img || 'default_image.jpg'}" alt="${product.name}" class="product-image" />
-        <h2 class="product-title">${product.name}</h2>
-        <div class="price-container">
-            <span class="original-price">₩${product.price}</span>
-            ${discountedPrice ? `<span class="discounted-price">₩${discountedPrice}</span>` : ''}
-        </div>
-        <p class="product-description">${product.description || 'No description available'}</p>
+            <img src="${product.img || 'default_image.jpg'}" alt="${product.name}" class="product-image" />
+            <h2 class="product-title">${product.name}</h2>
+            <div class="price-container">
+                <span class="original-price">₩${product.price}</span>
+                ${discountedPrice ? `<span class="discounted-price">₩${discountedPrice}</span>` : ''}
+            </div>
+            <p class="product-description">${product.description || 'No description available'}</p>
 
-        <!-- 수량 입력 필드 추가 -->
-        <div class="quantity-container">
-            <label for="quantity-${product.productNo}">수량:</label>
-            <input type="number" id="quantity-${product.productNo}" value="1" min="1" class="quantity-input">
-        </div>
+            <!-- 수량 입력 필드 추가 -->
+            <div class="quantity-container">
+                <label for="quantity-${product.productNo}">수량:</label>
+                <input type="number" id="quantity-${product.productNo}" value="1" min="1" class="quantity-input">
+            </div>
 
-        <!-- 장바구니에 담기 버튼 추가 -->
-        <button class="add-to-cart-button" data-product-id="${product.productNo}">
-            장바구니에 담기
-        </button>
+            <!-- 장바구니에 담기 버튼 추가 -->
+            <button class="add-to-cart-button"
+                data-product-id="${product.productNo}"
+                data-product-name="${product.name}"
+                data-product-price="${product.price}">
+                장바구니에 담기
+            </button>
         `;
 
             // HTML 삽입
@@ -723,48 +748,117 @@
                 const productNo = this.getAttribute('data-product-id');
                 const quantityInput = document.getElementById(`quantity-${productNo}`);
                 const productAmount = quantityInput ? quantityInput.value : 1;
+                const name = this.getAttribute('data-product-name'); // name 속성 가져오기
+                const price = this.getAttribute('data-product-price'); // price 속성 가져오기
 
                 // 장바구니에 담기 함수 호출
-                addToCart(productNo, productAmount);
+                addToCart(productNo, productAmount, name, price);
             });
         });
+
 
     }
 
     // 장바구니에 상품 추가 함수
-    let cart = []; // 장바구니 데이터를 저장하는 배열
-    function addToCart(productNo, productAmount) {
+    // 장바구니에 상품 추가 후 카트를 다시 불러오는 함수
+    function addToCart(productNo, productAmount, name, price) {
         const jwtToken = localStorage.getItem("accessToken");
         const tokenData = decodingJwt(jwtToken);
         const empNo = tokenData ? tokenData.sub : null;
 
-        // Ajax로 서버에 장바구니 담기 요청
         axios.put(`/market/cart/update`, null, {
             params: {
                 empNo: empNo,
                 productNo: productNo,
-                productAmount: productAmount
+                productAmount: productAmount,
+                name: name,
+                price: price
             }
         })
             .then(response => {
-                console.log('장바구니에 상품이 추가되었습니다:', response.data); // 응답 데이터 확인
+                console.log('장바구니에 상품이 추가되었습니다:', response.data);
 
-                // 장바구니에 추가된 항목을 저장
-                const cartItem = {
-                    productNo: response.data.productNo,
-                    productAmount: response.data.productAmount,
-                    empNo: empNo
-                };
-
-                cart.push(cartItem); // cart에 추가
-
-
+                // 새로운 상품이 추가된 후, 카트 목록을 다시 불러옴
+                fetchCart(empNo);
             })
             .catch(error => {
                 console.error('장바구니에 상품을 추가하는 중 오류 발생:', error);
             });
     }
 
+    // 카트 아이템을 서버에서 가져와서 표시하는 함수
+    function fetchCart(empNo) {
+        axios.get(`/market/cart/read`, { params: { empNo: empNo } })
+            .then(response => {
+                const cartItems = response.data;
+                console.log("카트아이템: ", JSON.stringify(cartItems, null, 2));
+                updateCartDisplay(cartItems);  // 카트 아이템을 화면에 표시하는 함수 호출
+            })
+            .catch(error => {
+                console.error('카트 아이템을 가져오는 중 오류 발생:', error);
+            });
+    }
+
+    // 카트 목록을 화면에 업데이트
+    function updateCartDisplay(cartItems) {
+        const cartContainer = document.getElementById('cart-list');
+        cartContainer.innerHTML = ''; // Clear existing items
+
+        let totalPrice = 0; // Initialize total price
+
+        cartItems.forEach(item => {
+            const itemTotal = item.productAmount * item.price; // Calculate item total
+            totalPrice += itemTotal; // Add to total price
+
+            const cartItemHTML = `
+            <div class="cart-item">
+                <h4>${item.name}</h4>
+                <p>가격: ₩${item.price}</p>
+                <p>수량: ${item.productAmount}</p>
+                <p>합계: ₩${itemTotal}</p> <!-- Display item total -->
+                <button class="delete-cart-button" data-product-no="${item.productNo}">삭제</button> <!-- Delete button -->
+            </div>
+        `;
+            cartContainer.innerHTML += cartItemHTML; // Add item to cart
+        });
+
+        // Update total price display
+        document.getElementById('total-price').textContent = `총 가격: ₩${totalPrice}`; // Display total price
+
+        // Add event listeners for delete buttons
+        const deleteButtons = document.querySelectorAll('.delete-cart-button');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productNo = this.getAttribute('data-product-no');
+                deleteCartItem(productNo); // Call delete function
+            });
+        });
+    }
+    function deleteCartItem(productNo) {
+        const jwtToken = localStorage.getItem("accessToken");
+        const tokenData = decodingJwt(jwtToken);
+        const empNo = tokenData ? tokenData.sub : null;
+
+        if (!empNo) {
+            console.error('empNo를 찾을 수 없습니다.');
+            return;
+        }
+
+        axios.delete(`/market/cart/delete`, {
+            params: {
+                empNo: empNo,
+                productNo: productNo
+            }
+        })
+            .then(response => {
+                console.log('카트 항목이 삭제되었습니다:', response.data);
+                // 삭제 후 카트 내용을 다시 불러옴
+                fetchCart(empNo);
+            })
+            .catch(error => {
+                console.error('카트 항목 삭제 중 오류 발생:', error);
+            });
+    }
 
 </script>
 

@@ -2,6 +2,7 @@ package com.groupware.erp.market.model;
 
 import com.groupware.erp.employee.entity.EmployeeEntity;
 import jakarta.persistence.*;
+import lombok.Cleanup;
 import lombok.Data;
 
 @Data
@@ -20,4 +21,9 @@ public class MarketCartEntity {
     private int productNo;
     @Column(name = "product_amount")
     private int productAmount;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "price")
+    private int price;
+
 }
