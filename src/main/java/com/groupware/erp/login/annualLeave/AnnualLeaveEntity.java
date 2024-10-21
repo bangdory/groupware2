@@ -1,5 +1,6 @@
 package com.groupware.erp.login.annualLeave;
 
+import com.groupware.erp.employee.entity.EmployeeEntity;
 import com.groupware.erp.login.LoginEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,7 +34,10 @@ public class AnnualLeaveEntity {
     private int pendingAnn;
 
     @OneToOne
-    @JoinColumn(name = "emp_no", referencedColumnName = "emp_no", insertable = false, updatable = false)
+    @JoinColumn(name = "emp_no", referencedColumnName = "emp_no")
     private LoginEntity loginEntity; // 연관 관계 설정
 
+    @OneToOne(mappedBy = "annualLeave")
+    private EmployeeEntity employee;
 }
+

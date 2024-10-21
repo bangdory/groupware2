@@ -3,7 +3,7 @@ DROP TABLE community_comment;
 create table community_comment(
                                   comment_no int primary key ,
                                   post_no int not null,
-                                  emp_no bigint,
+                                  emp_no varchar(10),
                                   comment_content varchar(500) not null,
                                   comment_date date not null,
                                   comment_parent int not null, #부모 댓글번호

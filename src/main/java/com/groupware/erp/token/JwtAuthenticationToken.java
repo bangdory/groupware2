@@ -2,10 +2,8 @@ package com.groupware.erp.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.List;
 
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
@@ -14,6 +12,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     private final String department;
     private final String empGrade;
     private final String token;
+    private final Collection<GrantedAuthority> authorities;
 
     public JwtAuthenticationToken(String username,
                                   String empEmail,
@@ -26,6 +25,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         this.department = department;
         this.empGrade = empGrade;
         this.token = token;
+        this.authorities = null;
         setAuthenticated(false);
     }
 
@@ -34,13 +34,14 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
                                   String department,
                                   String empGrade,
                                   String token,
-                                  Collection<? extends GrantedAuthority> authorities) {
+                                  Collection<GrantedAuthority> authorities) {
         super(authorities);
         this.username = username;
         this.empEmail = empEmail;
         this.department = department;
         this.empGrade = empGrade;
         this.token = token;
+        this.authorities = authorities;
         setAuthenticated(true);
     }
 
@@ -66,4 +67,10 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     public String getGrade() {
         return empGrade;
     }
+
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
 }

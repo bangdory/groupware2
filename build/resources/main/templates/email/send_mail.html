@@ -1,0 +1,41 @@
+<html layout:decorate="~{index}" xmlns:layout="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<div layout:fragment="content" class="container my-3">
+    <h5 class="border-bottom my-3 pb-2">메일 쓰기</h5>
+    <form class="my-3" method="post" th:object="${mailForm}">
+<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+        <div th:if="${empData != null}">
+            <!--        <div th:replace="~{form_errors::formErrorsFragment}"></div>-->
+            <input type="hidden" th:name="receiverMailAddress" th:value="${empData.getEmpEmail()}">
+
+            <div class="alert alert-danger"
+                 role="alert" th:if="${#fields.hasAnyErrors()}">
+                <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+            </div>
+            <div th:text="${empData != null ? empData.getEmpName() : '직원 이름 없음'} + '에게 메일 보내기'"></div>
+        </div>
+
+        <div th:if="${empData == null}">
+            <label for="receiverMailAddress" class="form-label">수신자 이메일</label>
+            <input type="email" class="form-control" th:name="receiverMailAddress" id="receiverMailAddress"
+                   placeholder="수신자 이메일을 입력하세요" th:field="*{receiverMailAddress}">
+            <div class="alert alert-danger"
+                 role="alert" th:if="${#fields.hasAnyErrors()}">
+                <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="subject" class="form-label">메일 제목</label>
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="제목을 입력하세요"
+                   th:field="*{subject}">
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">메일 내용</label>
+            <textarea type="text" class="form-control" name="message" id="message" rows="10" placeholder="내용을 입력하세요"
+                      th:field="*{message}"></textarea>
+        </div>
+        <input class="btn btn-primary my-2" type="submit" value="메일 보내기">
+    </form>
+</div>
+</html>

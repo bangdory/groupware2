@@ -17,3 +17,4 @@ BEGIN
         INSERT INTO Attendance (emp_no) VALUES (NEW.emp_no);
 END IF;
 END;
+
