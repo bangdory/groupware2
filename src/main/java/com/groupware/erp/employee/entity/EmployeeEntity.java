@@ -1,5 +1,7 @@
 package com.groupware.erp.employee.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.groupware.erp.domain.employee.Role;
 import com.groupware.erp.login.annualLeave.AnnualLeaveEntity;
 import jakarta.persistence.*;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name="employee")	// DB table 이름
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "empNo")
 public class EmployeeEntity {
 
     @Id // PK컬럼
@@ -49,6 +52,16 @@ public class EmployeeEntity {
     @JoinColumn(name = "emp_no", referencedColumnName = "emp_no") // 외래 키 관계 설정
     private AnnualLeaveEntity annualLeave;
 
+    // toString() 오버라이드
+    @Override
+    public String toString() {
+        return "EmployeeEntity{" +
+                "empNo='" + empNo +
+                '}';
+    }
+}
+
+
 //    // MemberJoinDTO -> MemberEntity 객체로 변환
 //    public static EmployeeEntity joinEmployee(EmployeeJoinDTO employeeJoinDTO, PasswordEncoder passwordEncoder) {
 //        EmployeeEntity employeeEntity = new EmployeeEntity();
@@ -65,4 +78,3 @@ public class EmployeeEntity {
 //        // 변환이 완료된 memberEntity 객체를 넘겨줌
 //        return employeeEntity;
 //    }
-}

@@ -5,9 +5,13 @@ import com.groupware.erp.attendance.dto.AttendanceVO;
 import com.groupware.erp.attendance.repository.AttendanceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -85,5 +89,61 @@ public class AttendanceServiceImpl implements AttendanceService {
     public Optional<AttendanceEntity> findByEmpNoAndRegDate(String empNo, LocalDate regDate) {
         return attendanceRepository.findByEmpNoAndRegDate(empNo, regDate);
     }
+
+    @Override
+    public Optional<AttendanceEntity> findByEmpNo(String empNo) {
+        return attendanceRepository.findByEmpNo(empNo);
+    }
+
+    @Override
+    public List<AttendanceEntity> findTop5ByEmpNoOrderByAttNoDesc(String empNo) {
+        return attendanceRepository.findTop5ByEmpNoOrderByAttNoDesc(empNo);
+    }
+
+    @Override
+    public AttendanceEntity updateStartTime(AttendanceEntity entity) {
+        Time arrTime = entity.getArrTime();
+        Time levTime = entity.getLevTime();
+
+        Time workTime = calculateWorkTime(arrTime, levTime);
+        entity.setWorkTime(workTime); // 계산된 근무 시간을 workTime에 저장
+
+        return attendanceRepository.save(entity);
+    }
+
+    @Override
+    public AttendanceEntity updateEndTime(AttendanceEntity entity) {
+        Time arrTime = entity.getArrTime();
+        Time levTime = entity.getLevTime();
+
+        Time workTime = calculateWorkTime(arrTime, levTime);
+        entity.setWorkTime(workTime); // 계산된 근무 시간을 workTime에 저장
+
+        return attendanceRepository.save(entity);
+    }
+
+    @Override
+    public AttendanceEntity findByAttNo(Long attNo) {
+        return attendanceRepository.findByAttNo(attNo);
+    }
+
+    private Time calculateWorkTime(Time arrTime, Time levTime) {
+        // 출근 시간과 퇴근 시간을 LocalTime으로 변환
+        LocalTime start = arrTime.toLocalTime();
+        LocalTime end = levTime.toLocalTime();
+
+        // 두 시간 사이의 차이 계산 (Duration을 사용)
+        Duration duration = Duration.between(start, end);
+
+        // 총 초 단위로 계산
+        long totalSeconds = duration.getSeconds();
+        int hours = (int) (totalSeconds / 3600);
+        int minutes = (int) ((totalSeconds % 3600) / 60);
+        int seconds = (int) (totalSeconds % 60);
+
+        // 계산된 시간을 Time 객체로 변환
+        return Time.valueOf(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+    }
+
 
 }

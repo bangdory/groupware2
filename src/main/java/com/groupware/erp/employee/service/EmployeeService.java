@@ -13,4 +13,6 @@ public interface EmployeeService {
 
     Optional<EmployeeEntity> findByEmpNo (String empNo);
 
+    EmployeeEntity findEmployeeById(String empNo);
+
 }

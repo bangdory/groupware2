@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>게시글 생성</title>
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center" th:insert="~{/designTemplates/header :: header}">
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar" th:insert="~{/designTemplates/aside :: aside}">
+</aside>
+<!-- End Sidebar-->
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>게시글 생성</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index">Home</a></li>
+                <li class="breadcrumb-item"><a href="/posts/list">자유게시판</a></li>
+                <li class="breadcrumb-item active">게시글 생성</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">새 게시글 작성</h5>
+
+                <!-- 게시글 생성 폼 -->
+                <form id="create-post-form">
+                    <div class="mb-3">
+                        <label for="postTitle" class="form-label">제목</label>
+                        <input type="text" class="form-control" id="postTitle" placeholder="제목을 입력하세요" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="postContent" class="form-label">내용</label>
+                        <textarea class="form-control" id="postContent" rows="6" placeholder="내용을 입력하세요" required></textarea>
+                    </div>
+
+                    <div class="mt-4" id="file-upload-section">
+                        <h5>파일 첨부</h5>
+                        <input type="file" id="fileUpload" name="file">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">게시글 생성</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/js/main.js"></script>
+
+<script>
+    // 현재 날짜 yyyy-mm-dd 형식으로 반환하는 함수
+    function getCurrentDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2); // 두 자리 수로 포맷
+        const day = ('0' + today.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+    }
+
+    // JWT에서 emp_no 추출하는 함수 (로컬 스토리지에서 토큰을 가져와서 처리)
+    function getEmpNoFromToken() {
+        const token = localStorage.getItem('accessToken'); // JWT 토큰을 가져옴
+        if (!token) return null;
+
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        const tokenData = JSON.parse(jsonPayload);
+        return tokenData.sub; // emp_no 값
+    }
+
+    let createdPostNo = null; // 게시글 생성 후 받은 postNo
+
+    // 게시글 작성 폼 처리
+    document.getElementById('create-post-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const postTitle = document.getElementById('postTitle').value;
+        const postContent = document.getElementById('postContent').value;
+        const postDate = getCurrentDate();
+        const empNo = getEmpNoFromToken();
+
+        if (!empNo) {
+            alert('유효한 사용자 정보가 없습니다. 로그인을 확인하세요.');
+            return;
+        }
+
+        const postData = {
+            postTitle: postTitle,
+            postContent: postContent,
+            postDate: postDate,
+            empNo: empNo
+        };
+
+        // 게시글 생성 API 호출
+        fetch('/posts/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                createdPostNo = data.postNo;
+                alert('게시글이 성공적으로 생성되었습니다.');
+                uploadFile();
+            })
+            .catch(error => {
+                console.error('게시글 생성 중 오류가 발생했습니다:', error);
+            });
+    });
+
+    // 파일 업로드 처리
+    function uploadFile() {
+        const fileInput = document.getElementById('fileUpload');
+        const file = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('postNo', createdPostNo); // 게시글 번호와 함께 파일 전송
+
+        // 파일 업로드 API 호출
+        fetch('/files/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('파일이 성공적으로 업로드되었습니다.');
+                window.location.href = '/posts/list'; // 파일 업로드 후 게시글 목록으로 이동
+            })
+            .catch(error => {
+                console.error('파일 업로드 중 오류가 발생했습니다:', error);
+            });
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>공지사항 상세 정보</title>
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center" th:insert="~{/designTemplates/header :: header}">
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar" th:insert="~{/designTemplates/aside :: aside}">
+</aside>
+<!-- End Sidebar-->
+
+<!-- ======= Main Section ======= -->
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>공지사항 상세 정보</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index">Home</a></li>
+                <li class="breadcrumb-item"><a href="/notices/list">공지사항</a></li>
+                <li class="breadcrumb-item active">공지사항 상세 정보</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" id="noticeTitle">공지사항 제목</h5>
+                <p id="noticeContent">공지사항 내용</p>
+                <div class="d-flex justify-content-between">
+                    <span id="noticeDate">작성일</span>
+                    <span id="noticeView">조회수: 0</span>
+                    <span id="noticeAuthor">작성자: 관리자</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 파일 섹션 -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">첨부 파일</h5>
+                <ul id="file-list" class="list-group"></ul>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+<script>
+    const noticeNo = new URLSearchParams(window.location.search).get('noticeNo');
+
+    // 공지사항 세부 정보 가져오기
+    fetch(`/notices/${noticeNo}`)
+        .then(response => response.json())
+        .then(notice => {
+            document.getElementById('noticeTitle').innerText = notice.noticeTitle;
+            document.getElementById('noticeContent').innerText = notice.noticeContent;
+            document.getElementById('noticeDate').innerText = `작성일: ${notice.noticeDate}`;
+            document.getElementById('noticeView').innerText = `조회수: ${notice.noticeView}`;
+            document.getElementById('noticeAuthor').innerText = `작성자: ${notice.empName}`;
+        })
+        .catch(error => console.error('Error fetching notice details:', error));
+
+    // 공지사항에 첨부된 파일 목록 가져오기
+    function loadFiles() {
+        fetch(`/files/notice/${noticeNo}`)
+            .then(response => response.json())
+            .then(files => {
+                const fileList = document.getElementById('file-list');
+                fileList.innerHTML = ''; // Clear previous files
+                files.forEach(file => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    listItem.innerHTML = `<a href="/uploads/${file.fileName}">${file.originalFilename}</a>`;
+                    fileList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching files:', error));
+    }
+
+    loadFiles();
+
+</script>
+
+</body>
+
+</html>

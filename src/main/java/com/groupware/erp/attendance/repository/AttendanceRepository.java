@@ -4,6 +4,7 @@ import com.groupware.erp.attendance.domain.AttendanceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +17,10 @@ public interface AttendanceRepository extends JpaRepository<AttendanceEntity, Lo
 
     // 직원 번호(empNo)로 모든 출근 기록 조회, 등록 날짜 역순으로 정렬
     List<AttendanceEntity> findByEmpNoOrderByRegDateDesc(String empNo);
+
+    Optional<AttendanceEntity> findByEmpNo(String empNo);
+
+    List<AttendanceEntity> findTop5ByEmpNoOrderByAttNoDesc(String empNo);
+
+    AttendanceEntity findByAttNo(Long attNo);
 }
