@@ -318,7 +318,7 @@
             </ul>
         </li><!-- End Forms Nav -->
 
-        <li class="nav-item">
+        <li class="nav-item" id="adminEmail" style="display: none">
             <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-mailbox"></i><span>이메일(파트3)</span><i
                     class="bi bi-chevron-down ms-auto"></i>
@@ -1114,10 +1114,13 @@
 
     function checkAdmin(auth) {
         const adminMenu = document.getElementById('adminMenu');
+        const adminEmail = document.getElementById('adminEmail');
         if (auth === 'ADMIN') {
             adminMenu.style.display = 'block';
+            adminEmail.style.display = 'block';
         } else {
             adminMenu.style.display = 'none';
+            adminEmail.style.display = 'none';
         }
     }
 
