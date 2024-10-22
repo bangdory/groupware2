@@ -40,4 +40,15 @@ public class AttendanceEntity {
     @ManyToOne
     @JoinColumn(name = "emp_no", referencedColumnName = "emp_no", insertable = false, updatable = false)
     private LoginEntity loginEntity;
+
+    @Override
+    public String toString() {
+        return "AttendanceEntity{" +
+                "attNo=" + attNo +
+                ", empNo='" + empNo + '\'' +
+                ", arrTime=" + arrTime +
+                ", levTime=" + levTime +
+                '}';
+    }
+
 }

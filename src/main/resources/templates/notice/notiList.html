@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>공지사항</title>
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center" th:insert="~{/designTemplates/header :: header}">
+</header>
+<!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar" th:insert="~{/designTemplates/aside :: aside}">
+</aside>
+<!-- End Sidebar-->
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>공지사항</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/index">Home</a></li>
+                <li class="breadcrumb-item active">공지사항</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">공지사항 목록</h5>
+
+                <!-- 공지사항 생성 버튼 추가 -->
+                <div class="d-flex justify-content-end" id="createNoticeButtonContainer">
+                    <!-- 버튼은 관리자만 볼 수 있게 JavaScript에서 관리 -->
+                    <a href="/notices/createPage" class="btn btn-primary" id="createNoticeButton" style="display: none;">공지사항 생성</a>
+                </div>
+
+                <!-- Table with stripped rows -->
+                <table class="table datatable mt-3">
+                    <thead>
+                    <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                        <th scope="col">조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody id="notice-list">
+                    <!-- 공지사항 목록이 여기에 들어감 -->
+                    </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/js/main.js"></script>
+
+<script>
+    // JWT 토큰에서 role 추출
+    function getRoleFromToken() {
+        const token = localStorage.getItem('accessToken'); // JWT 토큰을 가져옴
+        if (!token) return null;
+
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        const tokenData = JSON.parse(jsonPayload);
+        return tokenData.auth; // role 값 (예: 'admin' 또는 'user')
+    }
+
+    // role에 따른 버튼 표시 제어
+    const role = getRoleFromToken();
+    if (role === 'ADMIN') {
+        document.getElementById('createNoticeButton').style.display = 'block'; // 관리자일 경우 버튼 표시
+    }
+
+    // 공지사항 목록 가져오기
+    fetch('/notices')
+        .then(response => response.json())
+        .then(notices => {
+            const noticeList = document.getElementById('notice-list');
+            notices.forEach((notice, index) => {
+                const row = `<tr>
+                                <td>${notice.noticeNo}</td>
+                                <td><a href="/notices/detailPage?noticeNo=${notice.noticeNo}">${notice.noticeTitle}</a></td>
+                                <td>${notice.empName}</td>
+                                <td>${notice.noticeDate}</td>
+                                <td>${notice.noticeView}</td>
+                            </tr>`;
+                noticeList.innerHTML += row;
+            });
+        })
+        .catch(error => console.error('Error fetching notices:', error));
+</script>
+
+</body>
+
+</html>

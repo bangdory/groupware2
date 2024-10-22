@@ -1,5 +1,6 @@
 package com.groupware.erp.employee.service.impl;
 
+import com.groupware.erp.admin.dto.AdminEditEmployeeDTO;
 import com.groupware.erp.employee.dto.EmployeeMapperDTO;
 import com.groupware.erp.employee.entity.EmployeeEntity;
 import com.groupware.erp.employee.repository.EmployeeMapperRepository;
@@ -30,6 +31,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Optional<EmployeeEntity> findByEmpNo(String empNo) {
         return employeeRepository.findByEmpNo(empNo);
+    }
+
+    @Override
+    public EmployeeEntity findEmployeeById(String empNo){
+        //return employeeRepository.findById(empNo).orElse(null);
+
+        return employeeRepository.findByEmpNo(empNo).orElse(null);
     }
 
 }

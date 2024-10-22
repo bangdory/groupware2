@@ -1,9 +1,6 @@
 package com.groupware.erp.vacation.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,7 @@ public class VacationEntity {
 
     @Id
     @Column(name = "vac_no")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // 또는 GenerationType.AUTO
     private long vacNo;
 
     @Column(name = "emp_no")
@@ -54,12 +52,27 @@ public class VacationEntity {
 
     // 빌더 패턴 사용 (선택 사항)
     @Builder
-    public VacationEntity(String empNo, LocalDate reqDate, LocalDate startDate, LocalDate endDate, String requestReason, int totalDays) {
+    public VacationEntity(long vacNo, String empNo, LocalDate reqDate, LocalDate startDate, LocalDate endDate, String requestReason, int totalDays, int approveBoolean) {
+        this.vacNo = vacNo;
         this.empNo = empNo;
         this.reqDate = reqDate;
         this.startDate = startDate;
         this.endDate = endDate;
         this.requestReason = requestReason;
         this.totalDays = totalDays;
+        this.approveBoolean = approveBoolean;
     }
+
+    @Override
+    public String toString() {
+        return "VacationEntity{" +
+                "vacNo=" + vacNo +
+                ", empNo='" + empNo + '\'' +
+                ", reqDate=" + reqDate +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", approveBoolean=" + approveBoolean +
+                '}';
+    }
+
 }

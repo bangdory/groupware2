@@ -6,6 +6,7 @@ import com.groupware.erp.vacation.repository.VacationRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VacationServiceImpl implements VacationService{
@@ -15,6 +16,15 @@ public class VacationServiceImpl implements VacationService{
     // 생성자 주입
     public VacationServiceImpl(VacationRepository vacationRepository) {
         this.vacationRepository = vacationRepository;
+    }
+
+    public VacationEntity findByVacNo(int vacNo) {
+        return vacationRepository.findByVacNo(vacNo);
+    }
+
+    @Override
+    public int updateVacationApprove(long vacNo, int approveBoolean) {
+        return vacationRepository.updateVacationApprove(vacNo, approveBoolean);
     }
 
     public VacationEntity save(VacationDTO dto) {
@@ -35,6 +45,11 @@ public class VacationServiceImpl implements VacationService{
     @Override
     public List<VacationEntity> findByEmpNoOrderByVacNoDesc(String empNo) {
         return vacationRepository.findByEmpNoOrderByVacNoDesc(empNo);
+    }
+
+    @Override
+    public Optional<VacationEntity> findLatestByEmpNo(String empNo) {
+        return vacationRepository.findLatestByEmpNo(empNo);
     }
 
 
