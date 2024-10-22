@@ -46,9 +46,12 @@ function decodingJwt(token) {
 
 function checkAdmin(auth) {
     const adminMenu = document.getElementById('adminMenu');
+    const adminEmail = document.getElementById('adminEmail');
     if (auth === 'ADMIN') {
         adminMenu.style.display = 'block';
+        adminEmail.style.display = 'block';
     } else {
         adminMenu.style.display = 'none';
+        adminEmail.style.display = 'none';
     }
 }
