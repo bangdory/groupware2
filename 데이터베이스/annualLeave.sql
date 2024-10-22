@@ -25,7 +25,7 @@ END$$
 DELIMITER ;
 
 
-
+INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann , rem_ann, pending_ann) values ('0000000000', '2024-10-10', 11, 0,0,0);
 INSERT INTO annualLeave (emp_no, emp_hiredate, total_ann, use_ann) values ('0000000001', '2024-10-10', 11, 0);
 
 

@@ -33,42 +33,43 @@
 
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-journal-text"></i><span>파트2</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-journal-text"></i><span>게시판</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="forms-elements.html">
-                    <i class="bi bi-circle"></i><span>Form Elements</span>
+                <a href="/notices/list">
+                    <i class="bi bi-circle"></i><span>공지사항</span>
+                </a>
+            </li>
+            <li>
+                <a href="/posts/list">
+                    <i class="bi bi-circle"></i><span>자유게시판</span>
                 </a>
             </li>
         </ul>
     </li><!-- End Forms Nav -->
 
+
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-layout-text-window-reverse"></i><span>파트3</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-mailbox"></i><span>이메일</span><i
+                class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="tables-general.html">
-                    <i class="bi bi-circle"></i><span>General Tables</span>
+                <a href="/mail">
+                    <i class="bi bi-at"></i><span>관리자용 메일</span>
                 </a>
             </li>
         </ul>
     </li><!-- End Tables Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-bar-chart"></i><span>파트4</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" href="/market">
+            <i class="bi bi-bar-chart"></i><span>마켓</span>
         </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-            <li>
-                <a href="charts-chartjs.html">
-                    <i class="bi bi-circle"></i><span>Chart.js</span>
-                </a>
-            </li>
-        </ul>
     </li><!-- End Charts Nav -->
+
 
     <li class="nav-item" id="adminMenu" style="display: none">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -76,13 +77,14 @@
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="/admin/joinEmployee" class="bsLink" > <!-- onclick="handleLinkClick('/admin/joinEmployee')" -->
+                <a href="/admin/joinEmployee" class="bsLink">
+                    <!-- onclick="handleLinkClick('/admin/joinEmployee')" -->
                     <i class="bi bi-circle"></i><span>신규직원등록</span>
                 </a>
-                <a href="/admin/employeeList" class="bsLink"><!-- onclick="handleLinkClick('/admin/employeeList')" -->
+                <a href="/admin/employeeList" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
                     <i class="bi bi-circle"></i><span>직원근태관리</span>
                 </a>
-                <a href="#" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
+                <a href="/admin/adminEmployee" class="bsLink"><!-- onclick="handleLinkClick('#')" -->
                     <i class="bi bi-circle"></i><span>직원계정관리</span>
                 </a>
             </li>

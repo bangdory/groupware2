@@ -71,6 +71,7 @@
                                         <th>부서</th>
                                         <th>직급</th>
                                         <th>출근/퇴근</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -83,6 +84,15 @@
                                         <td th:text="${adminEmployeeEntity.department}"></td>
                                         <td th:text="${adminEmployeeEntity.empGrade}"></td>
                                         <td th:text="${#lists.contains(attendanceList, adminEmployeeEntity.empNo) ? '출근' : '미출근'}"></td>
+                                        <td>
+<!--                                            <button type="button" class="btn btn-primary"-->
+<!--                                                    th:attr="data-empNo=${adminEmployeeEntity.empNo}"-->
+<!--                                                    onclick="handleClick(this)">-->
+                                            <button class="btn btn-sm btn-primary ms-2" th:onclick="|location.href='@{/edit/empAdmin(empNo=${adminEmployeeEntity.empNo})}'|">
+                                                관리
+                                            </button>
+                                        </td>
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -197,6 +207,11 @@
         } else {
             adminMenu.style.display = 'none';
         }
+    }
+
+    function handleClick(buttonElement) {
+        const empNo = buttonElement.getAttribute('data-empNo');
+        window.location.href = '/edit/empAdmin?empNo=' + encodeURIComponent(empNo);
     }
 </script>
 </body>

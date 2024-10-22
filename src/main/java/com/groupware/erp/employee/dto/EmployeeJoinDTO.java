@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class EmployeeJoinDTO {
     private String empEmail;
     private String empName;
     private String empPhone;
-    private LocalDate empHireDate;
+    private Date empHireDate;
     private String department;
     private String empGrade;
     private Role role;

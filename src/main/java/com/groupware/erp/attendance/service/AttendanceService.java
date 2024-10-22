@@ -3,6 +3,7 @@ package com.groupware.erp.attendance.service;
 import com.groupware.erp.attendance.domain.AttendanceEntity;
 import com.groupware.erp.attendance.dto.AttendanceVO;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +24,14 @@ public interface AttendanceService {
 
     // 특정 날짜에 대한 출근 기록을 조회
     Optional<AttendanceEntity> findByEmpNoAndRegDate(String empNo, LocalDate regDate);
+
+    Optional<AttendanceEntity> findByEmpNo(String empNo);
+
+    List<AttendanceEntity> findTop5ByEmpNoOrderByAttNoDesc(String empNo);
+
+    AttendanceEntity updateStartTime (AttendanceEntity entity);
+
+    AttendanceEntity updateEndTime (AttendanceEntity entity);
+
+    AttendanceEntity findByAttNo(Long attNo);
 }

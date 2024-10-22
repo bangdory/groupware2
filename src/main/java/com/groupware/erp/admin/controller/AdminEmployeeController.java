@@ -6,8 +6,12 @@ import com.groupware.erp.admin.repository.AdminEmployeeRepository;
 import com.groupware.erp.admin.service.AdminEmployeeService;
 import com.groupware.erp.attendance.domain.AttendanceEntity;
 import com.groupware.erp.attendance.service.AttendanceService;
+import com.groupware.erp.employee.entity.EmployeeEntity;
+import com.groupware.erp.employee.service.EmployeeService;
 import com.groupware.erp.login.LoginService;
 import com.groupware.erp.token.JwtTokenProvider;
+import com.groupware.erp.vacation.domain.VacationEntity;
+import com.groupware.erp.vacation.service.VacationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +42,19 @@ public class AdminEmployeeController {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     private LoginService loginService;
+
     @Autowired
     private AdminEmployeeRepository adminEmployeeRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private VacationService vacationService;
+
 
     @GetMapping("/joinEmployee")
     public String joinEmployee() { //@RequestHeader("Authorization") String authorization, Model model
@@ -60,8 +73,8 @@ public class AdminEmployeeController {
     // 신규직원 등록
     @PostMapping("/joinEmployee")
     public String joinEmployee(@ModelAttribute @Valid AdminEmployeeDetailDTO adminEmployeeDetailDTO,
-                                              BindingResult bindingResult,
-                                              Model model) {
+                               BindingResult bindingResult,
+                               Model model) {
         if (bindingResult.hasErrors()) {
             return "joinEmployee";
         }
@@ -69,7 +82,7 @@ public class AdminEmployeeController {
         log.info("html에서 다 받아왔습니까?!??{}", adminEmployeeDetailDTO);
 
         String empNo = adminEmployeeService.joinEmployee(adminEmployeeDetailDTO);
-        model.addAttribute("successMessage","신규 직원이 등록되었습니다. 사원번호: "+ empNo);
+        model.addAttribute("successMessage", "신규 직원이 등록되었습니다. 사원번호: " + empNo);
         return "redirect:/admin/adminEmployee"; // 등록완료f@
     }
 
@@ -98,7 +111,7 @@ public class AdminEmployeeController {
     public String editEmployee(@RequestParam String empNo, Model model) {
         Optional<AdminEmployeeEntity> findByEmpNo = adminEmployeeRepository.findByEmpNo(empNo);
 
-        if(findByEmpNo.isPresent()) {
+        if (findByEmpNo.isPresent()) {
             AdminEmployeeEntity adminEmployeeEntity = findByEmpNo.get();
             log.info("editEmployee 실행{},{},{},{}",
                     adminEmployeeEntity.getEmpNo(),
@@ -129,8 +142,33 @@ public class AdminEmployeeController {
         try {
             adminEmployeeService.updateEmployeeStatus(empNo, "퇴사");
             return ResponseEntity.ok().build();
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+//
+//    @GetMapping("/empAdmin")
+//    public String empAdmin (@RequestParam(name = "empNo") String empNo, Model model) {
+//        log.info("empNo: " + empNo);
+//
+//        Optional<EmployeeEntity> empEntity = employeeService.findByEmpNo(empNo);
+//        Optional<VacationEntity> vacEntity = vacationService.findLatestByEmpNo(empNo);
+//        log.info("empNo: " + empNo);
+//
+//        // Attendance 데이터를 5개만 가져옴
+//        List<AttendanceEntity> attEntity = attendanceService.findTop5ByEmpNoOrderByAttNoDesc(empNo);
+//
+//        log.info("Employee Entity: " + empEntity.toString());
+//        log.info("Vacation Entity: " + vacEntity.toString());
+//        for (AttendanceEntity att : attEntity) {
+//            log.info("Attendance Entity: " + att.toString());
+//        }
+//
+//        // 모델에 추가
+//        model.addAttribute("empEntity", empEntity);
+//        model.addAttribute("vacEntity", vacEntity);
+//        model.addAttribute("attEntity", attEntity);
+//
+//        return "admin/empAdmin";
+//    }
 }

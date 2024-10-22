@@ -124,12 +124,23 @@ public class VacationController {
                 empNo, reqDate, startDate, endDate, requestReason, totalDays);
 
         try {
+
+            Optional<VacationEntity> OptEntity = vacationService.findLatestByEmpNo(empNo);
+            VacationEntity vacEntity = OptEntity.get();
+
+            if (vacEntity.getApproveBoolean() == 0) {
+
+                return ResponseEntity.ok(400); // 400번 코드로 거절을 의미하는 응답
+            }
+
+
             VacationEntity entity = vacationService.save(dto);
 
             if (entity == null) {
                 log.error("Vacation request failed for empNo={}", empNo);
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(500);
             }
+
 
             log.info("Vacation request successful for empNo={}", empNo);
             return ResponseEntity.ok(200);
